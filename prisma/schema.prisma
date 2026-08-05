@@ -1,0 +1,202 @@
+// Prisma schema for the CIMS marketing website (www.cims.lk) — a separate
+// project/database from the CIMS Campus LMS. Kept deliberately minimal: no
+// LMS-style multi-role RBAC or audit trails, since this only backs public
+// marketing content plus a single admin CMS role.
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ---------- ENUMS ----------
+
+enum AdminRole {
+  ADMIN
+}
+
+enum ProgrammeCategory {
+  ENGINEERING_TECHNOLOGY
+  BUSINESS_ECONOMICS
+  LAW_EDUCATION
+  STUDY_ABROAD
+}
+
+enum TeamCategory {
+  BOARD_OF_GOVERNORS
+  ACADEMIC_BOARD
+  INTERNATIONAL_REPRESENTATIVE
+}
+
+enum PostKind {
+  NEWS
+  ANNOUNCEMENT
+}
+
+// ---------- AUTH ----------
+
+model AdminUser {
+  id           String    @id @default(cuid())
+  email        String    @unique
+  passwordHash String
+  name         String
+  // Single role today; kept as an enum so a future EDITOR-tier role is an
+  // enum addition, not a schema rethink.
+  role         AdminRole @default(ADMIN)
+  isActive     Boolean   @default(true)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  passwordResetTokens PasswordResetToken[]
+}
+
+model PasswordResetToken {
+  id        String    @id @default(cuid())
+  adminId   String
+  admin     AdminUser @relation(fields: [adminId], references: [id], onDelete: Cascade)
+  token     String    @unique
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  @@index([adminId])
+}
+
+// ---------- CONTENT ----------
+
+model Programme {
+  id                String            @id @default(cuid())
+  slug              String            @unique
+  name              String
+  category          ProgrammeCategory
+  level             String? // "Bachelor's Degree", "Higher Diploma", "Foundation"
+  durationText      String? // "3 Years", "18 Months"
+  summary           String            @db.Text // card/listing blurb
+  description       String            @db.Text // sanitized HTML, detail page body
+  entryRequirements String?           @db.Text
+  careerOutcomes    String?           @db.Text
+  highlights        Json? // string[] bullet points — avoids a child table for a few bullets
+  heroImageUrl      String?
+  brochureFileUrl   String? // PDF
+  isFeatured        Boolean           @default(false)
+  isPublished       Boolean           @default(true)
+  orderIndex        Int               @default(0)
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+
+  testimonials Testimonial[]
+
+  @@index([category, isPublished])
+}
+
+model NewsPost {
+  id            String   @id @default(cuid())
+  slug          String   @unique
+  kind          PostKind @default(NEWS)
+  title         String
+  excerpt       String?
+  bodyHtml      String   @db.Text // sanitized via sanitize-html, same as LMS convention
+  coverImageUrl String?
+  isPinned      Boolean  @default(false) // announcements only, in practice
+  isPublished   Boolean  @default(true)
+  publishedAt   DateTime @default(now())
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([kind, isPublished, publishedAt])
+}
+
+model Event {
+  id            String    @id @default(cuid())
+  slug          String    @unique
+  title         String
+  description   String?   @db.Text
+  location      String?
+  startAt       DateTime
+  endAt         DateTime?
+  coverImageUrl String?
+  isFeatured    Boolean   @default(false)
+  isPublished   Boolean   @default(true)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  @@index([startAt])
+}
+
+model Testimonial {
+  id          String      @id @default(cuid())
+  studentName String
+  photoUrl    String?
+  batchYear   Int?
+  programmeId String?
+  programme   Programme?  @relation(fields: [programmeId], references: [id], onDelete: SetNull)
+  quote       String      @db.Text
+  videoUrl    String? // optional video testimonial link (YouTube etc.)
+  isFeatured  Boolean     @default(false) // shown in homepage/success-stories carousel
+  isPublished Boolean     @default(true)
+  orderIndex  Int         @default(0)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  @@index([isFeatured, isPublished])
+}
+
+model TeamMember {
+  id          String       @id @default(cuid())
+  name        String
+  category    TeamCategory
+  title       String // position/role text
+  bio         String?      @db.Text
+  photoUrl    String?
+  orderIndex  Int          @default(0)
+  isPublished Boolean      @default(true)
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  @@index([category, isPublished])
+}
+
+model CampusLocation {
+  id           String   @id @default(cuid())
+  name         String   @unique
+  addressLine1 String
+  addressLine2 String?
+  city         String
+  phone        String?
+  email        String?
+  mapEmbedUrl  String? // Google Maps embed iframe src
+  photoUrl     String?
+  orderIndex   Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+// Singleton row — same "one enforced-in-code active row" spirit as the LMS's
+// AcademicYear.isActive pattern, but simpler: id is always the literal
+// string "singleton", enforced via upsert in the settings action, never via
+// app-level create.
+model SiteSettings {
+  id                  String   @id @default("singleton")
+  heroHeadline        String
+  heroSubheadline     String?
+  heroImageUrl        String?
+  aboutSummary        String?  @db.Text
+  chairmanMessageHtml String?  @db.Text
+  chairmanPhotoUrl    String?
+  contactPhone        String
+  contactEmail        String
+  contactAddress      String
+  whatsappNumber      String?
+  facebookUrl         String?
+  instagramUrl        String?
+  linkedinUrl         String?
+  youtubeUrl          String?
+  tiktokUrl           String?
+  lmsUrl              String // e.g. https://lms.cims.lk — "Online Learning Portal"
+  certificateVerifyUrl String // e.g. https://lms.cims.lk/verify
+  onlinePaymentUrl    String // e.g. https://lms.cims.lk/login?callbackUrl=/student/payments
+  updatedAt           DateTime @updatedAt
+}

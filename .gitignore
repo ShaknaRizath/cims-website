@@ -17,6 +17,12 @@
 /.next/
 /out/
 
+# generated Prisma client (regenerated via `postinstall`/`prisma generate`)
+/src/generated/prisma
+
+# local-disk dev file uploads (fallback when Cloudinary isn't configured)
+/public/uploads/
+
 # production
 /build
 
