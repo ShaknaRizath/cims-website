@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Reveal } from "@/components/marketing/reveal";
 import { CtaBanner } from "@/components/marketing/cta-banner";
 import { ProgrammeCard } from "@/components/marketing/programme-card";
-import { TestimonialCard } from "@/components/marketing/testimonial-card";
+import { TestimonialCarousel } from "@/components/marketing/testimonial-carousel";
 import { NewsCard } from "@/components/marketing/news-card";
 import { PROGRAMME_CATEGORY_LABELS } from "@/lib/format/labels";
 
@@ -149,21 +149,17 @@ export default async function Home() {
                 Hear From Our Graduates
               </h2>
             </Reveal>
-            <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {featuredTestimonials.map((testimonial, index) => (
-                <Reveal key={testimonial.id} delayMs={index * 100}>
-                  <TestimonialCard
-                    testimonial={{
-                      studentName: testimonial.studentName,
-                      programmeName: testimonial.programme?.name,
-                      batchYear: testimonial.batchYear,
-                      quote: testimonial.quote,
-                      photoUrl: testimonial.photoUrl,
-                    }}
-                  />
-                </Reveal>
-              ))}
-            </div>
+            <Reveal className="mt-12">
+              <TestimonialCarousel
+                testimonials={featuredTestimonials.map((testimonial) => ({
+                  studentName: testimonial.studentName,
+                  programmeName: testimonial.programme?.name,
+                  batchYear: testimonial.batchYear,
+                  quote: testimonial.quote,
+                  photoUrl: testimonial.photoUrl,
+                }))}
+              />
+            </Reveal>
           </div>
         </section>
       )}
