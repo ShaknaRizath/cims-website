@@ -17,8 +17,8 @@ export function Reveal({ children, className, delayMs = 0 }: RevealProps) {
     <div
       ref={ref}
       className={cn(
-        "transition-all duration-700 ease-out",
-        isInView ? "translate-y-0 opacity-100" : "translate-y-6 opacity-0",
+        "transition-all duration-700 ease-out motion-reduce:transition-none",
+        isInView ? "translate-y-0 opacity-100" : "opacity-0 motion-reduce:translate-y-0 translate-y-6",
         className,
       )}
       style={{ transitionDelay: isInView ? `${delayMs}ms` : "0ms" }}
