@@ -18,6 +18,10 @@ export interface SiteSettingsFormDefaults {
   aboutSummary: string | null;
   chairmanMessageHtml: string | null;
   chairmanPhotoUrl: string | null;
+  ourRole: string | null;
+  ourVision: string | null;
+  ourMission: string | null;
+  aboutTeaserImageUrl: string | null;
   contactPhone: string;
   contactEmail: string;
   contactAddress: string;
@@ -82,6 +86,34 @@ export function SiteSettingsForm({ defaultValues }: { defaultValues?: SiteSettin
               <Textarea id="chairmanMessageHtml" name="chairmanMessageHtml" defaultValue={defaultValues?.chairmanMessageHtml ?? ""} rows={5} />
             </Field>
             <FileUploadField name="chairmanPhotoUrl" label="Chairman's photo" folder="settings" defaultUrl={defaultValues?.chairmanPhotoUrl} />
+          </FieldGroup>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Our Identity</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <FieldGroup>
+            <Field>
+              <FieldLabel htmlFor="ourRole">Our Role</FieldLabel>
+              <Textarea id="ourRole" name="ourRole" defaultValue={defaultValues?.ourRole ?? ""} rows={3} />
+            </Field>
+            <Field>
+              <FieldLabel htmlFor="ourVision">Our Vision</FieldLabel>
+              <Textarea id="ourVision" name="ourVision" defaultValue={defaultValues?.ourVision ?? ""} rows={3} />
+            </Field>
+            <Field>
+              <FieldLabel htmlFor="ourMission">Our Mission</FieldLabel>
+              <Textarea id="ourMission" name="ourMission" defaultValue={defaultValues?.ourMission ?? ""} rows={3} />
+            </Field>
+            <FileUploadField
+              name="aboutTeaserImageUrl"
+              label={'Homepage "Why CIMS?" image'}
+              folder="settings"
+              defaultUrl={defaultValues?.aboutTeaserImageUrl}
+            />
           </FieldGroup>
         </CardContent>
       </Card>
