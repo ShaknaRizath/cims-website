@@ -7,6 +7,7 @@ import { Reveal } from "@/components/marketing/reveal";
 import { CtaBanner } from "@/components/marketing/cta-banner";
 import { ProgrammeCard } from "@/components/marketing/programme-card";
 import { TestimonialCarousel } from "@/components/marketing/testimonial-carousel";
+import { PartnerUniversityCarousel } from "@/components/marketing/partner-university-carousel";
 import { NewsCard } from "@/components/marketing/news-card";
 import { PROGRAMME_CATEGORY_LABELS } from "@/lib/format/labels";
 
@@ -18,7 +19,7 @@ const stats = [
 ];
 
 export default async function Home() {
-  const [settings, featuredProgrammes, featuredTestimonials, latestPosts] = await Promise.all([
+  const [settings, featuredProgrammes, featuredTestimonials, partners, latestPosts] = await Promise.all([
     prisma.siteSettings.findUnique({ where: { id: "singleton" } }),
     prisma.programme.findMany({
       where: { isPublished: true, isFeatured: true },
@@ -30,6 +31,10 @@ export default async function Home() {
       orderBy: { orderIndex: "asc" },
       take: 3,
       include: { programme: { select: { name: true } } },
+    }),
+    prisma.partnerUniversity.findMany({
+      where: { isPublished: true },
+      orderBy: { orderIndex: "asc" },
     }),
     prisma.newsPost.findMany({
       where: { isPublished: true },
@@ -100,6 +105,37 @@ export default async function Home() {
       </section>
 
       <section className="mx-auto max-w-7xl px-6 py-20">
+        <div className="grid gap-10 lg:grid-cols-2 lg:items-center">
+          <Reveal className="relative aspect-4/3 overflow-hidden rounded-2xl bg-secondary">
+            {settings?.aboutTeaserImageUrl && (
+              <Image src={settings.aboutTeaserImageUrl} alt="" fill unoptimized className="object-cover" />
+            )}
+          </Reveal>
+          <Reveal
+            delayMs={100}
+            className="flex flex-col gap-4 rounded-2xl bg-primary p-10 text-primary-foreground"
+          >
+            <span className="text-sm font-semibold uppercase tracking-wide text-primary-foreground/80">
+              About Us
+            </span>
+            <h2 className="font-heading text-3xl font-bold sm:text-4xl">Why CIMS Campus?</h2>
+            <p className="text-primary-foreground/80">
+              {settings?.aboutSummary ??
+                "CIMS Campus has been empowering students with world-recognized qualifications, offering degree programmes and vocational training designed for real careers."}
+            </p>
+            <Button
+              size="lg"
+              className="mt-2 w-fit bg-accent text-accent-foreground hover:bg-accent/90"
+              nativeButton={false}
+              render={<Link href="/about" />}
+            >
+              Explore
+            </Button>
+          </Reveal>
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-7xl px-6 py-20">
         <Reveal className="flex flex-col gap-3 text-center">
           <span className="mx-auto text-sm font-semibold uppercase tracking-wide text-primary">
             Programmes
@@ -161,6 +197,28 @@ export default async function Home() {
               />
             </Reveal>
           </div>
+        </section>
+      )}
+
+      {partners.length > 0 && (
+        <section className="mx-auto max-w-7xl px-6 py-20">
+          <Reveal className="flex flex-col gap-3 text-center">
+            <span className="mx-auto text-sm font-semibold uppercase tracking-wide text-primary">
+              Our Network
+            </span>
+            <h2 className="font-heading text-3xl font-bold text-foreground sm:text-4xl">
+              Partner Universities &amp; Institutions
+            </h2>
+          </Reveal>
+          <Reveal className="mt-12">
+            <PartnerUniversityCarousel
+              partners={partners.map((partner) => ({
+                name: partner.name,
+                logoUrl: partner.logoUrl,
+                websiteUrl: partner.websiteUrl,
+              }))}
+            />
+          </Reveal>
         </section>
       )}
 

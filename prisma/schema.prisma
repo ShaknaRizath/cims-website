@@ -159,6 +159,19 @@ model TeamMember {
   @@index([category, isPublished])
 }
 
+model PartnerUniversity {
+  id          String   @id @default(cuid())
+  name        String
+  logoUrl     String?
+  websiteUrl  String?
+  orderIndex  Int      @default(0)
+  isPublished Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([isPublished])
+}
+
 model CampusLocation {
   id           String   @id @default(cuid())
   name         String   @unique
@@ -186,6 +199,10 @@ model SiteSettings {
   aboutSummary        String?  @db.Text
   chairmanMessageHtml String?  @db.Text
   chairmanPhotoUrl    String?
+  ourRole             String?  @db.Text
+  ourVision           String?  @db.Text
+  ourMission          String?  @db.Text
+  aboutTeaserImageUrl String?
   contactPhone        String
   contactEmail        String
   contactAddress      String
