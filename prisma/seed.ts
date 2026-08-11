@@ -33,6 +33,12 @@ async function main() {
         "CIMS Campus (College of Information Management and Sciences) has been empowering students with world-recognized qualifications since 2006, offering degree programmes and vocational training across Engineering & Technology, Business & Economics, and Law & Education.",
       chairmanMessageHtml:
         "Welcome to CIMS Campus. For nearly two decades, we have been committed to providing accessible, high-quality higher education that prepares our students for real careers. Our graduates go on to lead in industry, government, and their own ventures — and I invite you to become part of that story.",
+      ourRole:
+        "We preserve and transmit knowledge, connecting students with the skills and qualifications that open real career pathways.",
+      ourVision:
+        "To be a leading centre of higher education in Sri Lanka, recognized for producing graduates who lead with skill and integrity.",
+      ourMission:
+        "To provide accessible, industry-aligned higher education that equips every student for a successful career and lifelong learning.",
       contactPhone: "+94 77 359 0505",
       contactEmail: "info@cims.lk",
       contactAddress: "CIMS Campus, Colombo, Sri Lanka",
@@ -260,6 +266,22 @@ async function main() {
         bio: "Dr. Smith coordinates CIMS's study-abroad pathway partnerships with universities in the United Kingdom.",
         orderIndex: 0,
       },
+    ],
+  });
+
+  await prisma.partnerUniversity.deleteMany({
+    where: {
+      name: {
+        in: ["Liverpool John Moores University", "Curtin University", "University of Bedfordshire", "Algoma University"],
+      },
+    },
+  });
+  await prisma.partnerUniversity.createMany({
+    data: [
+      { name: "Liverpool John Moores University", websiteUrl: "https://www.ljmu.ac.uk", orderIndex: 0 },
+      { name: "Curtin University", websiteUrl: "https://www.curtin.edu.au", orderIndex: 1 },
+      { name: "University of Bedfordshire", websiteUrl: "https://www.beds.ac.uk", orderIndex: 2 },
+      { name: "Algoma University", websiteUrl: "https://algomau.ca", orderIndex: 3 },
     ],
   });
 
