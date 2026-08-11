@@ -23,5 +23,6 @@ export async function updateSiteSettings(_prev: ActionState, formData: FormData)
 
   revalidatePath("/admin/settings");
   revalidatePath("/");
+  revalidatePath("/about");
   return undefined;
 }
