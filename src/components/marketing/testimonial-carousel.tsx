@@ -44,9 +44,18 @@ export function TestimonialCarousel({ testimonials }: { testimonials: Testimonia
     return () => clearInterval(id);
   }, [api, isPaused, testimonials.length]);
 
-  const scrollTo = useCallback((index: number) => api?.scrollTo(index), [api]);
+  // Dots target the visually-centered testimonial, not the raw anchor slide,
+  // so scrolling to dot N puts testimonial N in the enlarged center position.
+  const scrollToCenter = useCallback(
+    (index: number) => api?.scrollTo((index - 1 + testimonials.length) % testimonials.length),
+    [api, testimonials.length],
+  );
 
   if (testimonials.length === 0) return null;
+
+  // With align:"start" and 3 slides visible at once (lg:basis-1/3), the
+  // middle visible slide is one past the anchor/leftmost slide embla reports.
+  const centerIndex = (selectedIndex + 1) % testimonials.length;
 
   return (
     <div
@@ -57,10 +66,10 @@ export function TestimonialCarousel({ testimonials }: { testimonials: Testimonia
       onBlurCapture={() => setIsPaused(false)}
     >
       <Carousel setApi={setApi} opts={{ loop: testimonials.length > 1, align: "start" }}>
-        <CarouselContent>
+        <CarouselContent className="-ml-6" viewportClassName="pt-24 pb-5 -mt-24 -mb-5">
           {testimonials.map((testimonial, index) => (
-            <CarouselItem key={index} className="sm:basis-1/2 lg:basis-1/3">
-              <TestimonialCard testimonial={testimonial} />
+            <CarouselItem key={index} className="pl-6 sm:basis-1/2 lg:basis-1/3">
+              <TestimonialCard testimonial={testimonial} isCenter={index === centerIndex} />
             </CarouselItem>
           ))}
         </CarouselContent>
@@ -79,15 +88,15 @@ export function TestimonialCarousel({ testimonials }: { testimonials: Testimonia
               key={index}
               type="button"
               role="tab"
-              aria-selected={index === selectedIndex}
+              aria-selected={index === centerIndex}
               aria-label={`Show testimonial from ${testimonial.studentName}`}
-              onClick={() => scrollTo(index)}
+              onClick={() => scrollToCenter(index)}
               className="group flex items-center justify-center rounded-full p-2.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
             >
               <span
                 className={cn(
                   "h-2 rounded-full transition-all",
-                  index === selectedIndex ? "w-6 bg-primary" : "w-2 bg-primary/30 group-hover:bg-primary/50",
+                  index === centerIndex ? "w-6 bg-primary" : "w-2 bg-primary/30 group-hover:bg-primary/50",
                 )}
               />
             </button>
@@ -96,7 +105,7 @@ export function TestimonialCarousel({ testimonials }: { testimonials: Testimonia
       )}
 
       <p className="sr-only" role="status" aria-live="polite">
-        Showing testimonial {selectedIndex + 1} of {testimonials.length}
+        Showing testimonial {centerIndex + 1} of {testimonials.length}
       </p>
     </div>
   );
