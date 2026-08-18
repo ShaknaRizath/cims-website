@@ -27,7 +27,7 @@ export default async function SuccessStoriesPage() {
         {testimonials.length === 0 ? (
           <p className="mt-16 text-center text-muted-foreground">Testimonials coming soon.</p>
         ) : (
-          <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-24 grid gap-x-6 gap-y-20 sm:grid-cols-2 lg:grid-cols-3">
             {testimonials.map((testimonial, index) => (
               <Reveal key={testimonial.id} delayMs={(index % 3) * 100}>
                 <TestimonialCard

@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { prisma } from "@/lib/db/prisma";
-import { ProgrammeCategory } from "@/generated/prisma/enums";
-import { PROGRAMME_CATEGORY_LABELS } from "@/lib/format/labels";
 import { ProgrammeCard } from "@/components/marketing/programme-card";
 import { Reveal } from "@/components/marketing/reveal";
 import { CtaBanner } from "@/components/marketing/cta-banner";
@@ -14,21 +12,20 @@ export const metadata: Metadata = {
   description: "Explore degree and diploma programmes at CIMS Campus across Engineering & Technology, Business & Economics, Law & Education, and Study Abroad pathways.",
 };
 
-const CATEGORY_FILTERS = Object.values(ProgrammeCategory);
-
 export default async function ProgrammesPage({
   searchParams,
 }: {
   searchParams: Promise<{ category?: string }>;
 }) {
   const { category } = await searchParams;
-  const activeCategory = CATEGORY_FILTERS.includes(category as ProgrammeCategory)
-    ? (category as ProgrammeCategory)
-    : undefined;
+
+  const categories = await prisma.programmeCategory.findMany({ orderBy: { orderIndex: "asc" } });
+  const activeCategory = categories.find((c) => c.slug === category);
 
   const programmes = await prisma.programme.findMany({
-    where: { isPublished: true, ...(activeCategory ? { category: activeCategory } : {}) },
-    orderBy: [{ category: "asc" }, { orderIndex: "asc" }],
+    where: { isPublished: true, ...(activeCategory ? { categoryId: activeCategory.id } : {}) },
+    orderBy: [{ category: { orderIndex: "asc" } }, { orderIndex: "asc" }],
+    include: { category: { select: { name: true } } },
   });
 
   return (
@@ -51,15 +48,15 @@ export default async function ProgrammesPage({
           >
             All Programmes
           </Button>
-          {CATEGORY_FILTERS.map((cat) => (
+          {categories.map((cat) => (
             <Button
-              key={cat}
-              variant={activeCategory === cat ? "default" : "outline"}
+              key={cat.id}
+              variant={activeCategory?.id === cat.id ? "default" : "outline"}
               size="sm"
               nativeButton={false}
-              render={<Link href={`/programmes?category=${cat}`} />}
+              render={<Link href={`/programmes?category=${cat.slug}`} />}
             >
-              {PROGRAMME_CATEGORY_LABELS[cat]}
+              {cat.name}
             </Button>
           ))}
         </div>
@@ -76,7 +73,7 @@ export default async function ProgrammesPage({
                   programme={{
                     slug: programme.slug,
                     name: programme.name,
-                    category: PROGRAMME_CATEGORY_LABELS[programme.category],
+                    category: programme.category.name,
                     level: programme.level ?? "",
                     durationText: programme.durationText ?? "",
                     summary: programme.summary,

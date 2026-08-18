@@ -4,7 +4,6 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import { ArrowRight, CheckCircle2, Download, GraduationCap } from "lucide-react";
 import { prisma } from "@/lib/db/prisma";
-import { PROGRAMME_CATEGORY_LABELS } from "@/lib/format/labels";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -36,6 +35,7 @@ export default async function ProgrammeDetailPage({
   const programme = await prisma.programme.findUnique({
     where: { slug },
     include: {
+      category: { select: { name: true } },
       testimonials: {
         where: { isPublished: true },
         orderBy: { orderIndex: "asc" },
@@ -63,7 +63,7 @@ export default async function ProgrammeDetailPage({
         <div className="relative mx-auto flex max-w-5xl flex-col gap-4 px-6 py-20">
           <Reveal>
             <Badge variant="secondary" className="w-fit">
-              {PROGRAMME_CATEGORY_LABELS[programme.category]}
+              {programme.category.name}
             </Badge>
           </Reveal>
           <Reveal delayMs={100}>
@@ -146,7 +146,7 @@ export default async function ProgrammeDetailPage({
             <Reveal className="text-center">
               <h2 className="font-heading text-2xl font-bold text-foreground">What Our Graduates Say</h2>
             </Reveal>
-            <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="mt-16 grid gap-x-6 gap-y-20 sm:grid-cols-2 lg:grid-cols-3">
               {programme.testimonials.map((testimonial, index) => (
                 <Reveal key={testimonial.id} delayMs={index * 100}>
                   <TestimonialCard
