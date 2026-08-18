@@ -7,6 +7,9 @@ import {
   Users,
   Building2,
   Landmark,
+  GalleryHorizontal,
+  Mail,
+  Tag,
   Settings,
   type LucideIcon,
 } from "lucide-react";
@@ -19,12 +22,15 @@ export interface AdminNavItem {
 
 export const adminNavItems: AdminNavItem[] = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
+  { href: "/admin/hero-slides", label: "Hero Slides", icon: GalleryHorizontal },
   { href: "/admin/programmes", label: "Programmes", icon: GraduationCap },
+  { href: "/admin/categories", label: "Categories", icon: Tag },
   { href: "/admin/news", label: "News", icon: Newspaper },
   { href: "/admin/events", label: "Events", icon: CalendarDays },
   { href: "/admin/testimonials", label: "Testimonials", icon: Quote },
   { href: "/admin/team", label: "Team", icon: Users },
   { href: "/admin/campuses", label: "Campuses", icon: Building2 },
   { href: "/admin/partners", label: "Partner Universities", icon: Landmark },
+  { href: "/admin/contact-messages", label: "Contact Messages", icon: Mail },
   { href: "/admin/settings", label: "Settings", icon: Settings },
 ];

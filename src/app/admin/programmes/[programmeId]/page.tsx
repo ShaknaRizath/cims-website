@@ -12,7 +12,10 @@ export default async function ProgrammeDetailPage({
 }) {
   const { programmeId } = await params;
 
-  const programme = await prisma.programme.findUnique({ where: { id: programmeId } });
+  const [programme, categories] = await Promise.all([
+    prisma.programme.findUnique({ where: { id: programmeId } }),
+    prisma.programmeCategory.findMany({ select: { id: true, name: true }, orderBy: { orderIndex: "asc" } }),
+  ]);
   if (!programme) notFound();
 
   return (
@@ -35,6 +38,7 @@ export default async function ProgrammeDetailPage({
             action={updateProgramme.bind(null, programme.id)}
             defaultValues={programme}
             submitLabel="Save changes"
+            categories={categories}
           />
         </CardContent>
       </Card>

@@ -11,7 +11,7 @@ export default async function AdminSettingsPage() {
         title="Site Settings"
         description="Hero copy, contact details, and outbound links used across the public site."
       />
-      <SiteSettingsForm defaultValues={settings ?? undefined} />
+      <SiteSettingsForm key={settings?.updatedAt.toISOString() ?? "new"} defaultValues={settings ?? undefined} />
     </div>
   );
 }

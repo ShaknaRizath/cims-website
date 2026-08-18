@@ -7,6 +7,7 @@ import { useFileUpload } from "@/lib/storage/use-file-upload";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Field, FieldLabel, FieldDescription, FieldError } from "@/components/ui/field";
+import { ImageCropDialog } from "@/components/admin/image-crop-dialog";
 
 interface FileUploadFieldProps {
   name: string;
@@ -17,6 +18,12 @@ interface FileUploadFieldProps {
   description?: string;
   kind?: "image" | "file";
   errors?: string[];
+  // Crop box ratio (e.g. 4 / 3, 16 / 9, 1). Defaults to 4 / 3 when unset —
+  // react-easy-crop always needs a fixed ratio, there's no freeform mode.
+  aspectRatio?: number;
+  // Skips the crop dialog entirely — for logos and other pre-sized assets
+  // where forcing any fixed aspect ratio would cut off part of the image.
+  disableCrop?: boolean;
 }
 
 export function FileUploadField({
@@ -28,11 +35,40 @@ export function FileUploadField({
   description,
   kind = "image",
   errors,
+  aspectRatio,
+  disableCrop = false,
 }: FileUploadFieldProps) {
   const [file, setFile] = useState<{ url: string; name: string } | null>(
     defaultUrl ? { url: defaultUrl, name: defaultUrl.split("/").pop() ?? defaultUrl } : null,
   );
+  const [pendingImage, setPendingImage] = useState<{ src: string; name: string; type: string } | null>(null);
   const { upload, uploading, error } = useFileUpload();
+
+  function resetFileInput() {
+    const input = document.getElementById(name) as HTMLInputElement | null;
+    if (input) input.value = "";
+  }
+
+  async function handleFileSelected(selected: File) {
+    if (kind !== "image" || disableCrop) {
+      const result = await upload(selected, folder);
+      if (result) setFile({ url: result.url, name: result.fileName });
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      setPendingImage({ src: reader.result as string, name: selected.name, type: selected.type });
+    };
+    reader.readAsDataURL(selected);
+  }
+
+  async function handleCropped(croppedFile: File) {
+    setPendingImage(null);
+    const result = await upload(croppedFile, folder);
+    if (result) setFile({ url: result.url, name: result.fileName });
+    resetFileInput();
+  }
 
   return (
     <Field>
@@ -75,9 +111,23 @@ export function FileUploadField({
           onChange={async (e) => {
             const selected = e.target.files?.[0];
             if (!selected) return;
-            const result = await upload(selected, folder);
-            if (result) setFile({ url: result.url, name: result.fileName });
+            await handleFileSelected(selected);
           }}
+        />
+      )}
+
+      {pendingImage && (
+        <ImageCropDialog
+          open
+          imageSrc={pendingImage.src}
+          fileName={pendingImage.name}
+          mimeType={pendingImage.type}
+          aspectRatio={aspectRatio}
+          onCancel={() => {
+            setPendingImage(null);
+            resetFileInput();
+          }}
+          onCropped={handleCropped}
         />
       )}
 
