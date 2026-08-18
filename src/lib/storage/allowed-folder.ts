@@ -11,6 +11,7 @@ const ALLOWED_UPLOAD_FOLDERS = [
   "campuses",
   "settings",
   "partners",
+  "hero",
 ];
 
 export function resolveAllowedFolderPrefixes(): string[] {

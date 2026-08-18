@@ -4,7 +4,6 @@ import { optionalTextField, optionalUrlField } from "@/lib/validation/shared";
 export const siteSettingsSchema = z.object({
   heroHeadline: z.string().min(2, { error: "Hero headline is required." }),
   heroSubheadline: optionalTextField,
-  heroImageUrl: optionalUrlField,
   aboutSummary: optionalTextField,
   chairmanMessageHtml: optionalTextField,
   chairmanPhotoUrl: optionalUrlField,

@@ -1,11 +1,10 @@
 import { z } from "zod";
-import { ProgrammeCategory } from "@/generated/prisma/enums";
 import { checkboxField, slugField, optionalTextField, optionalUrlField, bulletListField } from "@/lib/validation/shared";
 
 export const programmeSchema = z.object({
   slug: slugField,
   name: z.string().min(2, { error: "Name must be at least 2 characters." }),
-  category: z.enum(ProgrammeCategory),
+  categoryId: z.string().min(1, { error: "Select a category." }),
   level: optionalTextField,
   durationText: optionalTextField,
   summary: z.string().min(10, { error: "Summary must be at least 10 characters." }),
