@@ -22,10 +22,10 @@ export const primaryNav: NavEntry[] = [
     label: "Programmes",
     href: "/programmes",
     items: [
-      { label: "Engineering & Technology", href: "/programmes?category=ENGINEERING_TECHNOLOGY" },
-      { label: "Business & Economics", href: "/programmes?category=BUSINESS_ECONOMICS" },
-      { label: "Law & Education", href: "/programmes?category=LAW_EDUCATION" },
-      { label: "Study Abroad", href: "/programmes?category=STUDY_ABROAD" },
+      { label: "Engineering & Technology", href: "/programmes?category=engineering-technology" },
+      { label: "Business & Economics", href: "/programmes?category=business-economics" },
+      { label: "Law & Education", href: "/programmes?category=law-education" },
+      { label: "Study Abroad", href: "/programmes?category=study-abroad" },
     ],
   },
   {

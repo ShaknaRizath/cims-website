@@ -1,8 +1,10 @@
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, GraduationCap } from "lucide-react";
+import { GraduationCap } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
+import { buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 export interface ProgrammeCardData {
   slug: string;
@@ -41,12 +43,17 @@ export function ProgrammeCard({ programme }: { programme: ProgrammeCardData }) {
           <p className="line-clamp-2 flex-1 text-sm text-muted-foreground">
             {programme.summary}
           </p>
-          <div className="flex items-center justify-between text-sm text-muted-foreground">
-            <span>{programme.level} · {programme.durationText}</span>
-            <span className="inline-flex items-center gap-1 font-medium text-primary group-hover:gap-2 transition-all">
-              Read More <ArrowRight className="size-4" />
-            </span>
-          </div>
+          <span className="text-sm text-muted-foreground">
+            {programme.level} · {programme.durationText}
+          </span>
+          <span
+            className={cn(
+              buttonVariants({ variant: "outline", size: "sm" }),
+              "w-full justify-center border-primary text-primary group-hover:bg-primary group-hover:text-primary-foreground",
+            )}
+          >
+            Read More
+          </span>
         </div>
       </Link>
     </Card>
