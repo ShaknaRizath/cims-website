@@ -85,11 +85,25 @@ async function main() {
     });
   }
 
+  const categorySeeds = [
+    { id: "engineering-technology", name: "Engineering & Technology", slug: "engineering-technology", orderIndex: 0 },
+    { id: "business-economics", name: "Business & Economics", slug: "business-economics", orderIndex: 1 },
+    { id: "law-education", name: "Law & Education", slug: "law-education", orderIndex: 2 },
+    { id: "study-abroad", name: "Study Abroad", slug: "study-abroad", orderIndex: 3 },
+  ];
+  for (const category of categorySeeds) {
+    await prisma.programmeCategory.upsert({
+      where: { id: category.id },
+      update: {},
+      create: category,
+    });
+  }
+
   const programmeSeeds = [
     {
       slug: "bsc-software-engineering",
       name: "BSc (Hons) Software Engineering",
-      category: "ENGINEERING_TECHNOLOGY" as const,
+      categoryId: "engineering-technology",
       level: "Bachelor's Degree",
       durationText: "3 Years",
       summary: "Build in-demand skills in software design, cloud systems, and modern engineering practice.",
@@ -104,7 +118,7 @@ async function main() {
     {
       slug: "bba-business-management",
       name: "BBA (Hons) Business Management",
-      category: "BUSINESS_ECONOMICS" as const,
+      categoryId: "business-economics",
       level: "Bachelor's Degree",
       durationText: "3 Years",
       summary: "Develop the leadership, strategy, and analytical skills today's businesses need.",
@@ -119,7 +133,7 @@ async function main() {
     {
       slug: "llb-law",
       name: "LLB (Hons) Law",
-      category: "LAW_EDUCATION" as const,
+      categoryId: "law-education",
       level: "Bachelor's Degree",
       durationText: "4 Years",
       summary: "A rigorous grounding in legal theory and practice, taught by practising professionals.",
@@ -134,7 +148,7 @@ async function main() {
     {
       slug: "study-abroad-uk-pathway",
       name: "UK University Pathway",
-      category: "STUDY_ABROAD" as const,
+      categoryId: "study-abroad",
       level: "Foundation",
       durationText: "1 Year",
       summary: "Start in Sri Lanka and progress to a partner university abroad with guaranteed credit transfer.",

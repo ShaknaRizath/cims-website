@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, BadgeCheck, GraduationCap, Users, BookOpen } from "lucide-react";
+import { BadgeCheck, GraduationCap, Landmark, Users, BookOpen } from "lucide-react";
 import { prisma } from "@/lib/db/prisma";
 import { Button } from "@/components/ui/button";
 import { Reveal } from "@/components/marketing/reveal";
@@ -8,23 +8,28 @@ import { CtaBanner } from "@/components/marketing/cta-banner";
 import { ProgrammeCard } from "@/components/marketing/programme-card";
 import { TestimonialCarousel } from "@/components/marketing/testimonial-carousel";
 import { PartnerUniversityCarousel } from "@/components/marketing/partner-university-carousel";
-import { NewsCard } from "@/components/marketing/news-card";
-import { PROGRAMME_CATEGORY_LABELS } from "@/lib/format/labels";
+import { NewsEventsPanel, type FeedItem } from "@/components/marketing/news-events-panel";
+import { EventsCalendar } from "@/components/marketing/events-calendar";
+import { HeroSlider } from "@/components/marketing/hero-slider";
+import { ContactSection } from "@/components/marketing/contact-section";
 
 const stats = [
-  { label: "Years of Excellence", value: "18+", icon: BadgeCheck },
-  { label: "Graduates", value: "10,000+", icon: GraduationCap },
-  { label: "Degree Programmes", value: "20+", icon: BookOpen },
+  { label: "Years of Excellence", value: "14+", icon: BadgeCheck },
+  { label: "Passed Out Students", value: "10,000+", icon: GraduationCap },
+  { label: "UGC Recognized Degrees", value: "20", icon: BookOpen },
+  { label: "University Affiliations", value: "5", icon: Landmark },
   { label: "Industry Partners", value: "50+", icon: Users },
 ];
 
 export default async function Home() {
-  const [settings, featuredProgrammes, featuredTestimonials, partners, latestPosts] = await Promise.all([
+  const [settings, featuredProgrammes, featuredTestimonials, partners, latestPosts, events, heroSlides] =
+    await Promise.all([
     prisma.siteSettings.findUnique({ where: { id: "singleton" } }),
     prisma.programme.findMany({
       where: { isPublished: true, isFeatured: true },
       orderBy: { orderIndex: "asc" },
       take: 4,
+      include: { category: { select: { name: true } } },
     }),
     prisma.testimonial.findMany({
       where: { isPublished: true, isFeatured: true },
@@ -41,15 +46,58 @@ export default async function Home() {
       orderBy: [{ isPinned: "desc" }, { publishedAt: "desc" }],
       take: 3,
     }),
+    prisma.event.findMany({
+      where: { isPublished: true },
+      orderBy: { startAt: "asc" },
+    }),
+    prisma.heroSlide.findMany({
+      where: { isPublished: true },
+      orderBy: { orderIndex: "asc" },
+    }),
   ]);
+
+  const now = new Date();
+  const upcomingEvents = events.filter((event) => event.startAt >= now);
+
+  const feedItems: FeedItem[] = [
+    ...latestPosts.map((post) => ({
+      type: "news" as const,
+      slug: post.slug,
+      title: post.title,
+      excerpt: post.excerpt,
+      date: post.publishedAt,
+    })),
+    ...upcomingEvents.map((event) => ({
+      type: "event" as const,
+      slug: event.slug,
+      title: event.title,
+      excerpt: event.description,
+      date: event.startAt,
+    })),
+  ].sort((a, b) => a.date.getTime() - b.date.getTime());
+
+  const [featuredFeedItem, ...restFeedItems] = feedItems;
+
+  const heroImages = heroSlides.map((slide) => slide.imageUrl);
 
   return (
     <>
-      <section className="relative overflow-hidden bg-gradient-to-br from-primary via-primary to-primary/80 text-primary-foreground">
-        {settings?.heroImageUrl && (
-          <Image src={settings.heroImageUrl} alt="" fill unoptimized className="object-cover opacity-25" />
+      <section className="relative overflow-hidden text-primary-foreground">
+        {heroImages.length > 0 ? (
+          <>
+            <HeroSlider images={heroImages} />
+            <div
+              className="absolute inset-0"
+              style={{
+                background:
+                  "linear-gradient(to right, var(--primary) 0%, var(--primary) 30%, color-mix(in oklch, var(--primary) 55%, transparent) 55%, color-mix(in oklch, var(--primary) 10%, transparent) 80%)",
+              }}
+            />
+          </>
+        ) : (
+          <div className="absolute inset-0 bg-gradient-to-br from-primary via-primary to-primary/80" />
         )}
-        <div className="relative mx-auto flex max-w-7xl flex-col items-start gap-6 px-6 py-24 sm:py-32">
+        <div className="relative z-20 mx-auto flex max-w-7xl flex-col items-start gap-6 px-6 py-24 sm:py-32">
           <Reveal>
             <span className="inline-flex items-center rounded-full bg-primary-foreground/10 px-4 py-1.5 text-sm font-medium">
               Est. 2006 · Colombo, Sri Lanka
@@ -83,7 +131,7 @@ export default async function Home() {
                 nativeButton={false}
                 render={<Link href="/programmes" />}
               >
-                Explore Programmes <ArrowRight className="size-4" />
+                Explore Programmes
               </Button>
             </div>
           </Reveal>
@@ -91,7 +139,7 @@ export default async function Home() {
       </section>
 
       <section className="border-b bg-secondary/40">
-        <div className="mx-auto grid max-w-7xl grid-cols-2 gap-8 px-6 py-10 lg:grid-cols-4">
+        <div className="mx-auto grid max-w-7xl grid-cols-2 gap-8 px-6 py-10 sm:grid-cols-3 lg:grid-cols-5">
           {stats.map((stat, index) => (
             <Reveal key={stat.label} delayMs={index * 80} className="flex flex-col items-center gap-2 text-center">
               <stat.icon className="size-6 text-primary" />
@@ -156,7 +204,7 @@ export default async function Home() {
                   programme={{
                     slug: programme.slug,
                     name: programme.name,
-                    category: PROGRAMME_CATEGORY_LABELS[programme.category],
+                    category: programme.category.name,
                     level: programme.level ?? "",
                     durationText: programme.durationText ?? "",
                     summary: programme.summary,
@@ -169,7 +217,7 @@ export default async function Home() {
         )}
         <Reveal className="mt-10 flex justify-center">
           <Button variant="outline" nativeButton={false} render={<Link href="/programmes" />}>
-            View All Programmes <ArrowRight className="size-4" />
+            View All Programmes
           </Button>
         </Reveal>
       </section>
@@ -185,7 +233,7 @@ export default async function Home() {
                 Hear From Our Graduates
               </h2>
             </Reveal>
-            <Reveal className="mt-12">
+            <Reveal className="mt-28">
               <TestimonialCarousel
                 testimonials={featuredTestimonials.map((testimonial) => ({
                   studentName: testimonial.studentName,
@@ -201,7 +249,7 @@ export default async function Home() {
       )}
 
       {partners.length > 0 && (
-        <section className="mx-auto max-w-7xl px-6 py-20">
+        <section className="mx-auto w-full max-w-[1520px] px-6 py-20">
           <Reveal className="flex flex-col gap-3 text-center">
             <span className="mx-auto text-sm font-semibold uppercase tracking-wide text-primary">
               Our Network
@@ -222,25 +270,39 @@ export default async function Home() {
         </section>
       )}
 
-      {latestPosts.length > 0 && (
-        <section className="mx-auto max-w-7xl px-6 py-20">
+      {featuredFeedItem && (
+        <section className="mx-auto max-w-7xl px-6 py-16">
           <Reveal className="flex flex-col gap-3 text-center">
             <span className="mx-auto text-sm font-semibold uppercase tracking-wide text-primary">News</span>
             <h2 className="font-heading text-3xl font-bold text-foreground sm:text-4xl">Latest Updates</h2>
           </Reveal>
-          <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {latestPosts.map((post, index) => (
-              <Reveal key={post.id} delayMs={index * 100}>
-                <NewsCard post={post} />
-              </Reveal>
-            ))}
+          <div className="mt-10 grid lg:grid-cols-2">
+            <Reveal className="h-full">
+              <NewsEventsPanel featured={featuredFeedItem} list={restFeedItems.slice(0, 5)} />
+            </Reveal>
+            <Reveal
+              delayMs={100}
+              className="h-full rounded-lg border border-accent bg-background p-8 shadow-lg sm:p-10 lg:rounded-l-none"
+            >
+              <EventsCalendar
+                events={events.map((event) => ({
+                  slug: event.slug,
+                  title: event.title,
+                  startAt: event.startAt,
+                  location: event.location,
+                }))}
+              />
+            </Reveal>
           </div>
-          <Reveal className="mt-10 flex justify-center">
-            <Button variant="outline" nativeButton={false} render={<Link href="/news" />}>
-              View All News <ArrowRight className="size-4" />
-            </Button>
-          </Reveal>
         </section>
+      )}
+
+      {settings && (
+        <ContactSection
+          contactEmail={settings.contactEmail}
+          contactAddress={settings.contactAddress}
+          contactPhone={settings.contactPhone}
+        />
       )}
 
       <CtaBanner />

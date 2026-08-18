@@ -18,13 +18,6 @@ enum AdminRole {
   ADMIN
 }
 
-enum ProgrammeCategory {
-  ENGINEERING_TECHNOLOGY
-  BUSINESS_ECONOMICS
-  LAW_EDUCATION
-  STUDY_ABROAD
-}
-
 enum TeamCategory {
   BOARD_OF_GOVERNORS
   ACADEMIC_BOARD
@@ -71,7 +64,8 @@ model Programme {
   id                String            @id @default(cuid())
   slug              String            @unique
   name              String
-  category          ProgrammeCategory
+  categoryId        String
+  category          ProgrammeCategory @relation(fields: [categoryId], references: [id], onDelete: Restrict)
   level             String? // "Bachelor's Degree", "Higher Diploma", "Foundation"
   durationText      String? // "3 Years", "18 Months"
   summary           String            @db.Text // card/listing blurb
@@ -89,7 +83,22 @@ model Programme {
 
   testimonials Testimonial[]
 
-  @@index([category, isPublished])
+  @@index([categoryId, isPublished])
+}
+
+// Admin-managed lookup table (replaces what used to be a fixed enum) so
+// categories can be added/renamed/deleted from the CMS instead of code.
+model ProgrammeCategory {
+  id         String      @id @default(cuid())
+  name       String      @unique
+  slug       String      @unique
+  orderIndex Int         @default(0)
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+
+  programmes Programme[]
+
+  @@index([orderIndex])
 }
 
 model NewsPost {
@@ -159,6 +168,17 @@ model TeamMember {
   @@index([category, isPublished])
 }
 
+model HeroSlide {
+  id          String   @id @default(cuid())
+  imageUrl    String
+  orderIndex  Int      @default(0)
+  isPublished Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([isPublished])
+}
+
 model PartnerUniversity {
   id          String   @id @default(cuid())
   name        String
@@ -187,6 +207,19 @@ model CampusLocation {
   updatedAt    DateTime @updatedAt
 }
 
+model ContactMessage {
+  id        String   @id @default(cuid())
+  name      String
+  mobile    String
+  email     String
+  subject   String
+  message   String   @db.Text
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([isRead, createdAt])
+}
+
 // Singleton row — same "one enforced-in-code active row" spirit as the LMS's
 // AcademicYear.isActive pattern, but simpler: id is always the literal
 // string "singleton", enforced via upsert in the settings action, never via
@@ -195,7 +228,6 @@ model SiteSettings {
   id                  String   @id @default("singleton")
   heroHeadline        String
   heroSubheadline     String?
-  heroImageUrl        String?
   aboutSummary        String?  @db.Text
   chairmanMessageHtml String?  @db.Text
   chairmanPhotoUrl    String?
