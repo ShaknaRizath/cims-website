@@ -10,17 +10,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Field, FieldGroup, FieldLabel, FieldError, FieldDescription } from "@/components/ui/field";
 import { FileUploadField } from "@/components/admin/file-upload-field";
 
-const CATEGORY_OPTIONS = [
-  { value: "ENGINEERING_TECHNOLOGY", label: "Engineering & Technology" },
-  { value: "BUSINESS_ECONOMICS", label: "Business & Economics" },
-  { value: "LAW_EDUCATION", label: "Law & Education" },
-  { value: "STUDY_ABROAD", label: "Study Abroad" },
-];
-
 export interface ProgrammeFormDefaults {
   slug: string;
   name: string;
-  category: string;
+  categoryId: string;
   level: string | null;
   durationText: string | null;
   summary: string;
@@ -39,10 +32,12 @@ export function ProgrammeForm({
   action,
   defaultValues,
   submitLabel,
+  categories,
 }: {
   action: (prevState: ActionState, formData: FormData) => Promise<ActionState>;
   defaultValues?: ProgrammeFormDefaults;
   submitLabel: string;
+  categories: { id: string; name: string }[];
 }) {
   const [state, formAction, pending] = useActionState<ActionState, FormData>(action, undefined);
   const highlightsText = Array.isArray(defaultValues?.highlights)
@@ -66,20 +61,30 @@ export function ProgrammeForm({
         </Field>
 
         <Field>
-          <FieldLabel htmlFor="category">Category</FieldLabel>
-          <Select name="category" defaultValue={defaultValues?.category ?? "ENGINEERING_TECHNOLOGY"} items={CATEGORY_OPTIONS}>
-            <SelectTrigger id="category" className="w-full">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              {CATEGORY_OPTIONS.map((option) => (
-                <SelectItem key={option.value} value={option.value}>
-                  {option.label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-          <FieldError errors={state?.fieldErrors?.category?.map((message) => ({ message }))} />
+          <FieldLabel htmlFor="categoryId">Category</FieldLabel>
+          {categories.length === 0 ? (
+            <FieldDescription>
+              No categories yet — <a href="/admin/categories/new" className="underline">create one first</a>.
+            </FieldDescription>
+          ) : (
+            <Select
+              name="categoryId"
+              defaultValue={defaultValues?.categoryId ?? categories[0].id}
+              items={categories.map((c) => ({ value: c.id, label: c.name }))}
+            >
+              <SelectTrigger id="categoryId" className="w-full">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {categories.map((category) => (
+                  <SelectItem key={category.id} value={category.id}>
+                    {category.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          )}
+          <FieldError errors={state?.fieldErrors?.categoryId?.map((message) => ({ message }))} />
         </Field>
 
         <div className="grid gap-4 sm:grid-cols-2">

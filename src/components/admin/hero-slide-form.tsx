@@ -5,24 +5,22 @@ import type { ActionState } from "@/lib/actions/action-state";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Field, FieldGroup, FieldLabel, FieldError } from "@/components/ui/field";
+import { Field, FieldLabel, FieldGroup, FieldError } from "@/components/ui/field";
 import { FileUploadField } from "@/components/admin/file-upload-field";
 
-export interface PartnerUniversityFormDefaults {
-  name: string;
-  logoUrl: string | null;
-  websiteUrl: string | null;
+export interface HeroSlideFormDefaults {
+  imageUrl: string;
   orderIndex: number;
   isPublished: boolean;
 }
 
-export function PartnerUniversityForm({
+export function HeroSlideForm({
   action,
   defaultValues,
   submitLabel,
 }: {
   action: (prevState: ActionState, formData: FormData) => Promise<ActionState>;
-  defaultValues?: PartnerUniversityFormDefaults;
+  defaultValues?: HeroSlideFormDefaults;
   submitLabel: string;
 }) {
   const [state, formAction, pending] = useActionState<ActionState, FormData>(action, undefined);
@@ -30,31 +28,13 @@ export function PartnerUniversityForm({
   return (
     <form action={formAction}>
       <FieldGroup>
-        <Field>
-          <FieldLabel htmlFor="name">Name</FieldLabel>
-          <Input id="name" name="name" defaultValue={defaultValues?.name} placeholder="Liverpool John Moores University" required />
-          <FieldError errors={state?.fieldErrors?.name?.map((message) => ({ message }))} />
-        </Field>
-
-        <Field>
-          <FieldLabel htmlFor="websiteUrl">Website URL</FieldLabel>
-          <Input
-            id="websiteUrl"
-            name="websiteUrl"
-            type="url"
-            defaultValue={defaultValues?.websiteUrl ?? ""}
-            placeholder="https://www.ljmu.ac.uk"
-          />
-          <FieldError errors={state?.fieldErrors?.websiteUrl?.map((message) => ({ message }))} />
-        </Field>
-
         <FileUploadField
-          name="logoUrl"
-          label="Logo"
-          folder="partners"
-          defaultUrl={defaultValues?.logoUrl}
-          disableCrop
-          description="Uploaded as-is, no cropping — use the university's own logo file so nothing gets cut off."
+          name="imageUrl"
+          label="Slide image"
+          folder="hero"
+          defaultUrl={defaultValues?.imageUrl}
+          errors={state?.fieldErrors?.imageUrl}
+          aspectRatio={16 / 9}
         />
 
         <div className="grid gap-4 sm:grid-cols-2">

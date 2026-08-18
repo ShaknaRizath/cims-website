@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useActionState, useEffect, useRef } from "react";
 import { toast } from "sonner";
 import type { ActionState } from "@/lib/actions/action-state";
@@ -14,7 +15,6 @@ import { FileUploadField } from "@/components/admin/file-upload-field";
 export interface SiteSettingsFormDefaults {
   heroHeadline: string;
   heroSubheadline: string | null;
-  heroImageUrl: string | null;
   aboutSummary: string | null;
   chairmanMessageHtml: string | null;
   chairmanPhotoUrl: string | null;
@@ -66,7 +66,13 @@ export function SiteSettingsForm({ defaultValues }: { defaultValues?: SiteSettin
               <FieldLabel htmlFor="heroSubheadline">Subheadline</FieldLabel>
               <Textarea id="heroSubheadline" name="heroSubheadline" defaultValue={defaultValues?.heroSubheadline ?? ""} rows={2} />
             </Field>
-            <FileUploadField name="heroImageUrl" label="Hero image" folder="settings" defaultUrl={defaultValues?.heroImageUrl} />
+            <p className="text-sm text-muted-foreground">
+              Hero background photos are managed separately under{" "}
+              <Link href="/admin/hero-slides" className="font-medium text-primary underline underline-offset-2">
+                Hero Slides
+              </Link>
+              .
+            </p>
           </FieldGroup>
         </CardContent>
       </Card>
@@ -85,7 +91,13 @@ export function SiteSettingsForm({ defaultValues }: { defaultValues?: SiteSettin
               <FieldLabel htmlFor="chairmanMessageHtml">Chairman&apos;s message</FieldLabel>
               <Textarea id="chairmanMessageHtml" name="chairmanMessageHtml" defaultValue={defaultValues?.chairmanMessageHtml ?? ""} rows={5} />
             </Field>
-            <FileUploadField name="chairmanPhotoUrl" label="Chairman's photo" folder="settings" defaultUrl={defaultValues?.chairmanPhotoUrl} />
+            <FileUploadField
+              name="chairmanPhotoUrl"
+              label="Chairman's photo"
+              folder="settings"
+              defaultUrl={defaultValues?.chairmanPhotoUrl}
+              aspectRatio={1}
+            />
           </FieldGroup>
         </CardContent>
       </Card>
@@ -113,6 +125,7 @@ export function SiteSettingsForm({ defaultValues }: { defaultValues?: SiteSettin
               label={'Homepage "Why CIMS?" image'}
               folder="settings"
               defaultUrl={defaultValues?.aboutTeaserImageUrl}
+              aspectRatio={4 / 3}
             />
           </FieldGroup>
         </CardContent>
