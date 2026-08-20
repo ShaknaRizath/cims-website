@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Field, FieldGroup, FieldLabel, FieldError } from "@/components/ui/field";
+import { Field, FieldGroup, FieldLabel, FieldError, FieldDescription } from "@/components/ui/field";
 import { FileUploadField } from "@/components/admin/file-upload-field";
 
 export interface TestimonialFormDefaults {
@@ -15,6 +15,7 @@ export interface TestimonialFormDefaults {
   photoUrl: string | null;
   batchYear: number | null;
   programmeId: string | null;
+  programmeName: string | null;
   quote: string;
   videoUrl: string | null;
   isFeatured: boolean;
@@ -66,6 +67,19 @@ export function TestimonialForm({
             </Select>
           </Field>
         </div>
+
+        <Field>
+          <FieldLabel htmlFor="programmeName">Or type a programme name</FieldLabel>
+          <Input
+            id="programmeName"
+            name="programmeName"
+            defaultValue={defaultValues?.programmeName ?? ""}
+            placeholder="Use this if the programme isn't in the dropdown above"
+          />
+          <FieldDescription>
+            If filled in, this text is shown instead of the dropdown selection above.
+          </FieldDescription>
+        </Field>
 
         <Field>
           <FieldLabel htmlFor="quote">Quote</FieldLabel>

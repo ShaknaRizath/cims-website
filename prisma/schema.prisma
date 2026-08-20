@@ -16,6 +16,7 @@ datasource db {
 
 enum AdminRole {
   ADMIN
+  ADMISSIONS_OFFICER
 }
 
 enum TeamCategory {
@@ -27,6 +28,13 @@ enum TeamCategory {
 enum PostKind {
   NEWS
   ANNOUNCEMENT
+}
+
+enum ApplicationStatus {
+  SUBMITTED
+  UNDER_REVIEW
+  ACCEPTED
+  REJECTED
 }
 
 // ---------- AUTH ----------
@@ -82,6 +90,7 @@ model Programme {
   updatedAt         DateTime          @updatedAt
 
   testimonials Testimonial[]
+  applications Application[]
 
   @@index([categoryId, isPublished])
 }
@@ -142,6 +151,10 @@ model Testimonial {
   batchYear   Int?
   programmeId String?
   programme   Programme?  @relation(fields: [programmeId], references: [id], onDelete: SetNull)
+  // Free-text fallback for when the programme this quote refers to isn't (or
+  // isn't yet) a real Programme record — takes display priority over the
+  // linked programme's name when set.
+  programmeName String?
   quote       String      @db.Text
   videoUrl    String? // optional video testimonial link (YouTube etc.)
   isFeatured  Boolean     @default(false) // shown in homepage/success-stories carousel
@@ -220,6 +233,49 @@ model ContactMessage {
   @@index([isRead, createdAt])
 }
 
+// Public online application submitted through /apply. Deliberately excludes
+// batch/fee-plan/payment fields — those are handled later in the enrolment
+// process, outside this initial form.
+model Application {
+  id                        String            @id @default(cuid())
+  fullName                  String
+  nameWithInitials          String
+  dateOfBirth               DateTime
+  gender                    String // "MALE" | "FEMALE"
+  nicOrPassport              String
+  email                      String
+  mobileNumber               String
+  address                    String            @db.Text
+  nationality                String
+  programmeId                String
+  programme                  Programme         @relation(fields: [programmeId], references: [id], onDelete: Restrict)
+  highestQualification       String
+  institution                 String
+  yearCompleted               Int?
+  additionalQualifications   String?           @db.Text
+  status                      ApplicationStatus @default(SUBMITTED)
+  createdAt                   DateTime          @default(now())
+  updatedAt                   DateTime          @updatedAt
+
+  documents ApplicationDocument[]
+
+  @@index([status, createdAt])
+  @@index([programmeId])
+}
+
+model ApplicationDocument {
+  id            String      @id @default(cuid())
+  applicationId String
+  application   Application @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  // Slot key: "NIC_PASSPORT" | "PHOTO" | "CERTIFICATE" | "TRANSCRIPT" | "OTHER"
+  documentType  String
+  fileUrl       String
+  fileName      String
+  createdAt     DateTime    @default(now())
+
+  @@index([applicationId])
+}
+
 // Singleton row — same "one enforced-in-code active row" spirit as the LMS's
 // AcademicYear.isActive pattern, but simpler: id is always the literal
 // string "singleton", enforced via upsert in the settings action, never via
@@ -235,6 +291,9 @@ model SiteSettings {
   ourVision           String?  @db.Text
   ourMission          String?  @db.Text
   aboutTeaserImageUrl String?
+  // Background image behind the navy hero banner on the About Us page —
+  // separate from aboutTeaserImageUrl, which is the smaller homepage teaser photo.
+  aboutHeroImageUrl   String?
   contactPhone        String
   contactEmail        String
   contactAddress      String
