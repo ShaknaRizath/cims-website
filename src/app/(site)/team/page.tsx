@@ -5,6 +5,7 @@ import { TeamCategory } from "@/generated/prisma/enums";
 import { TEAM_CATEGORY_LABELS } from "@/lib/format/labels";
 import { TeamMemberCard } from "@/components/marketing/team-member-card";
 import { Reveal } from "@/components/marketing/reveal";
+import { PageHero } from "@/components/marketing/page-hero";
 import { CtaBanner } from "@/components/marketing/cta-banner";
 import { Button } from "@/components/ui/button";
 
@@ -36,13 +37,12 @@ export default async function TeamPage({
 
   return (
     <>
+      <PageHero
+        title="Leadership & Representatives"
+        description="Meet the Board of Governors, Academic Board, and International Representatives leading CIMS Campus."
+      />
       <div className="mx-auto max-w-7xl px-6 py-16">
-        <Reveal className="flex flex-col gap-3 text-center">
-          <span className="mx-auto text-sm font-semibold uppercase tracking-wide text-primary">Our Team</span>
-          <h1 className="font-heading text-3xl font-bold text-foreground sm:text-4xl">Leadership & Representatives</h1>
-        </Reveal>
-
-        <div className="mt-8 flex flex-wrap justify-center gap-2">
+        <div className="flex flex-wrap justify-center gap-2">
           <Button variant={!activeCategory ? "default" : "outline"} size="sm" nativeButton={false} render={<Link href="/team" />}>
             All
           </Button>
@@ -67,9 +67,13 @@ export default async function TeamPage({
             {group.members.length === 0 ? (
               <p className="mt-4 text-muted-foreground">No members listed yet.</p>
             ) : (
-              <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              <div className="mt-6 flex flex-wrap justify-center gap-6">
                 {group.members.map((member, index) => (
-                  <Reveal key={member.id} delayMs={(index % 3) * 100}>
+                  <Reveal
+                    key={member.id}
+                    delayMs={(index % 3) * 100}
+                    className="w-full sm:w-[calc(50%-0.75rem)] lg:w-[calc(33.333%-1rem)]"
+                  >
                     <TeamMemberCard member={member} />
                   </Reveal>
                 ))}
