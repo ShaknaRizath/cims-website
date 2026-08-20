@@ -14,7 +14,7 @@ import { HeroSlider } from "@/components/marketing/hero-slider";
 import { ContactSection } from "@/components/marketing/contact-section";
 
 const stats = [
-  { label: "Years of Excellence", value: "14+", icon: BadgeCheck },
+  { label: "Years of Excellence", value: "19+", icon: BadgeCheck },
   { label: "Passed Out Students", value: "10,000+", icon: GraduationCap },
   { label: "UGC Recognized Degrees", value: "20", icon: BookOpen },
   { label: "University Affiliations", value: "5", icon: Landmark },
@@ -34,7 +34,7 @@ export default async function Home() {
     prisma.testimonial.findMany({
       where: { isPublished: true, isFeatured: true },
       orderBy: { orderIndex: "asc" },
-      take: 3,
+      take: 12,
       include: { programme: { select: { name: true } } },
     }),
     prisma.partnerUniversity.findMany({
@@ -237,7 +237,7 @@ export default async function Home() {
               <TestimonialCarousel
                 testimonials={featuredTestimonials.map((testimonial) => ({
                   studentName: testimonial.studentName,
-                  programmeName: testimonial.programme?.name,
+                  programmeName: testimonial.programmeName ?? testimonial.programme?.name,
                   batchYear: testimonial.batchYear,
                   quote: testimonial.quote,
                   photoUrl: testimonial.photoUrl,

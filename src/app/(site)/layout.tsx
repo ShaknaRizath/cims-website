@@ -17,9 +17,10 @@ const FALLBACK_SETTINGS = {
 };
 
 export default async function SiteLayout({ children }: { children: React.ReactNode }) {
-  const [settings, campuses] = await Promise.all([
+  const [settings, campuses, categories] = await Promise.all([
     prisma.siteSettings.findUnique({ where: { id: "singleton" } }),
     prisma.campusLocation.findMany({ orderBy: { orderIndex: "asc" }, select: { id: true, name: true, city: true } }),
+    prisma.programmeCategory.findMany({ orderBy: { orderIndex: "asc" }, select: { name: true, slug: true } }),
   ]);
 
   const headerFooterSettings = settings ?? FALLBACK_SETTINGS;
@@ -32,7 +33,7 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
       >
         Skip to main content
       </a>
-      <Header settings={headerFooterSettings} />
+      <Header settings={headerFooterSettings} categories={categories} />
       <main id="main-content" className="flex flex-1 flex-col">
         {children}
       </main>

@@ -19,13 +19,19 @@ export default auth((req) => {
       loginUrl.searchParams.set("callbackUrl", pathname);
       return NextResponse.redirect(loginUrl);
     }
-    if (role !== "ADMIN") {
+    // Admissions Officers are confined to the Applications area — everything
+    // else in the CMS (programmes, news, settings, etc.) is ADMIN-only.
+    if (role === "ADMISSIONS_OFFICER" && !pathname.startsWith("/admin/applications")) {
+      return NextResponse.redirect(new URL("/admin/applications", req.nextUrl));
+    }
+    if (role !== "ADMIN" && role !== "ADMISSIONS_OFFICER") {
       return NextResponse.redirect(new URL("/unauthorized", req.nextUrl));
     }
   }
 
   if (pathname === "/login" && role) {
-    return NextResponse.redirect(new URL("/admin", req.nextUrl));
+    const destination = role === "ADMISSIONS_OFFICER" ? "/admin/applications" : "/admin";
+    return NextResponse.redirect(new URL(destination, req.nextUrl));
   }
 
   return NextResponse.next();

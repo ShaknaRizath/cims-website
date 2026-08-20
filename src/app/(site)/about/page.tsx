@@ -3,6 +3,7 @@ import Image from "next/image";
 import { BadgeCheck, GraduationCap, Users, Compass, Eye, Target, Lightbulb, Handshake, BookOpen, Trophy } from "lucide-react";
 import { prisma } from "@/lib/db/prisma";
 import { Reveal } from "@/components/marketing/reveal";
+import { PageHero } from "@/components/marketing/page-hero";
 import { CtaBanner } from "@/components/marketing/cta-banner";
 
 export const metadata: Metadata = {
@@ -56,16 +57,13 @@ export default async function AboutPage() {
 
   return (
     <>
+      <PageHero
+        title="Why CIMS Campus"
+        description={settings?.aboutSummary ?? undefined}
+        imageUrl={settings?.aboutHeroImageUrl}
+      />
       <section className="mx-auto max-w-4xl px-6 py-16">
-        <Reveal className="flex flex-col gap-4 text-center">
-          <span className="text-sm font-semibold uppercase tracking-wide text-primary">About Us</span>
-          <h1 className="font-heading text-3xl font-bold text-foreground sm:text-4xl">Why CIMS Campus</h1>
-          {settings?.aboutSummary && (
-            <p className="mx-auto max-w-2xl text-muted-foreground">{settings.aboutSummary}</p>
-          )}
-        </Reveal>
-
-        <div className="mt-12 grid gap-6 sm:grid-cols-3">
+        <div className="grid gap-6 sm:grid-cols-3">
           {whyCims.map((item, index) => (
             <Reveal key={item.title} delayMs={index * 100} className="flex flex-col items-center gap-3 text-center">
               <div className="flex size-12 items-center justify-center rounded-full bg-primary/10 text-primary">
