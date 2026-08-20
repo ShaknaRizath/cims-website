@@ -48,7 +48,7 @@ export default async function AdminTestimonialsPage() {
                     {testimonial.studentName}
                   </Link>
                 </TableCell>
-                <TableCell>{testimonial.programme?.name ?? "—"}</TableCell>
+                <TableCell>{testimonial.programmeName ?? testimonial.programme?.name ?? "—"}</TableCell>
                 <TableCell>{testimonial.isFeatured ? "Yes" : "No"}</TableCell>
                 <TableCell>
                   <Badge variant={testimonial.isPublished ? "secondary" : "outline"}>

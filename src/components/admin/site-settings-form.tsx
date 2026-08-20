@@ -22,6 +22,7 @@ export interface SiteSettingsFormDefaults {
   ourVision: string | null;
   ourMission: string | null;
   aboutTeaserImageUrl: string | null;
+  aboutHeroImageUrl: string | null;
   contactPhone: string;
   contactEmail: string;
   contactAddress: string;
@@ -126,6 +127,14 @@ export function SiteSettingsForm({ defaultValues }: { defaultValues?: SiteSettin
               folder="settings"
               defaultUrl={defaultValues?.aboutTeaserImageUrl}
               aspectRatio={4 / 3}
+            />
+            <FileUploadField
+              name="aboutHeroImageUrl"
+              label="About Us page banner image"
+              description="Background image behind the navy banner at the top of the About Us page."
+              folder="settings"
+              defaultUrl={defaultValues?.aboutHeroImageUrl}
+              aspectRatio={16 / 9}
             />
           </FieldGroup>
         </CardContent>

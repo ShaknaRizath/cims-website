@@ -9,13 +9,15 @@ import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { adminNavItems } from "@/components/admin/admin-nav";
 import { logout } from "@/lib/actions/auth/logout.action";
+import type { AdminRole } from "@/generated/prisma/enums";
 
-function NavLinks({ onNavigate }: { onNavigate?: () => void }) {
+function NavLinks({ role, onNavigate }: { role: AdminRole; onNavigate?: () => void }) {
   const pathname = usePathname();
+  const items = adminNavItems.filter((item) => item.roles.includes(role));
 
   return (
     <nav className="flex flex-col gap-1">
-      {adminNavItems.map((item) => {
+      {items.map((item) => {
         const active = item.href === "/admin" ? pathname === "/admin" : pathname.startsWith(item.href);
         return (
           <Link
@@ -41,10 +43,12 @@ function NavLinks({ onNavigate }: { onNavigate?: () => void }) {
 export function AdminShell({
   adminName,
   adminEmail,
+  adminRole,
   children,
 }: {
   adminName: string;
   adminEmail: string;
+  adminRole: AdminRole;
   children: React.ReactNode;
 }) {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -58,7 +62,7 @@ export function AdminShell({
           </Link>
         </div>
         <div className="flex-1 overflow-y-auto px-3">
-          <NavLinks />
+          <NavLinks role={adminRole} />
         </div>
         <div className="border-t border-sidebar-border p-4">
           <div className="mb-2 truncate text-sm font-medium">{adminName}</div>
@@ -95,7 +99,7 @@ export function AdminShell({
             <SheetTitle className="text-sidebar-foreground">CIMS Admin</SheetTitle>
           </SheetHeader>
           <div className="flex flex-1 flex-col justify-between overflow-y-auto px-3 pb-4">
-            <NavLinks onNavigate={() => setMobileOpen(false)} />
+            <NavLinks role={adminRole} onNavigate={() => setMobileOpen(false)} />
             <div className="mt-6 border-t border-sidebar-border pt-4">
               <div className="mb-2 truncate text-sm font-medium">{adminName}</div>
               <div className="mb-3 truncate text-xs text-sidebar-foreground/60">{adminEmail}</div>
