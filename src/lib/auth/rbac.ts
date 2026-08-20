@@ -4,11 +4,12 @@ import { auth } from "@/auth";
 import { prisma } from "@/lib/db/prisma";
 
 /**
- * Authoritative check for the /admin CMS. Re-reads `isActive` from the DB
- * (the JWT can't be revoked, so a deactivated admin's session cookie alone
- * isn't enough to deny access) and redirects otherwise.
+ * Base check for the /admin CMS: any authenticated, active admin regardless
+ * of role. Re-reads `isActive` from the DB (the JWT can't be revoked, so a
+ * deactivated admin's session cookie alone isn't enough to deny access) and
+ * redirects otherwise.
  */
-export async function requireAdmin() {
+export async function requireAnyAdmin() {
   const session = await auth();
   if (!session?.user) {
     redirect("/login");
@@ -33,5 +34,20 @@ export async function requireAdmin() {
     redirect("/unauthorized");
   }
 
+  return admin;
+}
+
+/**
+ * Full-CMS check: everything requireAnyAdmin() checks, plus role === "ADMIN".
+ * Used by every admin action outside of Applications — ADMISSIONS_OFFICER
+ * accounts are confined to viewing/updating applications (see proxy.ts and
+ * admin-nav.ts) and must not be able to reach these regardless of what the
+ * client sends.
+ */
+export async function requireAdmin() {
+  const admin = await requireAnyAdmin();
+  if (admin.role !== "ADMIN") {
+    redirect("/unauthorized");
+  }
   return admin;
 }

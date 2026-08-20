@@ -8,6 +8,16 @@ import { requireAdmin } from "@/lib/auth/rbac";
 import { testimonialSchema } from "@/lib/validation/testimonial.schema";
 import type { ActionState } from "@/lib/actions/action-state";
 
+// A typed-in programme name always wins over the dropdown selection, and
+// clears the other field explicitly — `undefined` would leave a stale value
+// in place on update instead of clearing it.
+function resolveProgrammeFields(data: { programmeId?: string; programmeName?: string }) {
+  if (data.programmeName) {
+    return { programmeId: null, programmeName: data.programmeName };
+  }
+  return { programmeId: data.programmeId ?? null, programmeName: null };
+}
+
 export async function createTestimonial(_prev: ActionState, formData: FormData): Promise<ActionState> {
   await requireAdmin();
 
@@ -16,7 +26,9 @@ export async function createTestimonial(_prev: ActionState, formData: FormData):
     return { fieldErrors: z.flattenError(parsed.error).fieldErrors };
   }
 
-  const testimonial = await prisma.testimonial.create({ data: parsed.data });
+  const testimonial = await prisma.testimonial.create({
+    data: { ...parsed.data, ...resolveProgrammeFields(parsed.data) },
+  });
 
   revalidatePath("/admin/testimonials");
   redirect(`/admin/testimonials/${testimonial.id}`);
@@ -34,7 +46,10 @@ export async function updateTestimonial(
     return { fieldErrors: z.flattenError(parsed.error).fieldErrors };
   }
 
-  await prisma.testimonial.update({ where: { id: testimonialId }, data: parsed.data });
+  await prisma.testimonial.update({
+    where: { id: testimonialId },
+    data: { ...parsed.data, ...resolveProgrammeFields(parsed.data) },
+  });
 
   revalidatePath("/admin/testimonials");
   revalidatePath(`/admin/testimonials/${testimonialId}`);
