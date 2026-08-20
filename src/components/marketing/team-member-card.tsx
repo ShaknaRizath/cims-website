@@ -11,7 +11,7 @@ export interface TeamMemberCardData {
 
 export function TeamMemberCard({ member }: { member: TeamMemberCardData }) {
   return (
-    <Card className="items-center gap-3 p-6 text-center">
+    <Card className="h-full items-center gap-3 p-6 text-center">
       <div className="relative flex size-20 items-center justify-center overflow-hidden rounded-full bg-primary/10 text-primary">
         {member.photoUrl ? (
           <Image src={member.photoUrl} alt="" fill unoptimized className="object-cover" />
@@ -23,7 +23,7 @@ export function TeamMemberCard({ member }: { member: TeamMemberCardData }) {
         <div className="font-heading font-semibold text-foreground">{member.name}</div>
         <div className="text-sm text-primary">{member.title}</div>
       </div>
-      {member.bio && <p className="text-sm text-muted-foreground">{member.bio}</p>}
+      {member.bio && <p className="whitespace-pre-line text-sm text-muted-foreground">{member.bio}</p>}
     </Card>
   );
 }

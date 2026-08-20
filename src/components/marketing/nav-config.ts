@@ -21,12 +21,9 @@ export const primaryNav: NavEntry[] = [
   {
     label: "Programmes",
     href: "/programmes",
-    items: [
-      { label: "Engineering & Technology", href: "/programmes?category=engineering-technology" },
-      { label: "Business & Economics", href: "/programmes?category=business-economics" },
-      { label: "Law & Education", href: "/programmes?category=law-education" },
-      { label: "Study Abroad", href: "/programmes?category=study-abroad" },
-    ],
+    // Filled in at render time from the ProgrammeCategory table (see Header) —
+    // kept empty here since this file has no DB access.
+    items: [],
   },
   {
     label: "Success Stories",

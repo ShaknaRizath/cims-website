@@ -29,9 +29,25 @@ export interface HeaderSettings extends UtilityNavSettings {
   contactEmail: string;
 }
 
-export function Header({ settings }: { settings: HeaderSettings }) {
+export interface HeaderProgrammeCategory {
+  name: string;
+  slug: string;
+}
+
+export function Header({
+  settings,
+  categories,
+}: {
+  settings: HeaderSettings;
+  categories: HeaderProgrammeCategory[];
+}) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const utilityNav = buildUtilityNav(settings);
+  const nav = primaryNav.map((entry) =>
+    isNavGroup(entry) && entry.label === "Programmes"
+      ? { ...entry, items: categories.map((c) => ({ label: c.name, href: `/programmes?category=${c.slug}` })) }
+      : entry,
+  );
 
   return (
     <header className="sticky top-0 z-40 w-full border-b border-border/60 bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/80">
@@ -67,7 +83,7 @@ export function Header({ settings }: { settings: HeaderSettings }) {
         </Link>
 
         <nav className="hidden items-center gap-1 lg:flex">
-          {primaryNav.map((entry) =>
+          {nav.map((entry) =>
             isNavGroup(entry) ? (
               <DropdownMenu key={entry.label}>
                 <DropdownMenuTrigger
@@ -126,7 +142,7 @@ export function Header({ settings }: { settings: HeaderSettings }) {
           </SheetHeader>
           <div className="flex flex-col gap-1 overflow-y-auto px-4 pb-4">
             <Accordion className="w-full">
-              {primaryNav.map((entry) =>
+              {nav.map((entry) =>
                 isNavGroup(entry) ? (
                   <AccordionItem key={entry.label} value={entry.label}>
                     <AccordionTrigger>{entry.label}</AccordionTrigger>

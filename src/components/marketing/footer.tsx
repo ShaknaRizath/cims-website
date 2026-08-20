@@ -18,6 +18,11 @@ export interface FooterCampus {
   city: string;
 }
 
+const legalLinks = [
+  { label: "Terms & Conditions", href: "/terms-and-conditions" },
+  { label: "Refund Policy", href: "/refund-policy" },
+];
+
 export function Footer({ settings, campuses }: { settings: FooterSettings; campuses: FooterCampus[] }) {
   const quickLinks = primaryNav.flatMap((entry) => (isNavGroup(entry) ? [] : [entry]));
   const utilityNav = buildUtilityNav(settings);
@@ -86,6 +91,15 @@ export function Footer({ settings, campuses }: { settings: FooterSettings; campu
             >
               {link.label}
             </a>
+          ))}
+          {legalLinks.map((link) => (
+            <Link
+              key={link.label}
+              href={link.href}
+              className="text-sm text-sidebar-foreground/80 hover:text-sidebar-primary"
+            >
+              {link.label}
+            </Link>
           ))}
           <a href={`mailto:${settings.contactEmail}`} className="flex items-center gap-2 text-sm text-sidebar-foreground/80 hover:text-sidebar-primary">
             <Mail className="size-4" /> {settings.contactEmail}
