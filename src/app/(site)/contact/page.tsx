@@ -3,6 +3,7 @@ import { Mail, MapPin, Phone } from "lucide-react";
 import { prisma } from "@/lib/db/prisma";
 import { Card, CardContent } from "@/components/ui/card";
 import { Reveal } from "@/components/marketing/reveal";
+import { PageHero } from "@/components/marketing/page-hero";
 
 export const metadata: Metadata = {
   title: "Contact | CIMS Campus",
@@ -16,21 +17,19 @@ export default async function ContactPage() {
   ]);
 
   return (
-    <div className="mx-auto max-w-7xl px-6 py-16">
-      <Reveal className="flex flex-col gap-3 text-center">
-        <span className="mx-auto text-sm font-semibold uppercase tracking-wide text-primary">Contact</span>
-        <h1 className="font-heading text-3xl font-bold text-foreground sm:text-4xl">Get in Touch</h1>
-        {settings && (
-          <div className="mx-auto mt-2 flex flex-wrap justify-center gap-6 text-sm text-muted-foreground">
-            <a href={`tel:${settings.contactPhone}`} className="flex items-center gap-1.5 hover:text-primary">
-              <Phone className="size-4" /> {settings.contactPhone}
-            </a>
-            <a href={`mailto:${settings.contactEmail}`} className="flex items-center gap-1.5 hover:text-primary">
-              <Mail className="size-4" /> {settings.contactEmail}
-            </a>
-          </div>
-        )}
-      </Reveal>
+    <>
+      <PageHero title="Get in Touch" description="Reach out to any of our campuses for admissions or general enquiries." />
+      <div className="mx-auto max-w-7xl px-6 py-16">
+      {settings && (
+        <Reveal className="mx-auto flex flex-wrap justify-center gap-6 text-sm text-muted-foreground">
+          <a href={`tel:${settings.contactPhone}`} className="flex items-center gap-1.5 hover:text-primary">
+            <Phone className="size-4" /> {settings.contactPhone}
+          </a>
+          <a href={`mailto:${settings.contactEmail}`} className="flex items-center gap-1.5 hover:text-primary">
+            <Mail className="size-4" /> {settings.contactEmail}
+          </a>
+        </Reveal>
+      )}
 
       {campuses.length === 0 ? (
         <p className="mt-16 text-center text-muted-foreground">Campus details coming soon.</p>
@@ -72,6 +71,7 @@ export default async function ContactPage() {
           ))}
         </div>
       )}
-    </div>
+      </div>
+    </>
   );
 }

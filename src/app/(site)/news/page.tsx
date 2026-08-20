@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { prisma } from "@/lib/db/prisma";
 import { NewsCard } from "@/components/marketing/news-card";
 import { Reveal } from "@/components/marketing/reveal";
+import { PageHero } from "@/components/marketing/page-hero";
 import { CtaBanner } from "@/components/marketing/cta-banner";
 
 export const metadata: Metadata = {
@@ -17,12 +18,8 @@ export default async function NewsPage() {
 
   return (
     <>
+      <PageHero title="News & Announcements" description="The latest updates, announcements, and stories from CIMS Campus." />
       <div className="mx-auto max-w-7xl px-6 py-16">
-        <Reveal className="flex flex-col gap-3 text-center">
-          <span className="mx-auto text-sm font-semibold uppercase tracking-wide text-primary">News</span>
-          <h1 className="font-heading text-3xl font-bold text-foreground sm:text-4xl">News & Announcements</h1>
-        </Reveal>
-
         {posts.length === 0 ? (
           <p className="mt-16 text-center text-muted-foreground">No posts published yet.</p>
         ) : (

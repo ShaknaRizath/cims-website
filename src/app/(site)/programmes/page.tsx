@@ -3,6 +3,7 @@ import Link from "next/link";
 import { prisma } from "@/lib/db/prisma";
 import { ProgrammeCard } from "@/components/marketing/programme-card";
 import { Reveal } from "@/components/marketing/reveal";
+import { PageHero } from "@/components/marketing/page-hero";
 import { CtaBanner } from "@/components/marketing/cta-banner";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -30,16 +31,12 @@ export default async function ProgrammesPage({
 
   return (
     <>
+      <PageHero
+        title="Find the Right Path for You"
+        description="Explore our degree and diploma programmes across four schools, each designed with industry input and clear career outcomes."
+      />
       <div className="mx-auto max-w-7xl px-6 py-16">
-        <Reveal className="flex flex-col gap-3 text-center">
-          <span className="mx-auto text-sm font-semibold uppercase tracking-wide text-primary">Programmes</span>
-          <h1 className="font-heading text-3xl font-bold text-foreground sm:text-4xl">Find the Right Path for You</h1>
-          <p className="mx-auto max-w-2xl text-muted-foreground">
-            Explore our degree and diploma programmes across four schools, each designed with industry input and clear career outcomes.
-          </p>
-        </Reveal>
-
-        <div className="mt-8 flex flex-wrap justify-center gap-2">
+        <div className="flex flex-wrap justify-center gap-2">
           <Button
             variant={!activeCategory ? "default" : "outline"}
             size="sm"
@@ -66,9 +63,13 @@ export default async function ProgrammesPage({
             No programmes found in this category yet.
           </p>
         ) : (
-          <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-12 flex flex-wrap justify-center gap-6">
             {programmes.map((programme, index) => (
-              <Reveal key={programme.id} delayMs={(index % 3) * 100}>
+              <Reveal
+                key={programme.id}
+                delayMs={(index % 3) * 100}
+                className="w-full sm:w-[calc(50%-0.75rem)] lg:w-[calc(33.333%-1rem)]"
+              >
                 <ProgrammeCard
                   programme={{
                     slug: programme.slug,
