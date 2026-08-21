@@ -9,7 +9,7 @@ interface CtaBannerProps {
 
 export function CtaBanner({
   headline = "Ready to start your journey?",
-  subtext = "Applications for the next intake are now open — take the first step toward your degree today.",
+  subtext = "Applications for the next intake are now open, take the first step toward your degree today.",
 }: CtaBannerProps) {
   return (
     <section className="bg-primary text-primary-foreground">

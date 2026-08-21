@@ -6,6 +6,7 @@ import { FileText, X } from "lucide-react";
 import { useFileUpload } from "@/lib/storage/use-file-upload";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Field, FieldLabel, FieldDescription, FieldError } from "@/components/ui/field";
 import { ImageCropDialog } from "@/components/admin/image-crop-dialog";
 
@@ -42,6 +43,11 @@ export function FileUploadField({
     defaultUrl ? { url: defaultUrl, name: defaultUrl.split("/").pop() ?? defaultUrl } : null,
   );
   const [pendingImage, setPendingImage] = useState<{ src: string; name: string; type: string } | null>(null);
+  // Per-upload opt-out of the crop dialog — distinct from the `disableCrop` prop,
+  // which removes cropping entirely for fields that never want it (e.g. logos).
+  // This lets the same field crop photos but skip cropping for posters/flyers,
+  // which often aren't the field's usual aspect ratio and shouldn't be cut down to it.
+  const [skipCrop, setSkipCrop] = useState(false);
   const { upload, uploading, error } = useFileUpload();
 
   function resetFileInput() {
@@ -50,7 +56,7 @@ export function FileUploadField({
   }
 
   async function handleFileSelected(selected: File) {
-    if (kind !== "image" || disableCrop) {
+    if (kind !== "image" || disableCrop || skipCrop) {
       const result = await upload(selected, folder);
       if (result) setFile({ url: result.url, name: result.fileName });
       return;
@@ -103,17 +109,25 @@ export function FileUploadField({
       )}
 
       {!file && (
-        <Input
-          id={name}
-          type="file"
-          accept={accept}
-          disabled={uploading}
-          onChange={async (e) => {
-            const selected = e.target.files?.[0];
-            if (!selected) return;
-            await handleFileSelected(selected);
-          }}
-        />
+        <>
+          {kind === "image" && !disableCrop && (
+            <label className="flex items-center gap-2 text-sm text-muted-foreground">
+              <Checkbox checked={skipCrop} onCheckedChange={setSkipCrop} />
+              Skip cropping (use the image as uploaded — for posters/flyers)
+            </label>
+          )}
+          <Input
+            id={name}
+            type="file"
+            accept={accept}
+            disabled={uploading}
+            onChange={async (e) => {
+              const selected = e.target.files?.[0];
+              if (!selected) return;
+              await handleFileSelected(selected);
+            }}
+          />
+        </>
       )}
 
       {pendingImage && (

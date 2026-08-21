@@ -41,7 +41,7 @@ export function Footer({ settings, campuses }: { settings: FooterSettings; campu
             CIMS <span className="font-normal">Campus</span>
           </span>
           <p className="text-sm text-sidebar-foreground/70">
-            College of Information Management and Sciences — your faster
+            College of Information Management and Sciences, your faster
             route to higher education since 2006.
           </p>
           {socialLinks.length > 0 && (
