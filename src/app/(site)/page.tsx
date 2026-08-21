@@ -98,11 +98,12 @@ export default async function Home() {
           <div className="absolute inset-0 bg-gradient-to-br from-primary via-primary to-primary/80" />
         )}
         <div className="relative z-20 mx-auto flex max-w-7xl flex-col items-start gap-6 px-6 py-24 sm:py-32">
-          <Reveal>
-            <span className="inline-flex items-center rounded-full bg-primary-foreground/10 px-4 py-1.5 text-sm font-medium">
-              Est. 2006 · Colombo, Sri Lanka
-            </span>
-          </Reveal>
+          {/* Invisible (not display:none) so it still occupies its slot — keeps the hero
+              banner's height exactly as it was with the "Est. 2006" badge, without a magic
+              spacer height that could drift out of sync with the text/padding above it. */}
+          <span aria-hidden="true" className="invisible inline-flex items-center rounded-full px-4 py-1.5 text-sm font-medium">
+            Est. 2006 · Colombo, Sri Lanka
+          </span>
           <Reveal delayMs={100}>
             <h1 className="max-w-3xl font-heading text-4xl font-bold tracking-tight sm:text-6xl">
               {settings?.heroHeadline ?? "Your Faster Route to Higher Education"}

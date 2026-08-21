@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import { notFound } from "next/navigation";
 import { CalendarDays, MapPin } from "lucide-react";
 import { prisma } from "@/lib/db/prisma";
@@ -50,8 +49,13 @@ export default async function EventDetailPage({
         </Reveal>
 
         {event.coverImageUrl && (
-          <Reveal delayMs={100} className="relative mt-8 aspect-video overflow-hidden rounded-xl">
-            <Image src={event.coverImageUrl} alt="" fill unoptimized className="object-cover" />
+          // Not Next's <Image fill> here — that needs a fixed-aspect container, which would
+          // crop tall posters/flyers the same way object-cover did. Image dimensions aren't
+          // stored, so a plain <img> at its natural size (capped by max-height) is what lets
+          // both wide photos and tall posters display in full, uncropped.
+          <Reveal delayMs={100} className="mt-8 overflow-hidden rounded-xl bg-muted">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={event.coverImageUrl} alt="" className="mx-auto max-h-[720px] w-full object-contain" />
           </Reveal>
         )}
 

@@ -11,6 +11,7 @@ export const siteSettingsSchema = z.object({
   ourVision: optionalTextField,
   ourMission: optionalTextField,
   aboutTeaserImageUrl: optionalUrlField,
+  aboutHeroImageUrl: optionalUrlField,
   contactPhone: z.string().min(2, { error: "Contact phone is required." }),
   contactEmail: z.email({ error: "Enter a valid email address." }),
   contactAddress: z.string().min(2, { error: "Contact address is required." }),
