@@ -41,7 +41,7 @@ export function Footer({ settings, campuses }: { settings: FooterSettings; campu
             CIMS <span className="font-normal">Campus</span>
           </span>
           <p className="text-sm text-sidebar-foreground/70">
-            Ceylon Institute of Management Science, your faster
+            Ceylon Institute of Management Sciences, your faster
             route to higher education since 2006.
           </p>
           {socialLinks.length > 0 && (
@@ -128,7 +128,7 @@ export function Footer({ settings, campuses }: { settings: FooterSettings; campu
       <div className="border-t border-sidebar-border">
         <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-2 px-6 py-4 text-xs text-sidebar-foreground/60 sm:flex-row">
           <span>© {new Date().getFullYear()} CIMS Campus. All rights reserved.</span>
-          <span>Ceylon Institute of Management Science, est. 2006</span>
+          <span>Ceylon Institute of Management Sciences, est. 2006</span>
         </div>
       </div>
     </footer>

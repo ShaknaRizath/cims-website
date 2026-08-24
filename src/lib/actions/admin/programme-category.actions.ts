@@ -92,6 +92,21 @@ export async function deleteProgrammeCategory(
 ): Promise<ActionState> {
   await requireAdmin();
 
+  // Categories are many-to-many now, so deleting one doesn't fail with a DB-level FK
+  // error the way it used to — it would just silently detach it from every programme.
+  // A programme for which this is its *only* category would be left with none, so
+  // block that case explicitly instead.
+  const orphanedProgrammes = await prisma.programme.findMany({
+    where: { categories: { some: { id: categoryId } } },
+    select: { name: true, _count: { select: { categories: true } } },
+  });
+  const onlyCategoryFor = orphanedProgrammes.filter((p) => p._count.categories === 1);
+  if (onlyCategoryFor.length > 0) {
+    return {
+      error: `This is the only category for: ${onlyCategoryFor.map((p) => p.name).join(", ")}. Give ${onlyCategoryFor.length === 1 ? "it" : "them"} another category first.`,
+    };
+  }
+
   try {
     await prisma.programmeCategory.delete({ where: { id: categoryId } });
   } catch (error) {

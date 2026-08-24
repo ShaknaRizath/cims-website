@@ -24,9 +24,12 @@ export default async function ProgrammesPage({
   const activeCategory = categories.find((c) => c.slug === category);
 
   const programmes = await prisma.programme.findMany({
-    where: { isPublished: true, ...(activeCategory ? { categoryId: activeCategory.id } : {}) },
-    orderBy: [{ category: { orderIndex: "asc" } }, { orderIndex: "asc" }],
-    include: { category: { select: { name: true } } },
+    where: {
+      isPublished: true,
+      ...(activeCategory ? { categories: { some: { id: activeCategory.id } } } : {}),
+    },
+    orderBy: { orderIndex: "asc" },
+    include: { categories: { select: { name: true }, orderBy: { orderIndex: "asc" } } },
   });
 
   return (
@@ -74,7 +77,7 @@ export default async function ProgrammesPage({
                   programme={{
                     slug: programme.slug,
                     name: programme.name,
-                    category: programme.category.name,
+                    category: programme.categories[0]?.name ?? "",
                     level: programme.level ?? "",
                     durationText: programme.durationText ?? "",
                     summary: programme.summary,

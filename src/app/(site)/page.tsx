@@ -29,7 +29,7 @@ export default async function Home() {
       where: { isPublished: true, isFeatured: true },
       orderBy: { orderIndex: "asc" },
       take: 4,
-      include: { category: { select: { name: true } } },
+      include: { categories: { select: { name: true }, orderBy: { orderIndex: "asc" } } },
     }),
     prisma.testimonial.findMany({
       where: { isPublished: true, isFeatured: true },
@@ -205,7 +205,7 @@ export default async function Home() {
                   programme={{
                     slug: programme.slug,
                     name: programme.name,
-                    category: programme.category.name,
+                    category: programme.categories[0]?.name ?? "",
                     level: programme.level ?? "",
                     durationText: programme.durationText ?? "",
                     summary: programme.summary,
