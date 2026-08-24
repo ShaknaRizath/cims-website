@@ -72,8 +72,10 @@ model Programme {
   id                String            @id @default(cuid())
   slug              String            @unique
   name              String
-  categoryId        String
-  category          ProgrammeCategory @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+  // A programme can belong to more than one category at once — its faculty
+  // (e.g. "Business and Economics") and its level (e.g. "Master's Degree") —
+  // so browsing by either surfaces it. Plain many-to-many, no join fields needed.
+  categories        ProgrammeCategory[] @relation("ProgrammeCategories")
   level             String? // "Bachelor's Degree", "Higher Diploma", "Foundation"
   durationText      String? // "3 Years", "18 Months"
   summary           String            @db.Text // card/listing blurb
@@ -92,7 +94,7 @@ model Programme {
   testimonials Testimonial[]
   applications Application[]
 
-  @@index([categoryId, isPublished])
+  @@index([isPublished])
 }
 
 // Admin-managed lookup table (replaces what used to be a fixed enum) so
@@ -105,7 +107,7 @@ model ProgrammeCategory {
   createdAt  DateTime    @default(now())
   updatedAt  DateTime    @updatedAt
 
-  programmes Programme[]
+  programmes Programme[] @relation("ProgrammeCategories")
 
   @@index([orderIndex])
 }

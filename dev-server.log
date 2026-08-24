@@ -6,627 +6,265 @@
 - Local:         http://localhost:3000
 - Network:       http://192.168.174.1:3000
 - Environments: .env
-✓ Ready in 7.0s
+✓ Ready in 1162ms
 - Experiments (use with caution):
   · cpus: 1
 
- GET / 200 in 4.5s (next.js: 645ms, proxy.ts: 1226ms, application-code: 2.6s)
- GET / 200 in 1041ms (next.js: 11ms, proxy.ts: 20ms, application-code: 1010ms)
- GET / 200 in 228ms (next.js: 7ms, proxy.ts: 6ms, application-code: 216ms)
- GET / 200 in 209ms (next.js: 6ms, proxy.ts: 4ms, application-code: 199ms)
- GET / 200 in 504ms (next.js: 12ms, proxy.ts: 75ms, application-code: 417ms)
-[browser] A tree hydrated but some attributes of the server rendered HTML didn't match the client properties. This won't be patched up. This can happen if a SSR-ed Client Component used:
+[browser] Uncaught PrismaClientValidationError: 
+Invalid `__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2f$prisma$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["prisma"].programme.findUnique()` invocation in
+C:\Users\DELL\Documents\GitHub\cims-website\.next\dev\server\chunks\ssr\[root-of-the-server]__0xntqfm._.js:248:152
 
-- A server/client branch `if (typeof window !== 'undefined')`.
-- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
-- Date formatting in a user's locale which doesn't match the server.
-- External changing data without sending a snapshot of it along with the HTML.
-- Invalid HTML tag nesting.
+  245 async function ProgrammeDetailPage({ params }) {
+  246     const { programmeId } = await params;
+  247     const [programme, categories] = await Promise.all([
+→ 248         __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2f$prisma$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["prisma"].programme.findUnique({
+                where: {
+                  id: "cmsx38y3b000kswzcat3mrucu"
+                },
+                include: {
+                  categories: {
+                  ~~~~~~~~~~
+                    select: {
+                      id: true
+                    }
+                  },
+              ?   category?: true,
+              ?   testimonials?: true,
+              ?   applications?: true
+                }
+              })
 
-It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+Unknown field `categories` for include statement on model `Programme`. Available options are marked with ?.
+    at <unknown> (C:\Users\DELL\Documents\GitHub\cims-website\.next\dev\server\chunks\ssr\[root-of-the-server]__0xntqfm._.js:248:152)
+    at  ProgrammeDetailPage (about://React/Server/C:%5CUsers%5CDELL%5CDocuments%5CGitHub%5Ccims-website%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0xntqfm._.js?0:247:37)
+ GET / 200 in 3.5s (next.js: 803ms, proxy.ts: 858ms, application-code: 1850ms)
+[browser] Uncaught PrismaClientValidationError: 
+Invalid `__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2f$prisma$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["prisma"].programme.findMany()` invocation in
+C:\Users\DELL\Documents\GitHub\cims-website\.next\dev\server\chunks\ssr\[root-of-the-server]__210kde6._.js:608:173
 
-https://react.dev/link/hydration-mismatch
+  605     }
+  606 });
+  607 const activeCategory = categories.find((c)=>c.slug === category);
+→ 608 const programmes = await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2f$prisma$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["prisma"].programme.findMany({
+        where: {
+          isPublished: true,
+          categories: {
+          ~~~~~~~~~~
+            some: {
+              id: "cmswvgjgm0002swzcqf9wde4l"
+            }
+          },
+      ?   AND?: ProgrammeWhereInput | ProgrammeWhereInput[],
+      ?   OR?: ProgrammeWhereInput[],
+      ?   NOT?: ProgrammeWhereInput | ProgrammeWhereInput[],
+      ?   id?: StringFilter | String,
+      ?   slug?: StringFilter | String,
+      ?   name?: StringFilter | String,
+      ?   categoryId?: StringFilter | String,
+      ?   level?: StringNullableFilter | String | Null,
+      ?   durationText?: StringNullableFilter | String | Null,
+      ?   summary?: StringFilter | String,
+      ?   description?: StringFilter | String,
+      ?   entryRequirements?: StringNullableFilter | String | Null,
+      ?   careerOutcomes?: StringNullableFilter | String | Null,
+      ?   highlights?: JsonNullableFilter,
+      ?   heroImageUrl?: StringNullableFilter | String | Null,
+      ?   brochureFileUrl?: StringNullableFilter | String | Null,
+      ?   isFeatured?: BoolFilter | Boolean,
+      ?   orderIndex?: IntFilter | Int,
+      ?   createdAt?: DateTimeFilter | DateTime,
+      ?   updatedAt?: DateTimeFilter | DateTime,
+      ?   category?: ProgrammeCategoryScalarRelationFilter | ProgrammeCategoryWhereInput,
+      ?   testimonials?: TestimonialListRelationFilter,
+      ?   applications?: ApplicationListRelationFilter
+        },
+        orderBy: {
+          orderIndex: "asc"
+        },
+        include: {
+          categories: {
+            select: {
+              name: true
+            },
+            orderBy: {
+              orderIndex: "asc"
+            }
+          }
+        }
+      })
 
-  ...
-    <ErrorBoundary errorComponent={undefined} errorStyles={undefined} errorScripts={undefined}>
-      <LoadingBoundary name="(site)/" loading={null}>
-        <HTTPAccessFallbackBoundary notFound={<SegmentViewNode>} forbidden={undefined} unauthorized={undefined}>
-          <HTTPAccessFallbackErrorBoundary pathname="/" notFound={<SegmentViewNode>} forbidden={undefined} ...>
-            <RedirectBoundary>
-              <RedirectErrorBoundary router={{...}}>
-                <InnerLayoutRouter url="/" tree={[...]} params={{}} cacheNode={{rsc:{...}, ...}} segmentPath={[...]} ...>
-                  <SegmentViewNode type="page" pagePath="(site)/pag...">
-                    <SegmentTrieNode>
-                    <Home>
-                      <section className="relative o...">
-                        <HeroSlider images={[...]}>
-                          <img>
-                          <ImagePreload>
-                          <img>
-                          <img>
-                          <div className="absolute b...">
-                            <button
-                              type="button"
-                              aria-label="Show slide 1"
-                              aria-current={true}
-                              onClick={function onClick}
-                              className="group flex items-center justify-center rounded-full p-1.5 focus-visible:outli..."
--                             fdprocessedid="9m8qms"
-                            >
-                            <button
-                              type="button"
-                              aria-label="Show slide 2"
-                              aria-current={false}
-                              onClick={function onClick}
-                              className="group flex items-center justify-center rounded-full p-1.5 focus-visible:outli..."
--                             fdprocessedid="qwkd1o"
-                            >
-                            <button
-                              type="button"
-                              aria-label="Show slide 3"
-                              aria-current={false}
-                              onClick={function onClick}
-                              className="group flex items-center justify-center rounded-full p-1.5 focus-visible:outli..."
--                             fdprocessedid="wvjit"
-                            >
-                        ...
-                        ...
-                      <section>
-                      <section>
-                      <section>
-                      ...
-                        <Reveal className="mt-28">
-                          <div ref={{current:null}} className="transition..." style={{...}}>
-                            <TestimonialCarousel testimonials={[...]}>
-                              <div className="relative" onMouseEnter={function onMouseEnter} ...>
-                                <Carousel>
-                                <div className="mt-8 flex ..." role="tablist" aria-label="Testimonials">
-                                  <button
-                                    type="button"
-                                    role="tab"
-                                    aria-selected={false}
-                                    aria-label="Show testimonial from Mohamed Samoon Sithy Rizana"
-                                    onClick={function onClick}
-                                    className="group flex items-center justify-center rounded-full p-2.5 focus-visible..."
--                                   fdprocessedid="4qnre8"
-                                  >
-                                  <button
-                                    type="button"
-                                    role="tab"
-                                    aria-selected={true}
-                                    aria-label="Show testimonial from Shehan Danushka Kalansooriya"
-                                    onClick={function onClick}
-                                    className="group flex items-center justify-center rounded-full p-2.5 focus-visible..."
--                                   fdprocessedid="olaq8s"
-                                  >
-                                  <button
-                                    type="button"
-                                    role="tab"
-                                    aria-selected={false}
-                                    aria-label="Show testimonial from Prisca Pedurupilla"
-                                    onClick={function onClick}
-                                    className="group flex items-center justify-center rounded-full p-2.5 focus-visible..."
--                                   fdprocessedid="wgln3a"
-                                  >
-                                  <button
-                                    type="button"
-                                    role="tab"
-                                    aria-selected={false}
-                                    aria-label="Show testimonial from Abdul Careem Mohamed Samil"
-                                    onClick={function onClick}
-                                    className="group flex items-center justify-center rounded-full p-2.5 focus-visible..."
--                                   fdprocessedid="o621oe"
-                                  >
-                                  <button
-                                    type="button"
-                                    role="tab"
-                                    aria-selected={false}
-                                    aria-label="Show testimonial from P A Sudarshana Perera"
-                                    onClick={function onClick}
-                                    className="group flex items-center justify-center rounded-full p-2.5 focus-visible..."
--                                   fdprocessedid="q257c"
-                                  >
-                                  <button
-                                    type="button"
-                                    role="tab"
-                                    aria-selected={false}
-                                    aria-label="Show testimonial from Subair Mohamed Hafrath"
-                                    onClick={function onClick}
-                                    className="group flex items-center justify-center rounded-full p-2.5 focus-visible..."
--                                   fdprocessedid="csc8rk"
-                                  >
-                                ...
-                      <section className="mx-auto w-...">
-                        <Reveal>
-                        <Reveal className="mt-12">
-                          <div ref={{current:null}} className="transition..." style={{...}}>
-                            <PartnerUniversityCarousel partners={[...]}>
-                              <div>
-                                <Carousel>
-                                <div className="mt-8 flex ..." role="tablist" aria-label="Partner un...">
-                                  <button
-                                    type="button"
-                                    role="tab"
-                                    aria-selected={true}
-                                    aria-label="Show City University Malaysia"
-                                    onClick={function onClick}
-                                    className="group flex items-center justify-center rounded-full p-2.5 focus-visible..."
--                                   fdprocessedid="9kozla"
-                                  >
-                                  <button
-                                    type="button"
-                                    role="tab"
-                                    aria-selected={false}
-                                    aria-label="Show INTI International University"
-                                    onClick={function onClick}
-                                    className="group flex items-center justify-center rounded-full p-2.5 focus-visible..."
--                                   fdprocessedid="essx5e"
-                                  >
-                      ...
-                        <Reveal delayMs={100} className="h-full rou...">
-                          <div ref={{current:null}} className="transition..." style={{...}}>
-                            <EventsCalendar events={[...]}>
-                              <div className="flex h-ful...">
-                                <div className="flex items...">
-                                  <button
-                                    type="button"
-                                    aria-label="Previous month"
-                                    onClick={function onClick}
-                                    className="text-muted-foreground transition hover:text-primary"
--                                   fdprocessedid="19b268"
-                                  >
-                                  <span>
-                                  <button
-                                    type="button"
-                                    aria-label="Next month"
-                                    onClick={function onClick}
-                                    className="text-muted-foreground transition hover:text-primary"
--                                   fdprocessedid="eu96i"
-                                  >
-                                <div>
-                                <div className="grid flex-...">
-                                  <button>
-                                  <button>
-                                  <button>
-                                  <button>
-                                  <button>
-                                  <button>
-                                  <button>
-                                  <button>
-                                  <button>
-                                  <button>
-                                  <button>
-                                  <button>
-                                  <button>
-                                  <button>
-                                  <button>
-                                  <button>
-                                  <button>
-                                  <button>
-                                  <button>
-                                  <button>
-                                  <button>
-                                  <button>
-                                  <button>
-                                  <button>
-                                  <button>
-                                  <button>
-                                  <button>
-                                  <button>
-                                  <button>
-                                  <button>
-                                  <button>
-                                  <button>
-                                  <button>
-                                  <button>
-                                  <button>
-                                  <button>
-                                  <button>
-                                  <button>
-                                  <button>
-                                  <button>
-                                  <button
-                                    type="button"
-                                    disabled={false}
-                                    onClick={function onClick}
-                                    className="flex flex-col items-start gap-1 border-b p-2 text-left text-sm sm:p-3 c..."
--                                   fdprocessedid="ldhneh"
-                                  >
-                                  ...
-                      ...
-                        <form ref={{current:null}} action={function bound dispatchActionState}>
-                          <FieldGroup>
-                            <div data-slot="field-group" className="group/fiel...">
-                              <div className="grid gap-4...">
-                                ...
-                                  <Input id="contact-name" name="name" required={true}>
-                                    <Input type={undefined} data-slot="input" className="h-8 w-full..." id="contact-name" ...>
-                                      <FieldControl ref={null} type={undefined} data-slot="input" ...>
-                                        <input
-                                          id="contact-name"
-                                          disabled={false}
-                                          name="name"
-                                          ref={function}
-                                          aria-labelledby={undefined}
-                                          autoFocus={false}
-                                          defaultValue={undefined}
-                                          onChange={function}
-                                          onFocus={function}
-                                          onBlur={function}
-                                          onKeyDown={function}
-                                          type={undefined}
-                                          data-slot="input"
-                                          required={true}
-                                          className="h-8 w-full min-w-0 rounded-lg border border-input bg-transparent ..."
--                                         fdprocessedid="hmm44"
-                                        >
-                                ...
-                                  <Input id="contact-mo..." name="mobile" type="tel" required={true}>
-                                    <Input type="tel" data-slot="input" className="h-8 w-full..." id="contact-mo..." ...>
-                                      <FieldControl ref={null} type="tel" data-slot="input" className="h-8 w-full..." ...>
-                                        <input
-                                          id="contact-mobile"
-                                          disabled={false}
-                                          name="mobile"
-                                          ref={function}
-                                          aria-labelledby={undefined}
-                                          autoFocus={false}
-                                          defaultValue={undefined}
-                                          onChange={function}
-                                          onFocus={function}
-                                          onBlur={function}
-                                          onKeyDown={function}
-                                          type="tel"
-                                          data-slot="input"
-                                          required={true}
-                                          className="h-8 w-full min-w-0 rounded-lg border border-input bg-transparent ..."
--                                         fdprocessedid="adrdq"
-                                        >
-                              ...
-                                <Input id="contact-email" name="email" type="email" required={true}>
-                                  <Input type="email" data-slot="input" className="h-8 w-full..." id="contact-email" ...>
-                                    <FieldControl ref={null} type="email" data-slot="input" className="h-8 w-full..." ...>
-                                      <input
-                                        id="contact-email"
-                                        disabled={false}
-                                        name="email"
-                                        ref={function}
-                                        aria-labelledby={undefined}
-                                        autoFocus={false}
-                                        defaultValue={undefined}
-                                        onChange={function}
-                                        onFocus={function}
-                                        onBlur={function}
-                                        onKeyDown={function}
-                                        type="email"
-                                        data-slot="input"
-                                        required={true}
-                                        className="h-8 w-full min-w-0 rounded-lg border border-input bg-transparent px..."
--                                       fdprocessedid="6f5nkk"
-                                      >
-                              ...
-                                <Input id="contact-su..." name="subject" required={true}>
-                                  <Input type={undefined} data-slot="input" className="h-8 w-full..." id="contact-su..." ...>
-                                    <FieldControl ref={null} type={undefined} data-slot="input" className="h-8 w-full..." ...>
-                                      <input
-                                        id="contact-subject"
-                                        disabled={false}
-                                        name="subject"
-                                        ref={function}
-                                        aria-labelledby={undefined}
-                                        autoFocus={false}
-                                        defaultValue={undefined}
-                                        onChange={function}
-                                        onFocus={function}
-                                        onBlur={function}
-                                        onKeyDown={function}
-                                        type={undefined}
-                                        data-slot="input"
-                                        required={true}
-                                        className="h-8 w-full min-w-0 rounded-lg border border-input bg-transparent px..."
--                                       fdprocessedid="hs6dv"
-                                      >
-                              <Field>
-                              <Button type="submit" disabled={false} className="w-full bg-..." size="lg">
-                                <Button data-slot="button" className={"group/bu..."} type="submit" disabled={false}>
-                                  <button
-                                    type="submit"
-                                    onClick={function}
-                                    onMouseDown={function}
-                                    onKeyDown={function}
-                                    onKeyUp={function}
-                                    onPointerDown={function}
-                                    tabIndex={0}
-                                    disabled={false}
-                                    data-slot="button"
-                                    ref={function}
-                                    className={"group/button inline-flex shrink-0 items-center justify-center rounded..."}
--                                   fdprocessedid="p833yn"
-                                  >
-+                                   Submit
-                      ...
-                  ...
-                ...
- 
-    at <unknown> (chrome-extension://kiilhncajadbgbmdbdcopdpnmdhlbdle/assets/js/content.js:13:96450)
-    at d (chrome-extension://kiilhncajadbgbmdbdcopdpnmdhlbdle/assets/js/content.js:13:96560)
-    at f (chrome-extension://kiilhncajadbgbmdbdcopdpnmdhlbdle/assets/js/content.js:13:96661) (chrome-extension://kiilhncajadbgbmdbdcopdpnmdhlbdle/assets/js/content.js:13:96450)
- GET / 200 in 508ms (next.js: 16ms, proxy.ts: 8ms, application-code: 484ms)
- GET / 200 in 1008ms (next.js: 33ms, proxy.ts: 60ms, application-code: 916ms)
- GET /about 200 in 733ms (next.js: 452ms, proxy.ts: 25ms, application-code: 256ms)
- GET /programmes?category=computing 200 in 854ms (next.js: 552ms, proxy.ts: 22ms, application-code: 279ms)
- GET /programmes/higher-diploma-software-engineering 200 in 14.6s (next.js: 14.4s, proxy.ts: 14ms, application-code: 236ms)
- GET /events 200 in 860ms (next.js: 629ms, proxy.ts: 38ms, application-code: 193ms)
- GET /events/ai-coding-for-beginners 200 in 1484ms (next.js: 1392ms, proxy.ts: 13ms, application-code: 79ms)
- GET / 200 in 895ms (next.js: 5ms, proxy.ts: 15ms, application-code: 874ms)
- GET /admin 200 in 2.5s (next.js: 1120ms, proxy.ts: 17ms, application-code: 1344ms)
- GET /admin/events 200 in 686ms (next.js: 481ms, proxy.ts: 13ms, application-code: 192ms)
- GET /admin/events/cmsfxoqb0000abczcz3qbcx5m 200 in 1397ms (next.js: 1292ms, proxy.ts: 12ms, application-code: 93ms)
- GET /admin/events/cmsfxoqb0000abczcz3qbcx5m 200 in 388ms (next.js: 7ms, proxy.ts: 10ms, application-code: 371ms)
- POST /admin/events/cmsfxoqb0000abczcz3qbcx5m 303 in 674ms (next.js: 17ms, proxy.ts: 12ms, application-code: 644ms)
-  └─ ƒ updateEvent("cmsfxoqb0000abczcz3qbcx5m", undefined, {}) in 230ms src/lib/actions/admin/event.actions.ts
- GET /events/ai-coding-for-beginners 200 in 527ms (next.js: 13ms, proxy.ts: 10ms, application-code: 504ms)
- GET / 200 in 519ms (next.js: 7ms, proxy.ts: 11ms, application-code: 501ms)
- GET /about 200 in 166ms (next.js: 12ms, proxy.ts: 15ms, application-code: 139ms)
- GET /admin/settings 200 in 545ms (next.js: 336ms, proxy.ts: 13ms, application-code: 197ms)
- POST /admin/settings 200 in 562ms (next.js: 7ms, proxy.ts: 13ms, application-code: 542ms)
-  └─ ƒ updateSiteSettings(undefined, {}) in 156ms src/lib/actions/admin/settings.actions.ts
- GET /about 200 in 743ms (next.js: 11ms, proxy.ts: 14ms, application-code: 719ms)
-[browser] Image with src "http://localhost:3000/uploads/settings/5acdf8c1-a6d5-47f8-aaf3-e93b0a5c8a67-uni.jpg" was detected as the Largest Contentful Paint (LCP). Please add the `loading="eager"` property if this image is above the fold.
+Unknown argument `categories`. Did you mean `categoryId`? Available options are marked with ?.
+    at <unknown> (C:\Users\DELL\Documents\GitHub\cims-website\.next\dev\server\chunks\ssr\[root-of-the-server]__210kde6._.js:608:173)
+    at  ProgrammesPage (about://React/Server/C:%5CUsers%5CDELL%5CDocuments%5CGitHub%5Ccims-website%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__210kde6._.js?0:608:24)
+[browser] Uncaught PrismaClientValidationError: 
+Invalid `__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2f$prisma$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["prisma"].programme.findMany()` invocation in
+C:\Users\DELL\Documents\GitHub\cims-website\.next\dev\server\chunks\ssr\[root-of-the-server]__210kde6._.js:608:173
+
+  605     }
+  606 });
+  607 const activeCategory = categories.find((c)=>c.slug === category);
+→ 608 const programmes = await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2f$prisma$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["prisma"].programme.findMany({
+        where: {
+          isPublished: true
+        },
+        orderBy: {
+          orderIndex: "asc"
+        },
+        include: {
+          categories: {
+          ~~~~~~~~~~
+            select: {
+              name: true
+            },
+            orderBy: {
+              orderIndex: "asc"
+            }
+          },
+      ?   category?: true,
+      ?   testimonials?: true,
+      ?   applications?: true
+        }
+      })
+
+Unknown field `categories` for include statement on model `Programme`. Available options are marked with ?.
+    at <unknown> (C:\Users\DELL\Documents\GitHub\cims-website\.next\dev\server\chunks\ssr\[root-of-the-server]__210kde6._.js:608:173)
+    at  ProgrammesPage (about://React/Server/C:%5CUsers%5CDELL%5CDocuments%5CGitHub%5Ccims-website%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__210kde6._.js?0:608:24)
+[browser] Uncaught PrismaClientValidationError: 
+Invalid `__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2f$prisma$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["prisma"].programme.findMany()` invocation in
+C:\Users\DELL\Documents\GitHub\cims-website\.next\dev\server\chunks\ssr\[root-of-the-server]__210kde6._.js:608:173
+
+  605     }
+  606 });
+  607 const activeCategory = categories.find((c)=>c.slug === category);
+→ 608 const programmes = await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2f$prisma$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["prisma"].programme.findMany({
+        where: {
+          isPublished: true,
+          categories: {
+          ~~~~~~~~~~
+            some: {
+              id: "cmswvcyqg0001swzc7qvtipho"
+            }
+          },
+      ?   AND?: ProgrammeWhereInput | ProgrammeWhereInput[],
+      ?   OR?: ProgrammeWhereInput[],
+      ?   NOT?: ProgrammeWhereInput | ProgrammeWhereInput[],
+      ?   id?: StringFilter | String,
+      ?   slug?: StringFilter | String,
+      ?   name?: StringFilter | String,
+      ?   categoryId?: StringFilter | String,
+      ?   level?: StringNullableFilter | String | Null,
+      ?   durationText?: StringNullableFilter | String | Null,
+      ?   summary?: StringFilter | String,
+      ?   description?: StringFilter | String,
+      ?   entryRequirements?: StringNullableFilter | String | Null,
+      ?   careerOutcomes?: StringNullableFilter | String | Null,
+      ?   highlights?: JsonNullableFilter,
+      ?   heroImageUrl?: StringNullableFilter | String | Null,
+      ?   brochureFileUrl?: StringNullableFilter | String | Null,
+      ?   isFeatured?: BoolFilter | Boolean,
+      ?   orderIndex?: IntFilter | Int,
+      ?   createdAt?: DateTimeFilter | DateTime,
+      ?   updatedAt?: DateTimeFilter | DateTime,
+      ?   category?: ProgrammeCategoryScalarRelationFilter | ProgrammeCategoryWhereInput,
+      ?   testimonials?: TestimonialListRelationFilter,
+      ?   applications?: ApplicationListRelationFilter
+        },
+        orderBy: {
+          orderIndex: "asc"
+        },
+        include: {
+          categories: {
+            select: {
+              name: true
+            },
+            orderBy: {
+              orderIndex: "asc"
+            }
+          }
+        }
+      })
+
+Unknown argument `categories`. Did you mean `categoryId`? Available options are marked with ?.
+    at <unknown> (C:\Users\DELL\Documents\GitHub\cims-website\.next\dev\server\chunks\ssr\[root-of-the-server]__210kde6._.js:608:173)
+    at  ProgrammesPage (about://React/Server/C:%5CUsers%5CDELL%5CDocuments%5CGitHub%5Ccims-website%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__210kde6._.js?0:608:24)
+[browser] Uncaught PrismaClientKnownRequestError: 
+Invalid `__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2f$prisma$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["prisma"].programmeCategory.findMany()` invocation in
+C:\Users\DELL\Documents\GitHub\cims-website\.next\dev\server\chunks\ssr\[root-of-the-server]__1qw2y14._.js:418:181
+
+  415 ;
+  416 ;
+  417 async function AdminCategoriesPage() {
+→ 418     const categories = await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2f$prisma$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["prisma"].programmeCategory.findMany(
+The column `Programme.categoryId` does not exist in the current database.
+    at <unknown> (C:\Users\DELL\Documents\GitHub\cims-website\.next\dev\server\chunks\ssr\[root-of-the-server]__1qw2y14._.js:418:181)
+    at  AdminCategoriesPage (about://React/Server/C:%5CUsers%5CDELL%5CDocuments%5CGitHub%5Ccims-website%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__1qw2y14._.js?0:418:24)
+ GET / 200 in 2.8s (next.js: 26ms, proxy.ts: 32ms, application-code: 2.7s)
+ GET /admin/categories 200 in 5.5s (next.js: 1965ms, proxy.ts: 175ms, application-code: 3.4s)
+ GET /admin/programmes/cmsx38y3b000kswzcat3mrucu 200 in 5.6s (next.js: 4.6s, proxy.ts: 180ms, application-code: 836ms)
+ GET /programmes?category=faculty-of-business-and-economics 200 in 5.7s (next.js: 1715ms, proxy.ts: 184ms, application-code: 3.8s)
+ GET /programmes?category=faculty-of-education-and-humanities-sciences 200 in 6.6s (next.js: 1596ms, proxy.ts: 995ms, application-code: 4.0s)
+ GET /programmes?category=computing 200 in 6.7s (next.js: 1701ms, proxy.ts: 992ms, application-code: 4.0s)
+ GET /programmes 200 in 212ms (next.js: 10ms, proxy.ts: 6ms, application-code: 197ms)
+ GET /programmes?category=diploma 200 in 146ms (next.js: 7ms, proxy.ts: 4ms, application-code: 135ms)
+ GET /programmes?category=master-s-degree 200 in 148ms (next.js: 6ms, proxy.ts: 4ms, application-code: 138ms)
+ GET /programmes?category=faculty-of-education-and-humanities-sciences 200 in 132ms (next.js: 6ms, proxy.ts: 4ms, application-code: 122ms)
+ GET /programmes?category=master-s-degree 200 in 130ms (next.js: 7ms, proxy.ts: 3ms, application-code: 120ms)
+ GET /programmes?category=faculty-of-education-and-humanities-sciences 200 in 147ms (next.js: 7ms, proxy.ts: 5ms, application-code: 134ms)
+ GET /programmes?category=diploma 200 in 135ms (next.js: 8ms, proxy.ts: 3ms, application-code: 125ms)
+ GET / 200 in 222ms (next.js: 8ms, proxy.ts: 5ms, application-code: 209ms)
+ GET /apply 200 in 298ms (next.js: 81ms, proxy.ts: 4ms, application-code: 213ms)
+ GET / 200 in 236ms (next.js: 5ms, proxy.ts: 4ms, application-code: 227ms)
+ GET /api/auth/csrf 200 in 1341ms (next.js: 1317ms, application-code: 24ms)
+ POST /api/auth/callback/credentials 302 in 117ms (next.js: 13ms, application-code: 104ms)
+ GET /admin 200 in 210ms (next.js: 61ms, proxy.ts: 12ms, application-code: 137ms)
+ GET /admin/programmes/cmsx38y3b000kswzcat3mrucu 200 in 121ms (next.js: 15ms, proxy.ts: 8ms, application-code: 98ms)
+ GET /api/auth/csrf 200 in 20ms (next.js: 11ms, application-code: 9ms)
+ POST /api/auth/callback/credentials 302 in 83ms (next.js: 3ms, application-code: 80ms)
+ GET /admin 200 in 118ms (next.js: 8ms, proxy.ts: 8ms, application-code: 102ms)
+ GET /admin/programmes/cmsx38y3b000kswzcat3mrucu 200 in 139ms (next.js: 14ms, proxy.ts: 10ms, application-code: 115ms)
+[browser] Image with src "http://localhost:3000/uploads/programmes/56e84319-e552-417f-a958-16a798e0ba12-diploma_bussiness_.jpg" was detected as the Largest Contentful Paint (LCP). Please add the `loading="eager"` property if this image is above the fold.
 Read more: https://nextjs.org/docs/app/api-reference/components/image#loading
- POST /admin/settings 200 in 412ms (next.js: 6ms, proxy.ts: 11ms, application-code: 394ms)
-  └─ ƒ updateSiteSettings(undefined, {}) in 247ms src/lib/actions/admin/settings.actions.ts
- GET /about 200 in 491ms (next.js: 8ms, proxy.ts: 10ms, application-code: 473ms)
-[browser] Image with src "http://localhost:3000/uploads/settings/5acdf8c1-a6d5-47f8-aaf3-e93b0a5c8a67-uni.jpg" was detected as the Largest Contentful Paint (LCP). Please add the `loading="eager"` property if this image is above the fold.
-Read more: https://nextjs.org/docs/app/api-reference/components/image#loading
- GET / 200 in 444ms (next.js: 9ms, proxy.ts: 13ms, application-code: 422ms)
- GET / 200 in 1123ms (next.js: 9ms, proxy.ts: 13ms, application-code: 1102ms)
- GET /about 200 in 144ms (next.js: 7ms, proxy.ts: 12ms, application-code: 125ms)
- POST /admin/settings 200 in 431ms (next.js: 6ms, proxy.ts: 10ms, application-code: 416ms)
-  └─ ƒ updateSiteSettings(undefined, {}) in 240ms src/lib/actions/admin/settings.actions.ts
- GET /admin/settings 200 in 21ms (next.js: 6ms, proxy.ts: 8ms, application-code: 7ms)
- GET /admin/settings 200 in 160ms (next.js: 10ms, proxy.ts: 12ms, application-code: 138ms)
- GET /admin/settings 200 in 25ms (next.js: 7ms, proxy.ts: 11ms, application-code: 7ms)
- GET /admin/settings 200 in 82ms (next.js: 5ms, proxy.ts: 8ms, application-code: 69ms)
- GET /admin/settings 200 in 2.2s (next.js: 20ms, proxy.ts: 49ms, application-code: 2.1s)
- GET /about 200 in 3.0s (next.js: 553ms, proxy.ts: 45ms, application-code: 2.4s)
- GET /about 200 in 2.2s (next.js: 579ms, proxy.ts: 1354ms, application-code: 294ms)
- GET /admin/settings 200 in 2.2s (next.js: 321ms, proxy.ts: 1354ms, application-code: 568ms)
- GET /about 200 in 1781ms (next.js: 5ms, proxy.ts: 5ms, application-code: 1770ms)
- POST /admin/settings 200 in 299ms (next.js: 7ms, proxy.ts: 11ms, application-code: 281ms)
-  └─ ƒ updateSiteSettings(undefined, {}) in 71ms src/lib/actions/admin/settings.actions.ts
- GET /about 200 in 529ms (next.js: 7ms, proxy.ts: 11ms, application-code: 511ms)
-[browser] Image with src "http://localhost:3000/uploads/settings/5acdf8c1-a6d5-47f8-aaf3-e93b0a5c8a67-uni.jpg" was detected as the Largest Contentful Paint (LCP). Please add the `loading="eager"` property if this image is above the fold.
-Read more: https://nextjs.org/docs/app/api-reference/components/image#loading
- GET /about 200 in 626ms (next.js: 7ms, proxy.ts: 12ms, application-code: 608ms)
- POST /admin/settings 200 in 343ms (next.js: 7ms, proxy.ts: 11ms, application-code: 325ms)
-  └─ ƒ updateSiteSettings(undefined, {}) in 168ms src/lib/actions/admin/settings.actions.ts
- POST /admin/settings 200 in 413ms (next.js: 7ms, proxy.ts: 11ms, application-code: 395ms)
-  └─ ƒ updateSiteSettings(undefined, {}) in 228ms src/lib/actions/admin/settings.actions.ts
- GET /about 200 in 406ms (next.js: 4ms, proxy.ts: 5ms, application-code: 396ms)
- GET /admin/settings 200 in 627ms (next.js: 8ms, proxy.ts: 16ms, application-code: 603ms)
- POST /admin/settings 200 in 349ms (next.js: 6ms, proxy.ts: 11ms, application-code: 332ms)
-  └─ ƒ updateSiteSettings(undefined, {}) in 207ms src/lib/actions/admin/settings.actions.ts
- GET /about 200 in 570ms (next.js: 8ms, proxy.ts: 9ms, application-code: 554ms)
- GET /success-stories 200 in 771ms (next.js: 556ms, proxy.ts: 12ms, application-code: 203ms)
- GET /admin/settings 200 in 1608ms (next.js: 23ms, proxy.ts: 83ms, application-code: 1501ms)
- GET /admin/settings 200 in 1553ms (next.js: 306ms, proxy.ts: 567ms, application-code: 679ms)
- GET /success-stories 200 in 3.2s (next.js: 696ms, proxy.ts: 85ms, application-code: 2.4s)
- GET /admin/settings 200 in 930ms (next.js: 49ms, proxy.ts: 247ms, application-code: 634ms)
- GET /success-stories 200 in 2.5s (next.js: 551ms, proxy.ts: 560ms, application-code: 1356ms)
- GET /success-stories 200 in 1678ms (next.js: 144ms, proxy.ts: 211ms, application-code: 1323ms)
- GET /success-stories 200 in 1677ms (next.js: 272ms, proxy.ts: 211ms, application-code: 1194ms)
- GET /success-stories 200 in 1361ms (next.js: 35ms, proxy.ts: 276ms, application-code: 1051ms)
- GET /success-stories 200 in 1287ms (next.js: 26ms, proxy.ts: 285ms, application-code: 977ms)
- GET /success-stories 200 in 1173ms (next.js: 43ms, proxy.ts: 300ms, application-code: 830ms)
- GET /admin/settings 200 in 374ms (next.js: 24ms, proxy.ts: 138ms, application-code: 212ms)
- GET /success-stories 200 in 1072ms (next.js: 25ms, proxy.ts: 377ms, application-code: 670ms)
- GET /admin/settings 200 in 390ms (next.js: 23ms, proxy.ts: 92ms, application-code: 275ms)
- GET /admin/settings 200 in 577ms (next.js: 26ms, proxy.ts: 71ms, application-code: 480ms)
- GET /admin/settings 200 in 459ms (next.js: 23ms, proxy.ts: 108ms, application-code: 328ms)
- GET /admin/settings 200 in 456ms (next.js: 132ms, proxy.ts: 107ms, application-code: 217ms)
-✓ Compiled in 447ms
- GET /admin/settings 200 in 2.3s (next.js: 436ms, proxy.ts: 267ms, application-code: 1554ms)
- GET /admin/settings 200 in 1105ms (next.js: 18ms, proxy.ts: 614ms, application-code: 473ms)
- GET /success-stories 200 in 3.3s (next.js: 1173ms, proxy.ts: 256ms, application-code: 1920ms)
- GET /admin/settings 200 in 904ms (next.js: 39ms, proxy.ts: 238ms, application-code: 627ms)
- GET /success-stories 200 in 2.2s (next.js: 124ms, proxy.ts: 586ms, application-code: 1459ms)
- GET /success-stories 200 in 1683ms (next.js: 256ms, proxy.ts: 212ms, application-code: 1215ms)
- GET /success-stories 200 in 1689ms (next.js: 140ms, proxy.ts: 212ms, application-code: 1336ms)
- GET /success-stories 200 in 1637ms (next.js: 43ms, proxy.ts: 523ms, application-code: 1072ms)
- GET /success-stories 200 in 1320ms (next.js: 27ms, proxy.ts: 300ms, application-code: 992ms)
- GET /success-stories 200 in 1172ms (next.js: 111ms, proxy.ts: 288ms, application-code: 773ms)
- GET /admin/settings 200 in 372ms (next.js: 20ms, proxy.ts: 140ms, application-code: 213ms)
- GET /success-stories 200 in 1046ms (next.js: 30ms, proxy.ts: 346ms, application-code: 670ms)
- GET /admin/settings 200 in 291ms (next.js: 18ms, proxy.ts: 81ms, application-code: 192ms)
- GET /admin/settings 200 in 285ms (next.js: 19ms, proxy.ts: 72ms, application-code: 194ms)
- GET /admin/settings 200 in 269ms (next.js: 17ms, proxy.ts: 73ms, application-code: 179ms)
- GET /admin/settings 200 in 253ms (next.js: 30ms, proxy.ts: 60ms, application-code: 162ms)
- GET /success-stories 200 in 1097ms (next.js: 6ms, proxy.ts: 5ms, application-code: 1087ms)
- GET /success-stories 200 in 529ms (next.js: 9ms, proxy.ts: 12ms, application-code: 508ms)
- GET / 200 in 1788ms (next.js: 1108ms, proxy.ts: 14ms, application-code: 666ms)
-✓ Compiled in 339ms
- GET /admin/settings 200 in 2.3s (next.js: 458ms, proxy.ts: 421ms, application-code: 1461ms)
- GET / 200 in 2.5s (next.js: 1000ms, proxy.ts: 422ms, application-code: 1050ms)
- GET / 200 in 894ms (next.js: 142ms, proxy.ts: 120ms, application-code: 632ms)
- GET /admin/settings 200 in 944ms (next.js: 25ms, proxy.ts: 150ms, application-code: 770ms)
- GET /programmes 200 in 2.0s (next.js: 343ms, proxy.ts: 8ms, application-code: 1655ms)
- GET / 200 in 1677ms (next.js: 7ms, proxy.ts: 12ms, application-code: 1658ms)
- GET / 200 in 675ms (next.js: 6ms, proxy.ts: 12ms, application-code: 658ms)
- GET / 200 in 1182ms (next.js: 7ms, proxy.ts: 14ms, application-code: 1161ms)
-✓ Compiled in 312ms
- GET /admin/settings 200 in 2.5s (next.js: 494ms, proxy.ts: 303ms, application-code: 1688ms)
- GET / 200 in 2.7s (next.js: 1300ms, proxy.ts: 301ms, application-code: 1070ms)
- GET /admin/settings 200 in 970ms (next.js: 25ms, proxy.ts: 210ms, application-code: 736ms)
- GET / 200 in 986ms (next.js: 150ms, proxy.ts: 175ms, application-code: 661ms)
- GET / 200 in 1619ms (next.js: 6ms, proxy.ts: 7ms, application-code: 1606ms)
- GET / 200 in 1184ms (next.js: 8ms, proxy.ts: 11ms, application-code: 1164ms)
- GET /about 200 in 612ms (next.js: 331ms, proxy.ts: 14ms, application-code: 267ms)
- GET /success-stories 200 in 304ms (next.js: 45ms, proxy.ts: 15ms, application-code: 244ms)
- GET /team?category=BOARD_OF_GOVERNORS 200 in 568ms (next.js: 326ms, proxy.ts: 12ms, application-code: 230ms)
- GET /team?category=ACADEMIC_BOARD 200 in 114ms (next.js: 7ms, proxy.ts: 10ms, application-code: 97ms)
- GET /team?category=INTERNATIONAL_REPRESENTATIVE 200 in 152ms (next.js: 7ms, proxy.ts: 10ms, application-code: 135ms)
- GET /news 200 in 632ms (next.js: 445ms, proxy.ts: 15ms, application-code: 173ms)
- GET /news/new-intake-open-2026 200 in 1210ms (next.js: 1142ms, proxy.ts: 13ms, application-code: 55ms)
- GET /admin/admins 200 in 637ms (next.js: 459ms, proxy.ts: 8ms, application-code: 170ms)
- GET /admin/applications 200 in 782ms (next.js: 559ms, proxy.ts: 12ms, application-code: 211ms)
- GET /admin/contact-messages 200 in 440ms (next.js: 278ms, proxy.ts: 10ms, application-code: 152ms)
-○ Compiling /admin/campuses ...
- GET /admin/campuses 200 in 5.1s (next.js: 4.8s, proxy.ts: 11ms, application-code: 266ms)
- GET /admin/campuses 200 in 182ms (next.js: 32ms, proxy.ts: 29ms, application-code: 120ms)
- GET /admin/campuses 200 in 102ms (next.js: 19ms, proxy.ts: 35ms, application-code: 48ms)
- GET /admin/news 200 in 2.3s (next.js: 2.1s, proxy.ts: 13ms, application-code: 127ms)
-○ Compiling /admin/news/[postId] ...
- GET /admin/news/cmsfxoq9l0009bczc714o6r52 200 in 10.4s (next.js: 10.1s, proxy.ts: 11ms, application-code: 296ms)
- GET /admin/news/cmsfxoq9l0009bczc714o6r52 200 in 202ms (next.js: 40ms, proxy.ts: 35ms, application-code: 127ms)
- POST /api/uploads/sign 200 in 2.6s (next.js: 2.4s, application-code: 177ms)
- POST /api/uploads/local 200 in 625ms (next.js: 475ms, application-code: 150ms)
- GET /admin/news/cmsfxoq9l0009bczc714o6r52 200 in 214ms (next.js: 15ms, proxy.ts: 25ms, application-code: 174ms)
- POST /admin/news/cmsfxoq9l0009bczc714o6r52 303 in 768ms (next.js: 331ms, proxy.ts: 67ms, application-code: 370ms)
-  └─ ƒ updateNewsPost("cmsfxoq9l0009bczc714o6r52", undefined, {}) in 97ms src/lib/actions/admin/news.actions.ts
- POST /api/uploads/sign 200 in 25ms (next.js: 5ms, application-code: 20ms)
- POST /api/uploads/local 200 in 37ms (next.js: 3ms, application-code: 34ms)
- GET /admin/news/cmsfxoq9l0009bczc714o6r52 200 in 164ms (next.js: 8ms, proxy.ts: 11ms, application-code: 145ms)
- POST /admin/news/cmsfxoq9l0009bczc714o6r52 303 in 320ms (next.js: 17ms, proxy.ts: 13ms, application-code: 290ms)
-  └─ ƒ updateNewsPost("cmsfxoq9l0009bczc714o6r52", undefined, {}) in 107ms src/lib/actions/admin/news.actions.ts
- GET /admin/news/cmsfxoq9l0009bczc714o6r52 200 in 215ms (next.js: 23ms, proxy.ts: 11ms, application-code: 181ms)
- POST /admin/news/cmsfxoq9l0009bczc714o6r52 303 in 350ms (next.js: 13ms, proxy.ts: 9ms, application-code: 328ms)
-  └─ ƒ updateNewsPost("cmsfxoq9l0009bczc714o6r52", undefined, {}) in 92ms src/lib/actions/admin/news.actions.ts
- GET /news 200 in 1159ms (next.js: 8ms, proxy.ts: 13ms, application-code: 1138ms)
-[browser] Image with src "http://localhost:3000/uploads/news/967c46a9-a4b3-4dbd-80a9-797c344eae9d-application.jpg" was detected as the Largest Contentful Paint (LCP). Please add the `loading="eager"` property if this image is above the fold.
-Read more: https://nextjs.org/docs/app/api-reference/components/image#loading
- GET /news/cims-graduation-ceremony-2026 200 in 110ms (next.js: 19ms, proxy.ts: 13ms, application-code: 78ms)
- GET /admin/news 200 in 72ms (next.js: 6ms, proxy.ts: 11ms, application-code: 55ms)
- GET /admin/news/new 200 in 2.3s (next.js: 2.2s, proxy.ts: 14ms, application-code: 102ms)
- GET /news/cims-graduation-ceremony-2026 200 in 100ms (next.js: 21ms, proxy.ts: 14ms, application-code: 66ms)
- GET /news/new-intake-open-2026 200 in 89ms (next.js: 14ms, proxy.ts: 13ms, application-code: 61ms)
- GET /admin/news/new 200 in 557ms (next.js: 5ms, proxy.ts: 13ms, application-code: 538ms)
- GET /admin/categories 200 in 1906ms (next.js: 1737ms, proxy.ts: 11ms, application-code: 157ms)
- GET /admin/events 200 in 271ms (next.js: 136ms, proxy.ts: 11ms, application-code: 124ms)
-✓ Finished filesystem cache database compaction in 13.1s
- GET /admin/news 200 in 75ms (next.js: 5ms, proxy.ts: 10ms, application-code: 60ms)
- GET /admin/news/cmsfxoq9l0009bczc714o6r52 200 in 69ms (next.js: 12ms, proxy.ts: 10ms, application-code: 47ms)
- GET /news/new-intake-open-2026 200 in 64ms (next.js: 14ms, proxy.ts: 14ms, application-code: 37ms)
- POST /api/uploads/sign 200 in 42ms (next.js: 7ms, application-code: 35ms)
- POST /api/uploads/local 200 in 59ms (next.js: 5ms, application-code: 54ms)
- GET /admin/news/cmsfxoq9l0009bczc714o6r52 200 in 228ms (next.js: 20ms, proxy.ts: 23ms, application-code: 185ms)
- POST /admin/news/cmsfxoq9l0009bczc714o6r52 303 in 373ms (next.js: 16ms, proxy.ts: 13ms, application-code: 344ms)
-  └─ ƒ updateNewsPost("cmsfxoq9l0009bczc714o6r52", undefined, {}) in 95ms src/lib/actions/admin/news.actions.ts
- GET /news/new-intake-open-2026 200 in 516ms (next.js: 17ms, proxy.ts: 14ms, application-code: 485ms)
-[browser] Base UI: A component is changing the default value state of an uncontrolled FieldControl after being initialized. To suppress this warning opt to use a controlled FieldControl. 
- GET /admin/news/cmt33kkay0000wozcj2nkzwg0 200 in 269ms (next.js: 51ms, proxy.ts: 27ms, application-code: 190ms)
- POST /admin/news/new 303 in 421ms (next.js: 9ms, proxy.ts: 36ms, application-code: 375ms)
-  └─ ƒ createNewsPost(undefined, {}) in 66ms src/lib/actions/admin/news.actions.ts
- POST /api/uploads/sign 200 in 38ms (next.js: 4ms, application-code: 34ms)
- POST /api/uploads/local 200 in 51ms (next.js: 4ms, application-code: 47ms)
- POST /api/uploads/sign 200 in 31ms (next.js: 7ms, application-code: 23ms)
- POST /api/uploads/local 200 in 47ms (next.js: 3ms, application-code: 44ms)
- GET /admin/news/cmt33kkay0000wozcj2nkzwg0 200 in 208ms (next.js: 25ms, proxy.ts: 18ms, application-code: 165ms)
- POST /admin/news/cmt33kkay0000wozcj2nkzwg0 303 in 295ms (next.js: 17ms, proxy.ts: 12ms, application-code: 265ms)
-  └─ ƒ updateNewsPost("cmt33kkay0000wozcj2nkzwg0", undefined, {}) in 36ms src/lib/actions/admin/news.actions.ts
- GET /news/new-intake-open-2026 200 in 346ms (next.js: 13ms, proxy.ts: 9ms, application-code: 324ms)
- GET /admin/news 200 in 442ms (next.js: 301ms, proxy.ts: 11ms, application-code: 129ms)
- GET /news 200 in 117ms (next.js: 13ms, proxy.ts: 12ms, application-code: 92ms)
- GET /news/cims-campus-celebrates-2018-graduation 200 in 64ms (next.js: 14ms, proxy.ts: 11ms, application-code: 39ms)
- GET /news/cims-campus-celebrates-2018-graduation 200 in 1344ms (next.js: 373ms, proxy.ts: 357ms, application-code: 614ms)
- GET /news/cims-campus-celebrates-2018-graduation 200 in 522ms (next.js: 27ms, proxy.ts: 71ms, application-code: 424ms)
-✓ Finished filesystem cache database compaction in 2.7min
-✓ Compiled in 273ms
- GET /admin/news/cmsfxoq9l0009bczc714o6r52 200 in 2.7s (next.js: 1393ms, proxy.ts: 381ms, application-code: 927ms)
- GET /admin/news 200 in 2.7s (next.js: 372ms, proxy.ts: 378ms, application-code: 1950ms)
- GET /news/cims-campus-celebrates-2018-graduation 200 in 3.1s (next.js: 808ms, proxy.ts: 380ms, application-code: 1880ms)
- GET /admin/news 200 in 2.1s (next.js: 40ms, proxy.ts: 1513ms, application-code: 511ms)
- GET /news/cims-campus-celebrates-2018-graduation 200 in 944ms (next.js: 179ms, proxy.ts: 399ms, application-code: 367ms)
- GET /admin/news/cmsfxoq9l0009bczc714o6r52 200 in 938ms (next.js: 310ms, proxy.ts: 394ms, application-code: 233ms)
- GET /admin/news 200 in 1873ms (next.js: 379ms, proxy.ts: 305ms, application-code: 1189ms)
- GET /admin/news/cmsfxoq9l0009bczc714o6r52 200 in 1893ms (next.js: 1054ms, proxy.ts: 307ms, application-code: 532ms)
- GET /news/cims-campus-celebrates-2018-graduation 200 in 2.2s (next.js: 819ms, proxy.ts: 307ms, application-code: 1096ms)
- GET /admin/news 200 in 1271ms (next.js: 41ms, proxy.ts: 729ms, application-code: 501ms)
- GET /news/cims-campus-celebrates-2018-graduation 200 in 757ms (next.js: 189ms, proxy.ts: 241ms, application-code: 327ms)
- GET /admin/news/cmsfxoq9l0009bczc714o6r52 200 in 766ms (next.js: 240ms, proxy.ts: 326ms, application-code: 200ms)
- GET /admin/news 200 in 2.1s (next.js: 438ms, proxy.ts: 422ms, application-code: 1211ms)
- GET /admin/news/cmsfxoq9l0009bczc714o6r52 200 in 2.1s (next.js: 933ms, proxy.ts: 423ms, application-code: 758ms)
- GET /news/cims-campus-celebrates-2018-graduation 200 in 2.4s (next.js: 1197ms, proxy.ts: 422ms, application-code: 780ms)
- GET /admin/news 200 in 1256ms (next.js: 29ms, proxy.ts: 756ms, application-code: 471ms)
- GET /admin/news/cmsfxoq9l0009bczc714o6r52 200 in 718ms (next.js: 183ms, proxy.ts: 218ms, application-code: 316ms)
- GET /news/cims-campus-celebrates-2018-graduation 200 in 675ms (next.js: 157ms, proxy.ts: 271ms, application-code: 247ms)
- GET /login?callbackUrl=%2Fadmin%2Fnews%2Fnew 200 in 1622ms (next.js: 572ms, proxy.ts: 5ms, application-code: 1046ms)
- GET /login?callbackUrl=%2Fadmin%2Fevents%2Fnew 200 in 98ms (next.js: 7ms, proxy.ts: 5ms, application-code: 86ms)
- GET /admin/news/cmt33kkay0000wozcj2nkzwg0 200 in 113ms (next.js: 20ms, proxy.ts: 13ms, application-code: 79ms)
- POST /api/uploads/sign 200 in 1941ms (next.js: 1812ms, application-code: 128ms)
- POST /api/uploads/local 200 in 642ms (next.js: 538ms, application-code: 104ms)
- GET /admin/news/cmt33kkay0000wozcj2nkzwg0 200 in 191ms (next.js: 9ms, proxy.ts: 10ms, application-code: 171ms)
- POST /admin/news/cmt33kkay0000wozcj2nkzwg0 303 in 361ms (next.js: 10ms, proxy.ts: 12ms, application-code: 339ms)
-  └─ ƒ updateNewsPost("cmt33kkay0000wozcj2nkzwg0", undefined, {}) in 122ms src/lib/actions/admin/news.actions.ts
- GET /news/cims-campus-celebrates-2018-graduation 200 in 1306ms (next.js: 16ms, proxy.ts: 19ms, application-code: 1271ms)
- GET /news 200 in 432ms (next.js: 236ms, proxy.ts: 14ms, application-code: 183ms)
- GET /news 200 in 117ms (next.js: 10ms, proxy.ts: 14ms, application-code: 94ms)
- GET /events 200 in 951ms (next.js: 685ms, proxy.ts: 13ms, application-code: 253ms)
- GET /events 200 in 116ms (next.js: 11ms, proxy.ts: 11ms, application-code: 94ms)
- GET /contact 200 in 896ms (next.js: 673ms, proxy.ts: 12ms, application-code: 211ms)
- GET / 200 in 1649ms (next.js: 1043ms, proxy.ts: 14ms, application-code: 592ms)
- GET /admin/news 200 in 88ms (next.js: 10ms, proxy.ts: 12ms, application-code: 66ms)
- GET /admin/news/cmsfxoq790008bczcuc79sxw6 200 in 90ms (next.js: 16ms, proxy.ts: 12ms, application-code: 62ms)
- POST /api/uploads/sign 200 in 30ms (next.js: 8ms, application-code: 22ms)
- POST /api/uploads/local 200 in 52ms (next.js: 5ms, application-code: 48ms)
- GET /admin/news/cmsfxoq790008bczcuc79sxw6 200 in 183ms (next.js: 10ms, proxy.ts: 14ms, application-code: 159ms)
- POST /admin/news/cmsfxoq790008bczcuc79sxw6 303 in 325ms (next.js: 16ms, proxy.ts: 13ms, application-code: 297ms)
-  └─ ƒ updateNewsPost("cmsfxoq790008bczcuc79sxw6", undefined, {}) in 88ms src/lib/actions/admin/news.actions.ts
- GET /admin/news 200 in 70ms (next.js: 7ms, proxy.ts: 9ms, application-code: 54ms)
- GET / 200 in 2.7s (next.js: 8ms, proxy.ts: 12ms, application-code: 2.7s)
- GET /news 200 in 97ms (next.js: 9ms, proxy.ts: 11ms, application-code: 77ms)
- GET /news/cims-graduation-ceremony-2026 200 in 72ms (next.js: 17ms, proxy.ts: 11ms, application-code: 44ms)
- GET /team?category=BOARD_OF_GOVERNORS 200 in 554ms (next.js: 324ms, proxy.ts: 17ms, application-code: 213ms)
- GET /contact 200 in 102ms (next.js: 10ms, proxy.ts: 12ms, application-code: 80ms)
- GET /events 200 in 169ms (next.js: 22ms, proxy.ts: 34ms, application-code: 113ms)
- GET /news 200 in 84ms (next.js: 8ms, proxy.ts: 11ms, application-code: 65ms)
- GET /success-stories/sponsored-programmes 200 in 616ms (next.js: 452ms, proxy.ts: 17ms, application-code: 147ms)
- GET /apply 200 in 1027ms (next.js: 810ms, proxy.ts: 11ms, application-code: 206ms)
- GET /about 200 in 493ms (next.js: 275ms, proxy.ts: 13ms, application-code: 205ms)
- GET /admin/campuses 200 in 571ms (next.js: 235ms, proxy.ts: 11ms, application-code: 325ms)
- GET /admin/programmes 200 in 627ms (next.js: 296ms, proxy.ts: 11ms, application-code: 320ms)
- GET /admin/categories 200 in 489ms (next.js: 264ms, proxy.ts: 10ms, application-code: 215ms)
- GET /admin/news 200 in 76ms (next.js: 6ms, proxy.ts: 12ms, application-code: 58ms)
- GET /admin/team 200 in 509ms (next.js: 230ms, proxy.ts: 10ms, application-code: 269ms)
- GET /admin/campuses 200 in 93ms (next.js: 7ms, proxy.ts: 10ms, application-code: 75ms)
- GET /admin/partners 200 in 2.5s (next.js: 2.3s, proxy.ts: 10ms, application-code: 114ms)
- GET /admin/events 200 in 422ms (next.js: 269ms, proxy.ts: 13ms, application-code: 140ms)
- GET /admin/settings 200 in 404ms (next.js: 266ms, proxy.ts: 9ms, application-code: 129ms)
- POST /api/uploads/sign 200 in 49ms (next.js: 18ms, application-code: 30ms)
- POST /api/uploads/local 200 in 69ms (next.js: 10ms, application-code: 58ms)
- POST /admin/settings 200 in 377ms (next.js: 6ms, proxy.ts: 8ms, application-code: 363ms)
-  └─ ƒ updateSiteSettings(undefined, {}) in 213ms src/lib/actions/admin/settings.actions.ts
- GET /about 200 in 519ms (next.js: 7ms, proxy.ts: 14ms, application-code: 498ms)
-[browser] Image with src "http://localhost:3000/uploads/settings/6c4f1d71-1169-4ec2-8a3d-c71044dab04c-19f05f75-0431-4f5d-9772-08d082d1875c.jpg" was detected as the Largest Contentful Paint (LCP). Please add the `loading="eager"` property if this image is above the fold.
-Read more: https://nextjs.org/docs/app/api-reference/components/image#loading
- GET /success-stories 200 in 492ms (next.js: 300ms, proxy.ts: 10ms, application-code: 181ms)
- GET /admin/news 200 in 43ms (next.js: 6ms, proxy.ts: 7ms, application-code: 31ms)
- GET /admin/events 200 in 42ms (next.js: 6ms, proxy.ts: 8ms, application-code: 28ms)
- GET /admin/testimonials 200 in 559ms (next.js: 332ms, proxy.ts: 14ms, application-code: 213ms)
- GET /admin/testimonials/cmsmoslsj0000uwzcjnb245ww 200 in 3.3s (next.js: 3.2s, proxy.ts: 10ms, application-code: 121ms)
-✓ Finished filesystem cache database compaction in 10.9s
-✓ Finished filesystem cache database compaction in 19.9s
- GET /admin/testimonials/cmsmoslsj0000uwzcjnb245ww 200 in 302ms (next.js: 9ms, proxy.ts: 9ms, application-code: 285ms)
- POST /admin/testimonials/cmsmoslsj0000uwzcjnb245ww 303 in 527ms (next.js: 23ms, proxy.ts: 13ms, application-code: 491ms)
-  └─ ƒ updateTestimonial("cmsmoslsj0000uwzcjnb245ww", undefined, {}) in 153ms src/lib/actions/admin/testimonial.actions.ts
- GET /success-stories 200 in 548ms (next.js: 9ms, proxy.ts: 11ms, application-code: 528ms)
- GET /admin/testimonials 200 in 133ms (next.js: 11ms, proxy.ts: 15ms, application-code: 108ms)
- GET /admin/testimonials/cmsmoslsk0001uwzc17v4biu6 200 in 188ms (next.js: 41ms, proxy.ts: 27ms, application-code: 120ms)
- GET /admin/testimonials 200 in 150ms (next.js: 9ms, proxy.ts: 11ms, application-code: 130ms)
- GET /admin/testimonials/cmsy8d9tk000tswzcphemj73r 200 in 112ms (next.js: 18ms, proxy.ts: 11ms, application-code: 84ms)
- GET /admin/testimonials/cmsy8d9tk000tswzcphemj73r 200 in 241ms (next.js: 23ms, proxy.ts: 20ms, application-code: 198ms)
- POST /admin/testimonials/cmsy8d9tk000tswzcphemj73r 303 in 403ms (next.js: 18ms, proxy.ts: 14ms, application-code: 370ms)
-  └─ ƒ updateTestimonial("cmsy8d9tk000tswzcphemj73r", undefined, {}) in 109ms src/lib/actions/admin/testimonial.actions.ts
- GET /success-stories 200 in 531ms (next.js: 7ms, proxy.ts: 16ms, application-code: 508ms)
- GET /admin/testimonials 200 in 82ms (next.js: 7ms, proxy.ts: 10ms, application-code: 66ms)
- GET /admin/testimonials/cmsmoslsj0000uwzcjnb245ww 200 in 91ms (next.js: 15ms, proxy.ts: 11ms, application-code: 66ms)
- GET /admin/testimonials 200 in 93ms (next.js: 6ms, proxy.ts: 12ms, application-code: 75ms)
- GET /admin/testimonials/cmsmoslsk0001uwzc17v4biu6 200 in 100ms (next.js: 15ms, proxy.ts: 11ms, application-code: 74ms)
- GET /admin/testimonials/cmsmoslsk0001uwzc17v4biu6 200 in 200ms (next.js: 25ms, proxy.ts: 12ms, application-code: 163ms)
- POST /admin/testimonials/cmsmoslsk0001uwzc17v4biu6 303 in 294ms (next.js: 17ms, proxy.ts: 14ms, application-code: 264ms)
-  └─ ƒ updateTestimonial("cmsmoslsk0001uwzc17v4biu6", undefined, {}) in 46ms src/lib/actions/admin/testimonial.actions.ts
- GET /success-stories 200 in 433ms (next.js: 8ms, proxy.ts: 11ms, application-code: 414ms)
- GET /admin/testimonials/cmsmoslsk0001uwzc17v4biu6 200 in 165ms (next.js: 11ms, proxy.ts: 10ms, application-code: 143ms)
- POST /admin/testimonials/cmsmoslsk0001uwzc17v4biu6 303 in 288ms (next.js: 14ms, proxy.ts: 12ms, application-code: 262ms)
-  └─ ƒ updateTestimonial("cmsmoslsk0001uwzc17v4biu6", undefined, {}) in 80ms src/lib/actions/admin/testimonial.actions.ts
- GET /admin/testimonials 200 in 84ms (next.js: 6ms, proxy.ts: 10ms, application-code: 68ms)
+ GET /admin/categories 200 in 213ms (next.js: 13ms, proxy.ts: 14ms, application-code: 186ms)
+ GET /admin/programmes 200 in 249ms (next.js: 103ms, proxy.ts: 16ms, application-code: 131ms)
+ GET /admin/programmes/cmswzk0a0000cswzcfiiplvyg 200 in 123ms (next.js: 20ms, proxy.ts: 20ms, application-code: 83ms)
+ GET /programmes?category=faculty-of-business-and-economics 200 in 375ms (next.js: 12ms, proxy.ts: 16ms, application-code: 347ms)
+ GET /programmes?category=faculty-of-science-and-technology 200 in 177ms (next.js: 13ms, proxy.ts: 14ms, application-code: 150ms)
+ GET /programmes?category=faculty-of-business-and-economics 200 in 156ms (next.js: 11ms, proxy.ts: 12ms, application-code: 133ms)
+ GET /programmes?category=faculty-of-education-and-humanities-sciences 200 in 180ms (next.js: 12ms, proxy.ts: 15ms, application-code: 153ms)
+ GET /programmes?category=diploma 200 in 207ms (next.js: 11ms, proxy.ts: 16ms, application-code: 179ms)
+ GET /programmes?category=bachelor-s-degree 200 in 169ms (next.js: 16ms, proxy.ts: 14ms, application-code: 140ms)
+ GET /programmes?category=master-s-degree 200 in 127ms (next.js: 10ms, proxy.ts: 11ms, application-code: 106ms)
+ GET /programmes?category=doctoral-degree 200 in 166ms (next.js: 12ms, proxy.ts: 15ms, application-code: 138ms)
+ GET / 200 in 286ms (next.js: 15ms, proxy.ts: 15ms, application-code: 257ms)
+ GET /about 200 in 272ms (next.js: 140ms, proxy.ts: 17ms, application-code: 114ms)
+ GET /team?category=BOARD_OF_GOVERNORS 200 in 244ms (next.js: 105ms, proxy.ts: 15ms, application-code: 123ms)
+ GET /news 200 in 213ms (next.js: 117ms, proxy.ts: 16ms, application-code: 80ms)
+ GET / 200 in 306ms (next.js: 13ms, proxy.ts: 18ms, application-code: 275ms)
+ GET /events 200 in 219ms (next.js: 123ms, proxy.ts: 16ms, application-code: 79ms)
+ GET / 200 in 266ms (next.js: 11ms, proxy.ts: 13ms, application-code: 242ms)
+✓ Compiled in 3.8s
+ GET /admin/programmes/cmswzk0a0000cswzcfiiplvyg 200 in 928ms (next.js: 472ms, proxy.ts: 138ms, application-code: 318ms)
+ GET / 200 in 942ms (next.js: 138ms, proxy.ts: 138ms, application-code: 666ms)
+ GET /admin/programmes/cmsx38y3b000kswzcat3mrucu 200 in 939ms (next.js: 574ms, proxy.ts: 137ms, application-code: 228ms)
+ GET /programmes?category=faculty-of-education-and-humanities-sciences 200 in 1039ms (next.js: 320ms, proxy.ts: 133ms, application-code: 585ms)
+ GET /programmes?category=computing 200 in 949ms (next.js: 175ms, proxy.ts: 228ms, application-code: 545ms)
+ GET / 200 in 421ms (next.js: 6ms, proxy.ts: 5ms, application-code: 410ms)
+ GET /success-stories 200 in 257ms (next.js: 126ms, proxy.ts: 20ms, application-code: 111ms)
+ GET /events 200 in 358ms (next.js: 204ms, proxy.ts: 21ms, application-code: 132ms)
+ GET /contact 200 in 230ms (next.js: 92ms, proxy.ts: 21ms, application-code: 116ms)
+ GET /events 200 in 101ms (next.js: 12ms, proxy.ts: 15ms, application-code: 75ms)
+ GET /events/ai-coding-for-beginners 200 in 760ms (next.js: 668ms, proxy.ts: 17ms, application-code: 75ms)
+ GET /admin/events 200 in 161ms (next.js: 74ms, proxy.ts: 14ms, application-code: 72ms)
+ GET /admin/events/cmsfxoqb0000abczcz3qbcx5m 200 in 801ms (next.js: 695ms, proxy.ts: 15ms, application-code: 90ms)
+ POST /api/uploads/sign 200 in 434ms (next.js: 375ms, application-code: 59ms)
+ POST /api/uploads/local 200 in 236ms (next.js: 93ms, application-code: 143ms)
+ POST /api/uploads/sign 200 in 26ms (next.js: 7ms, application-code: 19ms)
+ POST /api/uploads/local 200 in 33ms (next.js: 6ms, application-code: 27ms)
+ GET /admin/events/cmsfxoqb0000abczcz3qbcx5m 200 in 146ms (next.js: 13ms, proxy.ts: 11ms, application-code: 122ms)
+ POST /admin/events/cmsfxoqb0000abczcz3qbcx5m 303 in 347ms (next.js: 22ms, proxy.ts: 12ms, application-code: 313ms)
+  └─ ƒ updateEvent("cmsfxoqb0000abczcz3qbcx5m", undefined, {}) in 125ms src/lib/actions/admin/event.actions.ts
+ GET /admin/events/cmsfxoqb0000abczcz3qbcx5m 200 in 512ms (next.js: 22ms, proxy.ts: 12ms, application-code: 477ms)
+ GET /events/ai-coding-for-beginners 200 in 407ms (next.js: 30ms, proxy.ts: 12ms, application-code: 365ms)
+ GET /events 200 in 90ms (next.js: 13ms, proxy.ts: 16ms, application-code: 60ms)
+ GET / 200 in 427ms (next.js: 20ms, proxy.ts: 24ms, application-code: 383ms)
+ GET /programmes 200 in 210ms (next.js: 12ms, proxy.ts: 10ms, application-code: 187ms)
