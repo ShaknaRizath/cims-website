@@ -4,6 +4,7 @@ import { Footer } from "@/components/marketing/footer";
 import { WhatsAppWidget } from "@/components/marketing/whatsapp-widget";
 
 const FALLBACK_SETTINGS = {
+  logoUrl: null,
   contactPhone: "+94 77 359 0505",
   contactEmail: "info@cims.lk",
   lmsUrl: "https://lms.cims.lk",

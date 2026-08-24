@@ -135,7 +135,10 @@ model Event {
   location      String?
   startAt       DateTime
   endAt         DateTime?
-  coverImageUrl String?
+  coverImageUrl String? // full poster/photo, shown uncropped on the event's own page
+  // Deliberately cropped 16:9 version of coverImageUrl for the Events listing card —
+  // falls back to coverImageUrl (browser-cropped via object-cover) when not set.
+  cardImageUrl  String?
   isFeatured    Boolean   @default(false)
   isPublished   Boolean   @default(true)
   createdAt     DateTime  @default(now())
@@ -282,6 +285,9 @@ model ApplicationDocument {
 // app-level create.
 model SiteSettings {
   id                  String   @id @default("singleton")
+  // Site brand mark shown in the header next to "CIMS Campus" — separate from
+  // the favicon/other marketing images, since it's used in site chrome, not content.
+  logoUrl             String?
   heroHeadline        String
   heroSubheadline     String?
   aboutSummary        String?  @db.Text

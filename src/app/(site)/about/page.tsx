@@ -15,7 +15,7 @@ const whyCims = [
   {
     icon: BadgeCheck,
     title: "Recognized Qualifications",
-    description: "Degree and diploma programmes recognized by industry and higher education partners.",
+    description: "UGC-recognized Degree programs and TVEC-approved Diploma programs, designed to meet industry standards and supported by higher education partners.",
   },
   {
     icon: Users,
