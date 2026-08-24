@@ -193,7 +193,7 @@ export default async function Home() {
             Find the Right Path for You
           </h2>
           <p className="mx-auto max-w-2xl text-muted-foreground">
-            Explore our degree and diploma programmes across four schools, each designed with industry input
+            Explore our Degree and Diploma programmes across four schools, each designed with industry input
             and clear career outcomes.
           </p>
         </Reveal>

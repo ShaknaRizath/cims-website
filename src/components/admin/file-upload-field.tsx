@@ -25,6 +25,10 @@ interface FileUploadFieldProps {
   // Skips the crop dialog entirely — for logos and other pre-sized assets
   // where forcing any fixed aspect ratio would cut off part of the image.
   disableCrop?: boolean;
+  // Reports the field's current uploaded URL (or null once removed) — for forms
+  // that need to derive something else from this image (e.g. a separately
+  // cropped thumbnail) without re-reading it back out of the DOM.
+  onUploaded?: (url: string | null) => void;
 }
 
 export function FileUploadField({
@@ -38,6 +42,7 @@ export function FileUploadField({
   errors,
   aspectRatio,
   disableCrop = false,
+  onUploaded,
 }: FileUploadFieldProps) {
   const [file, setFile] = useState<{ url: string; name: string } | null>(
     defaultUrl ? { url: defaultUrl, name: defaultUrl.split("/").pop() ?? defaultUrl } : null,
@@ -58,7 +63,10 @@ export function FileUploadField({
   async function handleFileSelected(selected: File) {
     if (kind !== "image" || disableCrop || skipCrop) {
       const result = await upload(selected, folder);
-      if (result) setFile({ url: result.url, name: result.fileName });
+      if (result) {
+        setFile({ url: result.url, name: result.fileName });
+        onUploaded?.(result.url);
+      }
       return;
     }
 
@@ -72,7 +80,10 @@ export function FileUploadField({
   async function handleCropped(croppedFile: File) {
     setPendingImage(null);
     const result = await upload(croppedFile, folder);
-    if (result) setFile({ url: result.url, name: result.fileName });
+    if (result) {
+      setFile({ url: result.url, name: result.fileName });
+      onUploaded?.(result.url);
+    }
     resetFileInput();
   }
 
@@ -100,7 +111,10 @@ export function FileUploadField({
             type="button"
             variant="ghost"
             size="icon-sm"
-            onClick={() => setFile(null)}
+            onClick={() => {
+              setFile(null);
+              onUploaded?.(null);
+            }}
             aria-label={`Remove ${label}`}
           >
             <X className="size-4" />
