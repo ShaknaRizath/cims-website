@@ -45,6 +45,7 @@ export const primaryNav: NavEntry[] = [
     ],
   },
   { label: "News", href: "/news" },
+  { label: "Events", href: "/events" },
   { label: "Contact", href: "/contact" },
 ];
 

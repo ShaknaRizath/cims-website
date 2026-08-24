@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useState } from "react";
 import type { ActionState } from "@/lib/actions/action-state";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -38,6 +38,10 @@ export function NewsPostForm({
   submitLabel: string;
 }) {
   const [state, formAction, pending] = useActionState<ActionState, FormData>(action, undefined);
+  // Captured once — `new Date()` inline in defaultValue would recompute a
+  // different value on every re-render, which is what triggered Base UI's
+  // "uncontrolled FieldControl default value changed after init" warning.
+  const [now] = useState(() => new Date());
 
   return (
     <form action={formAction}>
@@ -77,7 +81,7 @@ export function NewsPostForm({
               id="publishedAt"
               name="publishedAt"
               type="datetime-local"
-              defaultValue={defaultValues ? toDatetimeLocalValue(defaultValues.publishedAt) : toDatetimeLocalValue(new Date())}
+              defaultValue={toDatetimeLocalValue(defaultValues?.publishedAt ?? now)}
               required
             />
             <FieldError errors={state?.fieldErrors?.publishedAt?.map((message) => ({ message }))} />

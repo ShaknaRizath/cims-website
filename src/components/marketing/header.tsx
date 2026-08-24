@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useState } from "react";
 import { Menu, Phone, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -25,6 +26,7 @@ import {
 import { primaryNav, isNavGroup, buildUtilityNav, type UtilityNavSettings } from "@/components/marketing/nav-config";
 
 export interface HeaderSettings extends UtilityNavSettings {
+  logoUrl?: string | null;
   contactPhone: string;
   contactEmail: string;
 }
@@ -78,7 +80,10 @@ export function Header({
       </div>
 
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-6 py-3">
-        <Link href="/" className="flex items-center gap-2 font-heading text-xl font-bold text-primary">
+        <Link href="/" className="flex items-center gap-2.5 font-heading text-xl font-bold text-primary">
+          {settings.logoUrl && (
+            <Image src={settings.logoUrl} alt="" width={40} height={40} unoptimized className="size-10 object-contain" />
+          )}
           CIMS <span className="font-normal text-foreground">Campus</span>
         </Link>
 
