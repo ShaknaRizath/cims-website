@@ -98,9 +98,9 @@ export function Header({
                 >
                   {entry.label}
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="start" className="w-64">
+                <DropdownMenuContent align="start" className="w-96">
                   {entry.items.map((item) => (
-                    <DropdownMenuItem key={item.label} render={<Link href={item.href} />}>
+                    <DropdownMenuItem key={item.label} render={<Link href={item.href} />} className="whitespace-nowrap">
                       {item.label}
                     </DropdownMenuItem>
                   ))}

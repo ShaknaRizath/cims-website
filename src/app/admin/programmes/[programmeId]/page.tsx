@@ -13,7 +13,10 @@ export default async function ProgrammeDetailPage({
   const { programmeId } = await params;
 
   const [programme, categories] = await Promise.all([
-    prisma.programme.findUnique({ where: { id: programmeId } }),
+    prisma.programme.findUnique({
+      where: { id: programmeId },
+      include: { categories: { select: { id: true } } },
+    }),
     prisma.programmeCategory.findMany({ select: { id: true, name: true }, orderBy: { orderIndex: "asc" } }),
   ]);
   if (!programme) notFound();
@@ -36,7 +39,7 @@ export default async function ProgrammeDetailPage({
         <CardContent>
           <ProgrammeForm
             action={updateProgramme.bind(null, programme.id)}
-            defaultValues={programme}
+            defaultValues={{ ...programme, categoryIds: programme.categories.map((c) => c.id) }}
             submitLabel="Save changes"
             categories={categories}
           />

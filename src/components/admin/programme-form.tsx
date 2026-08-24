@@ -6,14 +6,13 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Field, FieldGroup, FieldLabel, FieldError, FieldDescription } from "@/components/ui/field";
 import { FileUploadField } from "@/components/admin/file-upload-field";
 
 export interface ProgrammeFormDefaults {
   slug: string;
   name: string;
-  categoryId: string;
+  categoryIds: string[];
   level: string | null;
   durationText: string | null;
   summary: string;
@@ -61,30 +60,32 @@ export function ProgrammeForm({
         </Field>
 
         <Field>
-          <FieldLabel htmlFor="categoryId">Category</FieldLabel>
+          <FieldLabel>Categories</FieldLabel>
           {categories.length === 0 ? (
             <FieldDescription>
               No categories yet — <a href="/admin/categories/new" className="underline">create one first</a>.
             </FieldDescription>
           ) : (
-            <Select
-              name="categoryId"
-              defaultValue={defaultValues?.categoryId ?? categories[0].id}
-              items={categories.map((c) => ({ value: c.id, label: c.name }))}
-            >
-              <SelectTrigger id="categoryId" className="w-full">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
+            <>
+              <div className="flex flex-col gap-2">
                 {categories.map((category) => (
-                  <SelectItem key={category.id} value={category.id}>
+                  <label key={category.id} className="flex items-center gap-2 text-sm">
+                    <Checkbox
+                      name="categoryIds"
+                      value={category.id}
+                      defaultChecked={defaultValues?.categoryIds?.includes(category.id)}
+                    />
                     {category.name}
-                  </SelectItem>
+                  </label>
                 ))}
-              </SelectContent>
-            </Select>
+              </div>
+              <FieldDescription>
+                Select every category this programme belongs to — e.g. both its faculty and its level (Diploma,
+                Bachelor&apos;s Degree, etc.) — so it shows up when browsing by either.
+              </FieldDescription>
+            </>
           )}
-          <FieldError errors={state?.fieldErrors?.categoryId?.map((message) => ({ message }))} />
+          <FieldError errors={state?.fieldErrors?.categoryIds?.map((message) => ({ message }))} />
         </Field>
 
         <div className="grid gap-4 sm:grid-cols-2">

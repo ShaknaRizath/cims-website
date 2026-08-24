@@ -8,8 +8,8 @@ import { Empty, EmptyHeader, EmptyMedia, EmptyTitle, EmptyDescription } from "@/
 
 export default async function AdminProgrammesPage() {
   const programmes = await prisma.programme.findMany({
-    orderBy: [{ category: { orderIndex: "asc" } }, { orderIndex: "asc" }],
-    include: { category: { select: { name: true } } },
+    orderBy: { orderIndex: "asc" },
+    include: { categories: { select: { name: true }, orderBy: { orderIndex: "asc" } } },
   });
 
   return (
@@ -50,7 +50,7 @@ export default async function AdminProgrammesPage() {
                     {programme.name}
                   </Link>
                 </TableCell>
-                <TableCell>{programme.category.name}</TableCell>
+                <TableCell>{programme.categories.map((c) => c.name).join(", ")}</TableCell>
                 <TableCell>{programme.level ?? "—"}</TableCell>
                 <TableCell>
                   <Badge variant={programme.isPublished ? "secondary" : "outline"}>
