@@ -35,7 +35,7 @@ export default async function ProgrammeDetailPage({
   const programme = await prisma.programme.findUnique({
     where: { slug },
     include: {
-      category: { select: { name: true } },
+      categories: { select: { name: true }, orderBy: { orderIndex: "asc" } },
       testimonials: {
         where: { isPublished: true },
         orderBy: { orderIndex: "asc" },
@@ -63,7 +63,7 @@ export default async function ProgrammeDetailPage({
         <div className="relative mx-auto flex max-w-5xl flex-col gap-4 px-6 py-20">
           <Reveal>
             <Badge variant="secondary" className="w-fit">
-              {programme.category.name}
+              {programme.categories[0]?.name}
             </Badge>
           </Reveal>
           <Reveal delayMs={100}>

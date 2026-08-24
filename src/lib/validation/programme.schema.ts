@@ -4,7 +4,7 @@ import { checkboxField, slugField, optionalTextField, optionalUrlField, bulletLi
 export const programmeSchema = z.object({
   slug: slugField,
   name: z.string().min(2, { error: "Name must be at least 2 characters." }),
-  categoryId: z.string().min(1, { error: "Select a category." }),
+  categoryIds: z.array(z.string()).min(1, { error: "Select at least one category." }),
   level: optionalTextField,
   durationText: optionalTextField,
   summary: z.string().min(10, { error: "Summary must be at least 10 characters." }),

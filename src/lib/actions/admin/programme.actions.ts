@@ -12,14 +12,23 @@ import type { ActionState } from "@/lib/actions/action-state";
 export async function createProgramme(_prev: ActionState, formData: FormData): Promise<ActionState> {
   await requireAdmin();
 
-  const parsed = programmeSchema.safeParse(Object.fromEntries(formData));
+  // formData.getAll() is needed for the categoryIds checkbox group — Object.fromEntries()
+  // only keeps the last value for a repeated key, collapsing a multi-select to one.
+  const parsed = programmeSchema.safeParse({
+    ...Object.fromEntries(formData),
+    categoryIds: formData.getAll("categoryIds"),
+  });
   if (!parsed.success) {
     return { fieldErrors: z.flattenError(parsed.error).fieldErrors };
   }
 
+  const { categoryIds, ...data } = parsed.data;
+
   let programmeId: string;
   try {
-    const programme = await prisma.programme.create({ data: parsed.data });
+    const programme = await prisma.programme.create({
+      data: { ...data, categories: { connect: categoryIds.map((id) => ({ id })) } },
+    });
     programmeId = programme.id;
   } catch (error) {
     if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === "P2002") {
@@ -39,13 +48,21 @@ export async function updateProgramme(
 ): Promise<ActionState> {
   await requireAdmin();
 
-  const parsed = programmeSchema.safeParse(Object.fromEntries(formData));
+  const parsed = programmeSchema.safeParse({
+    ...Object.fromEntries(formData),
+    categoryIds: formData.getAll("categoryIds"),
+  });
   if (!parsed.success) {
     return { fieldErrors: z.flattenError(parsed.error).fieldErrors };
   }
 
+  const { categoryIds, ...data } = parsed.data;
+
   try {
-    await prisma.programme.update({ where: { id: programmeId }, data: parsed.data });
+    await prisma.programme.update({
+      where: { id: programmeId },
+      data: { ...data, categories: { set: categoryIds.map((id) => ({ id })) } },
+    });
   } catch (error) {
     if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === "P2002") {
       return { error: "A programme with this slug already exists." };

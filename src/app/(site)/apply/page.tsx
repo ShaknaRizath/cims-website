@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 export default async function ApplyPage() {
   const programmes = await prisma.programme.findMany({
     where: { isPublished: true },
-    orderBy: [{ category: { orderIndex: "asc" } }, { orderIndex: "asc" }],
+    orderBy: { orderIndex: "asc" },
     select: { id: true, name: true },
   });
 
