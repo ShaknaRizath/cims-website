@@ -36,7 +36,7 @@ export default async function ProgrammesPage({
     <>
       <PageHero
         title="Find the Right Path for You"
-        description="Explore our Degree and Diploma programmes across four schools, each designed with industry input and clear career outcomes."
+        description="Explore our Degree and Diploma programmes across three Faculties, each designed with industry input and clear career outcomes."
       />
       <div className="mx-auto max-w-7xl px-6 py-16">
         <div className="flex flex-wrap justify-center gap-2">
