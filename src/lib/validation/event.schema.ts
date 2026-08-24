@@ -13,6 +13,7 @@ export const eventSchema = z
       .optional()
       .transform((value) => (value ? new Date(value) : undefined)),
     coverImageUrl: optionalUrlField,
+    cardImageUrl: optionalUrlField,
     isFeatured: checkboxField,
     isPublished: checkboxField,
   })

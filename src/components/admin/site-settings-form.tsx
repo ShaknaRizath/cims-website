@@ -13,6 +13,7 @@ import { Field, FieldGroup, FieldLabel, FieldError } from "@/components/ui/field
 import { FileUploadField } from "@/components/admin/file-upload-field";
 
 export interface SiteSettingsFormDefaults {
+  logoUrl: string | null;
   heroHeadline: string;
   heroSubheadline: string | null;
   aboutSummary: string | null;
@@ -52,6 +53,24 @@ export function SiteSettingsForm({ defaultValues }: { defaultValues?: SiteSettin
 
   return (
     <form action={formAction} className="flex flex-col gap-6">
+      <Card>
+        <CardHeader>
+          <CardTitle>Branding</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <FieldGroup>
+            <FileUploadField
+              name="logoUrl"
+              label="Site logo"
+              description="Shown in the header next to the CIMS Campus name. Uploaded as-is, uncropped — this works best with a pre-sized square or circular logo."
+              folder="settings"
+              defaultUrl={defaultValues?.logoUrl}
+              disableCrop
+            />
+          </FieldGroup>
+        </CardContent>
+      </Card>
+
       <Card>
         <CardHeader>
           <CardTitle>Hero</CardTitle>

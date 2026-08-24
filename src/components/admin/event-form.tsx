@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useState } from "react";
 import type { ActionState } from "@/lib/actions/action-state";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -8,6 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Field, FieldGroup, FieldLabel, FieldError, FieldDescription } from "@/components/ui/field";
 import { FileUploadField } from "@/components/admin/file-upload-field";
+import { EventCardImageField } from "@/components/admin/event-card-image-field";
 import { toDatetimeLocalValue } from "@/lib/format/datetime-local";
 
 export interface EventFormDefaults {
@@ -18,6 +19,7 @@ export interface EventFormDefaults {
   startAt: Date;
   endAt: Date | null;
   coverImageUrl: string | null;
+  cardImageUrl: string | null;
   isFeatured: boolean;
   isPublished: boolean;
 }
@@ -32,6 +34,9 @@ export function EventForm({
   submitLabel: string;
 }) {
   const [state, formAction, pending] = useActionState<ActionState, FormData>(action, undefined);
+  const [coverImageUrl, setCoverImageUrl] = useState<string | null>(defaultValues?.coverImageUrl ?? null);
+  // Captured once — see news-post-form.tsx for why `new Date()` can't be computed inline here.
+  const [now] = useState(() => new Date());
 
   return (
     <form action={formAction}>
@@ -61,7 +66,7 @@ export function EventForm({
               id="startAt"
               name="startAt"
               type="datetime-local"
-              defaultValue={defaultValues ? toDatetimeLocalValue(defaultValues.startAt) : toDatetimeLocalValue(new Date())}
+              defaultValue={toDatetimeLocalValue(defaultValues?.startAt ?? now)}
               required
             />
             <FieldError errors={state?.fieldErrors?.startAt?.map((message) => ({ message }))} />
@@ -88,7 +93,10 @@ export function EventForm({
           label="Cover image"
           folder="events"
           defaultUrl={defaultValues?.coverImageUrl}
+          onUploaded={setCoverImageUrl}
         />
+
+        <EventCardImageField posterUrl={coverImageUrl} defaultUrl={defaultValues?.cardImageUrl} />
 
         <div className="flex gap-6">
           <label className="flex items-center gap-2 text-sm">
