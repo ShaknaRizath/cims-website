@@ -6,291 +6,881 @@
 - Local:         http://localhost:3000
 - Network:       http://192.168.174.1:3000
 - Environments: .env
-✓ Ready in 1162ms
+✓ Ready in 713ms
 - Experiments (use with caution):
   · cpus: 1
 
-[browser] Uncaught PrismaClientValidationError: 
-Invalid `__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2f$prisma$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["prisma"].programme.findUnique()` invocation in
-C:\Users\DELL\Documents\GitHub\cims-website\.next\dev\server\chunks\ssr\[root-of-the-server]__0xntqfm._.js:248:152
+ GET / 200 in 719ms (next.js: 49ms, proxy.ts: 269ms, application-code: 401ms)
+ GET / 200 in 3.8s (next.js: 815ms, proxy.ts: 99ms, application-code: 2.8s)
+ GET /programmes?category=faculty-of-education-and-humanities-sciences 200 in 3.8s (next.js: 2.4s, proxy.ts: 104ms, application-code: 1259ms)
+ GET / 200 in 788ms (next.js: 11ms, proxy.ts: 261ms, application-code: 516ms)
+ GET /programmes?category=computing 200 in 4.2s (next.js: 2.4s, proxy.ts: 388ms, application-code: 1409ms)
+ GET /admin/events/cmsfxoqb0000abczcz3qbcx5m 200 in 4.4s (next.js: 3.9s, proxy.ts: 104ms, application-code: 406ms)
+  Reload env: .env
+ GET /admin/events/cmsfxoqb0000abczcz3qbcx5m 200 in 552ms (next.js: 276ms, proxy.ts: 56ms, application-code: 220ms)
+ GET / 200 in 585ms (next.js: 67ms, proxy.ts: 63ms, application-code: 454ms)
+ GET /programmes?category=computing 200 in 591ms (next.js: 119ms, proxy.ts: 58ms, application-code: 414ms)
+ GET /programmes?category=faculty-of-education-and-humanities-sciences 200 in 704ms (next.js: 161ms, proxy.ts: 57ms, application-code: 486ms)
+ GET / 200 in 501ms (next.js: 19ms, proxy.ts: 254ms, application-code: 227ms)
+  Reload env: .env
+ GET /admin/events/cmsfxoqb0000abczcz3qbcx5m 200 in 721ms (next.js: 359ms, proxy.ts: 57ms, application-code: 306ms)
+ GET / 200 in 743ms (next.js: 65ms, proxy.ts: 55ms, application-code: 623ms)
+ GET /programmes?category=faculty-of-education-and-humanities-sciences 200 in 742ms (next.js: 210ms, proxy.ts: 53ms, application-code: 480ms)
+ GET /programmes?category=computing 200 in 755ms (next.js: 157ms, proxy.ts: 53ms, application-code: 544ms)
+ GET / 200 in 543ms (next.js: 17ms, proxy.ts: 329ms, application-code: 197ms)
+[browser] A tree hydrated but some attributes of the server rendered HTML didn't match the client properties. This won't be patched up. This can happen if a SSR-ed Client Component used:
 
-  245 async function ProgrammeDetailPage({ params }) {
-  246     const { programmeId } = await params;
-  247     const [programme, categories] = await Promise.all([
-→ 248         __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2f$prisma$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["prisma"].programme.findUnique({
-                where: {
-                  id: "cmsx38y3b000kswzcat3mrucu"
-                },
-                include: {
-                  categories: {
-                  ~~~~~~~~~~
-                    select: {
-                      id: true
-                    }
-                  },
-              ?   category?: true,
-              ?   testimonials?: true,
-              ?   applications?: true
-                }
-              })
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
 
-Unknown field `categories` for include statement on model `Programme`. Available options are marked with ?.
-    at <unknown> (C:\Users\DELL\Documents\GitHub\cims-website\.next\dev\server\chunks\ssr\[root-of-the-server]__0xntqfm._.js:248:152)
-    at  ProgrammeDetailPage (about://React/Server/C:%5CUsers%5CDELL%5CDocuments%5CGitHub%5Ccims-website%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0xntqfm._.js?0:247:37)
- GET / 200 in 3.5s (next.js: 803ms, proxy.ts: 858ms, application-code: 1850ms)
-[browser] Uncaught PrismaClientValidationError: 
-Invalid `__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2f$prisma$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["prisma"].programme.findMany()` invocation in
-C:\Users\DELL\Documents\GitHub\cims-website\.next\dev\server\chunks\ssr\[root-of-the-server]__210kde6._.js:608:173
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
 
-  605     }
-  606 });
-  607 const activeCategory = categories.find((c)=>c.slug === category);
-→ 608 const programmes = await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2f$prisma$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["prisma"].programme.findMany({
-        where: {
-          isPublished: true,
-          categories: {
-          ~~~~~~~~~~
-            some: {
-              id: "cmswvgjgm0002swzcqf9wde4l"
-            }
-          },
-      ?   AND?: ProgrammeWhereInput | ProgrammeWhereInput[],
-      ?   OR?: ProgrammeWhereInput[],
-      ?   NOT?: ProgrammeWhereInput | ProgrammeWhereInput[],
-      ?   id?: StringFilter | String,
-      ?   slug?: StringFilter | String,
-      ?   name?: StringFilter | String,
-      ?   categoryId?: StringFilter | String,
-      ?   level?: StringNullableFilter | String | Null,
-      ?   durationText?: StringNullableFilter | String | Null,
-      ?   summary?: StringFilter | String,
-      ?   description?: StringFilter | String,
-      ?   entryRequirements?: StringNullableFilter | String | Null,
-      ?   careerOutcomes?: StringNullableFilter | String | Null,
-      ?   highlights?: JsonNullableFilter,
-      ?   heroImageUrl?: StringNullableFilter | String | Null,
-      ?   brochureFileUrl?: StringNullableFilter | String | Null,
-      ?   isFeatured?: BoolFilter | Boolean,
-      ?   orderIndex?: IntFilter | Int,
-      ?   createdAt?: DateTimeFilter | DateTime,
-      ?   updatedAt?: DateTimeFilter | DateTime,
-      ?   category?: ProgrammeCategoryScalarRelationFilter | ProgrammeCategoryWhereInput,
-      ?   testimonials?: TestimonialListRelationFilter,
-      ?   applications?: ApplicationListRelationFilter
-        },
-        orderBy: {
-          orderIndex: "asc"
-        },
-        include: {
-          categories: {
-            select: {
-              name: true
-            },
-            orderBy: {
-              orderIndex: "asc"
-            }
-          }
-        }
-      })
+https://react.dev/link/hydration-mismatch
 
-Unknown argument `categories`. Did you mean `categoryId`? Available options are marked with ?.
-    at <unknown> (C:\Users\DELL\Documents\GitHub\cims-website\.next\dev\server\chunks\ssr\[root-of-the-server]__210kde6._.js:608:173)
-    at  ProgrammesPage (about://React/Server/C:%5CUsers%5CDELL%5CDocuments%5CGitHub%5Ccims-website%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__210kde6._.js?0:608:24)
-[browser] Uncaught PrismaClientValidationError: 
-Invalid `__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2f$prisma$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["prisma"].programme.findMany()` invocation in
-C:\Users\DELL\Documents\GitHub\cims-website\.next\dev\server\chunks\ssr\[root-of-the-server]__210kde6._.js:608:173
-
-  605     }
-  606 });
-  607 const activeCategory = categories.find((c)=>c.slug === category);
-→ 608 const programmes = await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2f$prisma$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["prisma"].programme.findMany({
-        where: {
-          isPublished: true
-        },
-        orderBy: {
-          orderIndex: "asc"
-        },
-        include: {
-          categories: {
-          ~~~~~~~~~~
-            select: {
-              name: true
-            },
-            orderBy: {
-              orderIndex: "asc"
-            }
-          },
-      ?   category?: true,
-      ?   testimonials?: true,
-      ?   applications?: true
-        }
-      })
-
-Unknown field `categories` for include statement on model `Programme`. Available options are marked with ?.
-    at <unknown> (C:\Users\DELL\Documents\GitHub\cims-website\.next\dev\server\chunks\ssr\[root-of-the-server]__210kde6._.js:608:173)
-    at  ProgrammesPage (about://React/Server/C:%5CUsers%5CDELL%5CDocuments%5CGitHub%5Ccims-website%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__210kde6._.js?0:608:24)
-[browser] Uncaught PrismaClientValidationError: 
-Invalid `__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2f$prisma$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["prisma"].programme.findMany()` invocation in
-C:\Users\DELL\Documents\GitHub\cims-website\.next\dev\server\chunks\ssr\[root-of-the-server]__210kde6._.js:608:173
-
-  605     }
-  606 });
-  607 const activeCategory = categories.find((c)=>c.slug === category);
-→ 608 const programmes = await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2f$prisma$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["prisma"].programme.findMany({
-        where: {
-          isPublished: true,
-          categories: {
-          ~~~~~~~~~~
-            some: {
-              id: "cmswvcyqg0001swzc7qvtipho"
-            }
-          },
-      ?   AND?: ProgrammeWhereInput | ProgrammeWhereInput[],
-      ?   OR?: ProgrammeWhereInput[],
-      ?   NOT?: ProgrammeWhereInput | ProgrammeWhereInput[],
-      ?   id?: StringFilter | String,
-      ?   slug?: StringFilter | String,
-      ?   name?: StringFilter | String,
-      ?   categoryId?: StringFilter | String,
-      ?   level?: StringNullableFilter | String | Null,
-      ?   durationText?: StringNullableFilter | String | Null,
-      ?   summary?: StringFilter | String,
-      ?   description?: StringFilter | String,
-      ?   entryRequirements?: StringNullableFilter | String | Null,
-      ?   careerOutcomes?: StringNullableFilter | String | Null,
-      ?   highlights?: JsonNullableFilter,
-      ?   heroImageUrl?: StringNullableFilter | String | Null,
-      ?   brochureFileUrl?: StringNullableFilter | String | Null,
-      ?   isFeatured?: BoolFilter | Boolean,
-      ?   orderIndex?: IntFilter | Int,
-      ?   createdAt?: DateTimeFilter | DateTime,
-      ?   updatedAt?: DateTimeFilter | DateTime,
-      ?   category?: ProgrammeCategoryScalarRelationFilter | ProgrammeCategoryWhereInput,
-      ?   testimonials?: TestimonialListRelationFilter,
-      ?   applications?: ApplicationListRelationFilter
-        },
-        orderBy: {
-          orderIndex: "asc"
-        },
-        include: {
-          categories: {
-            select: {
-              name: true
-            },
-            orderBy: {
-              orderIndex: "asc"
-            }
-          }
-        }
-      })
-
-Unknown argument `categories`. Did you mean `categoryId`? Available options are marked with ?.
-    at <unknown> (C:\Users\DELL\Documents\GitHub\cims-website\.next\dev\server\chunks\ssr\[root-of-the-server]__210kde6._.js:608:173)
-    at  ProgrammesPage (about://React/Server/C:%5CUsers%5CDELL%5CDocuments%5CGitHub%5Ccims-website%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__210kde6._.js?0:608:24)
-[browser] Uncaught PrismaClientKnownRequestError: 
-Invalid `__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2f$prisma$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["prisma"].programmeCategory.findMany()` invocation in
-C:\Users\DELL\Documents\GitHub\cims-website\.next\dev\server\chunks\ssr\[root-of-the-server]__1qw2y14._.js:418:181
-
-  415 ;
-  416 ;
-  417 async function AdminCategoriesPage() {
-→ 418     const categories = await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2f$prisma$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["prisma"].programmeCategory.findMany(
-The column `Programme.categoryId` does not exist in the current database.
-    at <unknown> (C:\Users\DELL\Documents\GitHub\cims-website\.next\dev\server\chunks\ssr\[root-of-the-server]__1qw2y14._.js:418:181)
-    at  AdminCategoriesPage (about://React/Server/C:%5CUsers%5CDELL%5CDocuments%5CGitHub%5Ccims-website%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__1qw2y14._.js?0:418:24)
- GET / 200 in 2.8s (next.js: 26ms, proxy.ts: 32ms, application-code: 2.7s)
- GET /admin/categories 200 in 5.5s (next.js: 1965ms, proxy.ts: 175ms, application-code: 3.4s)
- GET /admin/programmes/cmsx38y3b000kswzcat3mrucu 200 in 5.6s (next.js: 4.6s, proxy.ts: 180ms, application-code: 836ms)
- GET /programmes?category=faculty-of-business-and-economics 200 in 5.7s (next.js: 1715ms, proxy.ts: 184ms, application-code: 3.8s)
- GET /programmes?category=faculty-of-education-and-humanities-sciences 200 in 6.6s (next.js: 1596ms, proxy.ts: 995ms, application-code: 4.0s)
- GET /programmes?category=computing 200 in 6.7s (next.js: 1701ms, proxy.ts: 992ms, application-code: 4.0s)
- GET /programmes 200 in 212ms (next.js: 10ms, proxy.ts: 6ms, application-code: 197ms)
- GET /programmes?category=diploma 200 in 146ms (next.js: 7ms, proxy.ts: 4ms, application-code: 135ms)
- GET /programmes?category=master-s-degree 200 in 148ms (next.js: 6ms, proxy.ts: 4ms, application-code: 138ms)
- GET /programmes?category=faculty-of-education-and-humanities-sciences 200 in 132ms (next.js: 6ms, proxy.ts: 4ms, application-code: 122ms)
- GET /programmes?category=master-s-degree 200 in 130ms (next.js: 7ms, proxy.ts: 3ms, application-code: 120ms)
- GET /programmes?category=faculty-of-education-and-humanities-sciences 200 in 147ms (next.js: 7ms, proxy.ts: 5ms, application-code: 134ms)
- GET /programmes?category=diploma 200 in 135ms (next.js: 8ms, proxy.ts: 3ms, application-code: 125ms)
- GET / 200 in 222ms (next.js: 8ms, proxy.ts: 5ms, application-code: 209ms)
- GET /apply 200 in 298ms (next.js: 81ms, proxy.ts: 4ms, application-code: 213ms)
- GET / 200 in 236ms (next.js: 5ms, proxy.ts: 4ms, application-code: 227ms)
- GET /api/auth/csrf 200 in 1341ms (next.js: 1317ms, application-code: 24ms)
- POST /api/auth/callback/credentials 302 in 117ms (next.js: 13ms, application-code: 104ms)
- GET /admin 200 in 210ms (next.js: 61ms, proxy.ts: 12ms, application-code: 137ms)
- GET /admin/programmes/cmsx38y3b000kswzcat3mrucu 200 in 121ms (next.js: 15ms, proxy.ts: 8ms, application-code: 98ms)
- GET /api/auth/csrf 200 in 20ms (next.js: 11ms, application-code: 9ms)
- POST /api/auth/callback/credentials 302 in 83ms (next.js: 3ms, application-code: 80ms)
- GET /admin 200 in 118ms (next.js: 8ms, proxy.ts: 8ms, application-code: 102ms)
- GET /admin/programmes/cmsx38y3b000kswzcat3mrucu 200 in 139ms (next.js: 14ms, proxy.ts: 10ms, application-code: 115ms)
-[browser] Image with src "http://localhost:3000/uploads/programmes/56e84319-e552-417f-a958-16a798e0ba12-diploma_bussiness_.jpg" was detected as the Largest Contentful Paint (LCP). Please add the `loading="eager"` property if this image is above the fold.
+  ...
+    <SiteLayout>
+      <a>
+      <Header settings={{id:"singleton", ...}} categories={[...]}>
+        <header className="sticky top...">
+          <div>
+          <div className="mx-auto fl...">
+            <LinkComponent>
+            <nav className="hidden ite...">
+              <Button>
+              <Button>
+              <DropdownMenu>
+                <MenuRoot data-slot="dropdown-menu">
+                  <FloatingTree externalTree={{nodesRef:{...}, ...}}>
+                    <DropdownMenuTrigger render={<Button>}>
+                      <MenuTrigger data-slot="dropdown-m..." render={<Button>}>
+                        <Button variant="ghost" className="text-sm fo..." onClick={function} onMouseDown={function} ...>
+                          <Button data-slot="dropdown-m..." className={"group/bu..."} onClick={function} ...>
+                            <button
+                              type="button"
+                              onClick={function}
+                              onMouseDown={function}
+                              onKeyDown={function}
+                              onKeyUp={function}
+                              onPointerDown={function}
+                              tabIndex={0}
+                              disabled={false}
+                              data-slot="dropdown-menu-trigger"
+                              aria-haspopup="menu"
+                              aria-controls={undefined}
+                              id="base-ui-_R_6eikndlb_"
+                              ref={function}
+                              className={"group/button inline-flex shrink-0 items-center justify-center rounded-lg bo..."}
+-                             fdprocessedid="8fl9hc"
+                            >
++                             Programmes
+                    ...
+              <DropdownMenu>
+                <MenuRoot data-slot="dropdown-menu">
+                  <FloatingTree externalTree={{nodesRef:{...}, ...}}>
+                    <DropdownMenuTrigger render={<Button>}>
+                      <MenuTrigger data-slot="dropdown-m..." render={<Button>}>
+                        <Button variant="ghost" className="text-sm fo..." onClick={function} onMouseDown={function} ...>
+                          <Button data-slot="dropdown-m..." className={"group/bu..."} onClick={function} ...>
+                            <button
+                              type="button"
+                              onClick={function}
+                              onMouseDown={function}
+                              onKeyDown={function}
+                              onKeyUp={function}
+                              onPointerDown={function}
+                              tabIndex={0}
+                              disabled={false}
+                              data-slot="dropdown-menu-trigger"
+                              aria-haspopup="menu"
+                              aria-controls={undefined}
+                              id="base-ui-_R_6iikndlb_"
+                              ref={function}
+                              className={"group/button inline-flex shrink-0 items-center justify-center rounded-lg bo..."}
+-                             fdprocessedid="ejdp9"
+                            >
++                             Success Stories
+                    ...
+              <DropdownMenu>
+                <MenuRoot data-slot="dropdown-menu">
+                  <FloatingTree externalTree={{nodesRef:{...}, ...}}>
+                    <DropdownMenuTrigger render={<Button>}>
+                      <MenuTrigger data-slot="dropdown-m..." render={<Button>}>
+                        <Button variant="ghost" className="text-sm fo..." onClick={function} onMouseDown={function} ...>
+                          <Button data-slot="dropdown-m..." className={"group/bu..."} onClick={function} ...>
+                            <button
+                              type="button"
+                              onClick={function}
+                              onMouseDown={function}
+                              onKeyDown={function}
+                              onKeyUp={function}
+                              onPointerDown={function}
+                              tabIndex={0}
+                              disabled={false}
+                              data-slot="dropdown-menu-trigger"
+                              aria-haspopup="menu"
+                              aria-controls={undefined}
+                              id="base-ui-_R_6mikndlb_"
+                              ref={function}
+                              className={"group/button inline-flex shrink-0 items-center justify-center rounded-lg bo..."}
+-                             fdprocessedid="dhs26j"
+                            >
++                             Team
+                    ...
+              ...
+            ...
+          ...
+      ...
+        <HTTPAccessFallbackBoundary notFound={<SegmentViewNode>} forbidden={undefined} unauthorized={undefined}>
+          <HTTPAccessFallbackErrorBoundary pathname="/" notFound={<SegmentViewNode>} forbidden={undefined} ...>
+            <RedirectBoundary>
+              <RedirectErrorBoundary router={{...}}>
+                <InnerLayoutRouter url="/" tree={[...]} params={{}} cacheNode={{rsc:{...}, ...}} segmentPath={[...]} ...>
+                  <SegmentViewNode type="page" pagePath="(site)/pag...">
+                    <SegmentTrieNode>
+                    <Home>
+                      <section className="relative o...">
+                        <HeroSlider images={[...]}>
+                          <img>
+                          <ImagePreload>
+                          <img>
+                          <img>
+                          <div className="absolute b...">
+                            <button
+                              type="button"
+                              aria-label="Show slide 1"
+                              aria-current={true}
+                              onClick={function onClick}
+                              className="group flex items-center justify-center rounded-full p-1.5 focus-visible:outli..."
+-                             fdprocessedid="2rf73"
+                            >
+                            <button
+                              type="button"
+                              aria-label="Show slide 2"
+                              aria-current={false}
+                              onClick={function onClick}
+                              className="group flex items-center justify-center rounded-full p-1.5 focus-visible:outli..."
+-                             fdprocessedid="r1mx3n"
+                            >
+                            <button
+                              type="button"
+                              aria-label="Show slide 3"
+                              aria-current={false}
+                              onClick={function onClick}
+                              className="group flex items-center justify-center rounded-full p-1.5 focus-visible:outli..."
+-                             fdprocessedid="7lxii"
+                            >
+                        ...
+                        ...
+                      <section>
+                      <section>
+                      <section>
+                      ...
+                        <Reveal className="mt-28">
+                          <div ref={{current:null}} className="transition..." style={{...}}>
+                            <TestimonialCarousel testimonials={[...]}>
+                              <div className="relative" onMouseEnter={function onMouseEnter} ...>
+                                <Carousel>
+                                <div className="mt-8 flex ..." role="tablist" aria-label="Testimonials">
+                                  <button
+                                    type="button"
+                                    role="tab"
+                                    aria-selected={false}
+                                    aria-label="Show testimonial from Mohamed Samoon Sithy Rizana"
+                                    onClick={function onClick}
+                                    className="group flex items-center justify-center rounded-full p-2.5 focus-visible..."
+-                                   fdprocessedid="mjery2s"
+                                  >
+                                  <button
+                                    type="button"
+                                    role="tab"
+                                    aria-selected={true}
+                                    aria-label="Show testimonial from Prisca Pedurupilla"
+                                    onClick={function onClick}
+                                    className="group flex items-center justify-center rounded-full p-2.5 focus-visible..."
+-                                   fdprocessedid="v1rv7v"
+                                  >
+                                  <button
+                                    type="button"
+                                    role="tab"
+                                    aria-selected={false}
+                                    aria-label="Show testimonial from Shehan Danushka Kalansooriya"
+                                    onClick={function onClick}
+                                    className="group flex items-center justify-center rounded-full p-2.5 focus-visible..."
+-                                   fdprocessedid="wi47n"
+                                  >
+                                  <button
+                                    type="button"
+                                    role="tab"
+                                    aria-selected={false}
+                                    aria-label="Show testimonial from Abdul Careem Mohamed Samil"
+                                    onClick={function onClick}
+                                    className="group flex items-center justify-center rounded-full p-2.5 focus-visible..."
+-                                   fdprocessedid="uu42suj"
+                                  >
+                                  <button
+                                    type="button"
+                                    role="tab"
+                                    aria-selected={false}
+                                    aria-label="Show testimonial from P A Sudarshana Perera"
+                                    onClick={function onClick}
+                                    className="group flex items-center justify-center rounded-full p-2.5 focus-visible..."
+-                                   fdprocessedid="0rl2k"
+                                  >
+                                  <button
+                                    type="button"
+                                    role="tab"
+                                    aria-selected={false}
+                                    aria-label="Show testimonial from Subair Mohamed Hafrath"
+                                    onClick={function onClick}
+                                    className="group flex items-center justify-center rounded-full p-2.5 focus-visible..."
+-                                   fdprocessedid="ydqcqk"
+                                  >
+                                ...
+                      <section className="mx-auto w-...">
+                        <Reveal>
+                        <Reveal className="mt-12">
+                          <div ref={{current:null}} className="transition..." style={{...}}>
+                            <PartnerUniversityCarousel partners={[...]}>
+                              <div>
+                                <Carousel>
+                                <div className="mt-8 flex ..." role="tablist" aria-label="Partner un...">
+                                  <button
+                                    type="button"
+                                    role="tab"
+                                    aria-selected={true}
+                                    aria-label="Show City University Malaysia"
+                                    onClick={function onClick}
+                                    className="group flex items-center justify-center rounded-full p-2.5 focus-visible..."
+-                                   fdprocessedid="he80mc"
+                                  >
+                                  <button
+                                    type="button"
+                                    role="tab"
+                                    aria-selected={false}
+                                    aria-label="Show INTI International University"
+                                    onClick={function onClick}
+                                    className="group flex items-center justify-center rounded-full p-2.5 focus-visible..."
+-                                   fdprocessedid="921dt"
+                                  >
+                      ...
+                        <Reveal delayMs={100} className="h-full rou...">
+                          <div ref={{current:null}} className="transition..." style={{...}}>
+                            <EventsCalendar events={[...]}>
+                              <div className="flex h-ful...">
+                                <div className="flex items...">
+                                  <button
+                                    type="button"
+                                    aria-label="Previous month"
+                                    onClick={function onClick}
+                                    className="text-muted-foreground transition hover:text-primary"
+-                                   fdprocessedid="jzz59v"
+                                  >
+                                  <span>
+                                  <button
+                                    type="button"
+                                    aria-label="Next month"
+                                    onClick={function onClick}
+                                    className="text-muted-foreground transition hover:text-primary"
+-                                   fdprocessedid="1jrb7"
+                                  >
+                                <div>
+                                <div className="grid flex-...">
+                                  <button>
+                                  <button>
+                                  <button>
+                                  <button>
+                                  <button>
+                                  <button>
+                                  <button>
+                                  <button>
+                                  <button>
+                                  <button>
+                                  <button>
+                                  <button>
+                                  <button>
+                                  <button>
+                                  <button>
+                                  <button>
+                                  <button>
+                                  <button>
+                                  <button>
+                                  <button>
+                                  <button>
+                                  <button>
+                                  <button>
+                                  <button>
+                                  <button>
+                                  <button>
+                                  <button>
+                                  <button>
+                                  <button>
+                                  <button>
+                                  <button>
+                                  <button>
+                                  <button>
+                                  <button>
+                                  <button>
+                                  <button>
+                                  <button>
+                                  <button>
+                                  <button>
+                                  <button>
+                                  <button
+                                    type="button"
+                                    disabled={false}
+                                    onClick={function onClick}
+                                    className="flex flex-col items-start gap-1 border-b p-2 text-left text-sm sm:p-3 c..."
+-                                   fdprocessedid="2k45u"
+                                  >
+                                  ...
+                      ...
+                        <form ref={{current:null}} action={function bound dispatchActionState}>
+                          <FieldGroup>
+                            <div data-slot="field-group" className="group/fiel...">
+                              <div className="grid gap-4...">
+                                ...
+                                  <Input id="contact-name" name="name" required={true}>
+                                    <Input type={undefined} data-slot="input" className="h-8 w-full..." id="contact-name" ...>
+                                      <FieldControl ref={null} type={undefined} data-slot="input" ...>
+                                        <input
+                                          id="contact-name"
+                                          disabled={false}
+                                          name="name"
+                                          ref={function}
+                                          aria-labelledby={undefined}
+                                          autoFocus={false}
+                                          defaultValue={undefined}
+                                          onChange={function}
+                                          onFocus={function}
+                                          onBlur={function}
+                                          onKeyDown={function}
+                                          type={undefined}
+                                          data-slot="input"
+                                          required={true}
+                                          className="h-8 w-full min-w-0 rounded-lg border border-input bg-transparent ..."
+-                                         fdprocessedid="ecovil"
+                                        >
+                                ...
+                                  <Input id="contact-mo..." name="mobile" type="tel" required={true}>
+                                    <Input type="tel" data-slot="input" className="h-8 w-full..." id="contact-mo..." ...>
+                                      <FieldControl ref={null} type="tel" data-slot="input" className="h-8 w-full..." ...>
+                                        <input
+                                          id="contact-mobile"
+                                          disabled={false}
+                                          name="mobile"
+                                          ref={function}
+                                          aria-labelledby={undefined}
+                                          autoFocus={false}
+                                          defaultValue={undefined}
+                                          onChange={function}
+                                          onFocus={function}
+                                          onBlur={function}
+                                          onKeyDown={function}
+                                          type="tel"
+                                          data-slot="input"
+                                          required={true}
+                                          className="h-8 w-full min-w-0 rounded-lg border border-input bg-transparent ..."
+-                                         fdprocessedid="a69a71"
+                                        >
+                              ...
+                                <Input id="contact-email" name="email" type="email" required={true}>
+                                  <Input type="email" data-slot="input" className="h-8 w-full..." id="contact-email" ...>
+                                    <FieldControl ref={null} type="email" data-slot="input" className="h-8 w-full..." ...>
+                                      <input
+                                        id="contact-email"
+                                        disabled={false}
+                                        name="email"
+                                        ref={function}
+                                        aria-labelledby={undefined}
+                                        autoFocus={false}
+                                        defaultValue={undefined}
+                                        onChange={function}
+                                        onFocus={function}
+                                        onBlur={function}
+                                        onKeyDown={function}
+                                        type="email"
+                                        data-slot="input"
+                                        required={true}
+                                        className="h-8 w-full min-w-0 rounded-lg border border-input bg-transparent px..."
+-                                       fdprocessedid="3bfn5r"
+                                      >
+                              ...
+                                <Input id="contact-su..." name="subject" required={true}>
+                                  <Input type={undefined} data-slot="input" className="h-8 w-full..." id="contact-su..." ...>
+                                    <FieldControl ref={null} type={undefined} data-slot="input" className="h-8 w-full..." ...>
+                                      <input
+                                        id="contact-subject"
+                                        disabled={false}
+                                        name="subject"
+                                        ref={function}
+                                        aria-labelledby={undefined}
+                                        autoFocus={false}
+                                        defaultValue={undefined}
+                                        onChange={function}
+                                        onFocus={function}
+                                        onBlur={function}
+                                        onKeyDown={function}
+                                        type={undefined}
+                                        data-slot="input"
+                                        required={true}
+                                        className="h-8 w-full min-w-0 rounded-lg border border-input bg-transparent px..."
+-                                       fdprocessedid="50p0vk"
+                                      >
+                              <Field>
+                              <Button type="submit" disabled={false} className="w-full bg-..." size="lg">
+                                <Button data-slot="button" className={"group/bu..."} type="submit" disabled={false}>
+                                  <button
+                                    type="submit"
+                                    onClick={function}
+                                    onMouseDown={function}
+                                    onKeyDown={function}
+                                    onKeyUp={function}
+                                    onPointerDown={function}
+                                    tabIndex={0}
+                                    disabled={false}
+                                    data-slot="button"
+                                    ref={function}
+                                    className={"group/button inline-flex shrink-0 items-center justify-center rounded..."}
+-                                   fdprocessedid="k9bbik"
+                                  >
++                                   Submit
+                      ...
+                  ...
+                ...
+      ...
+ 
+    at <unknown> (chrome-extension://kiilhncajadbgbmdbdcopdpnmdhlbdle/assets/js/content.js:13:96450)
+    at d (chrome-extension://kiilhncajadbgbmdbdcopdpnmdhlbdle/assets/js/content.js:13:96560)
+    at f (chrome-extension://kiilhncajadbgbmdbdcopdpnmdhlbdle/assets/js/content.js:13:96661) (chrome-extension://kiilhncajadbgbmdbdcopdpnmdhlbdle/assets/js/content.js:13:96450)
+[browser] Image with src "http://localhost:3000/uploads/hero/d092d5ac-8c59-4f3f-8aeb-f82c7e3a96dc-dom-fou-YRMWVcdyhmI-unsplash.jpg" was detected as the Largest Contentful Paint (LCP). Please add the `loading="eager"` property if this image is above the fold.
 Read more: https://nextjs.org/docs/app/api-reference/components/image#loading
- GET /admin/categories 200 in 213ms (next.js: 13ms, proxy.ts: 14ms, application-code: 186ms)
- GET /admin/programmes 200 in 249ms (next.js: 103ms, proxy.ts: 16ms, application-code: 131ms)
- GET /admin/programmes/cmswzk0a0000cswzcfiiplvyg 200 in 123ms (next.js: 20ms, proxy.ts: 20ms, application-code: 83ms)
- GET /programmes?category=faculty-of-business-and-economics 200 in 375ms (next.js: 12ms, proxy.ts: 16ms, application-code: 347ms)
- GET /programmes?category=faculty-of-science-and-technology 200 in 177ms (next.js: 13ms, proxy.ts: 14ms, application-code: 150ms)
- GET /programmes?category=faculty-of-business-and-economics 200 in 156ms (next.js: 11ms, proxy.ts: 12ms, application-code: 133ms)
- GET /programmes?category=faculty-of-education-and-humanities-sciences 200 in 180ms (next.js: 12ms, proxy.ts: 15ms, application-code: 153ms)
- GET /programmes?category=diploma 200 in 207ms (next.js: 11ms, proxy.ts: 16ms, application-code: 179ms)
- GET /programmes?category=bachelor-s-degree 200 in 169ms (next.js: 16ms, proxy.ts: 14ms, application-code: 140ms)
- GET /programmes?category=master-s-degree 200 in 127ms (next.js: 10ms, proxy.ts: 11ms, application-code: 106ms)
- GET /programmes?category=doctoral-degree 200 in 166ms (next.js: 12ms, proxy.ts: 15ms, application-code: 138ms)
- GET / 200 in 286ms (next.js: 15ms, proxy.ts: 15ms, application-code: 257ms)
- GET /about 200 in 272ms (next.js: 140ms, proxy.ts: 17ms, application-code: 114ms)
- GET /team?category=BOARD_OF_GOVERNORS 200 in 244ms (next.js: 105ms, proxy.ts: 15ms, application-code: 123ms)
- GET /news 200 in 213ms (next.js: 117ms, proxy.ts: 16ms, application-code: 80ms)
- GET / 200 in 306ms (next.js: 13ms, proxy.ts: 18ms, application-code: 275ms)
- GET /events 200 in 219ms (next.js: 123ms, proxy.ts: 16ms, application-code: 79ms)
- GET / 200 in 266ms (next.js: 11ms, proxy.ts: 13ms, application-code: 242ms)
-✓ Compiled in 3.8s
- GET /admin/programmes/cmswzk0a0000cswzcfiiplvyg 200 in 928ms (next.js: 472ms, proxy.ts: 138ms, application-code: 318ms)
- GET / 200 in 942ms (next.js: 138ms, proxy.ts: 138ms, application-code: 666ms)
- GET /admin/programmes/cmsx38y3b000kswzcat3mrucu 200 in 939ms (next.js: 574ms, proxy.ts: 137ms, application-code: 228ms)
- GET /programmes?category=faculty-of-education-and-humanities-sciences 200 in 1039ms (next.js: 320ms, proxy.ts: 133ms, application-code: 585ms)
- GET /programmes?category=computing 200 in 949ms (next.js: 175ms, proxy.ts: 228ms, application-code: 545ms)
- GET / 200 in 421ms (next.js: 6ms, proxy.ts: 5ms, application-code: 410ms)
- GET /success-stories 200 in 257ms (next.js: 126ms, proxy.ts: 20ms, application-code: 111ms)
- GET /events 200 in 358ms (next.js: 204ms, proxy.ts: 21ms, application-code: 132ms)
- GET /contact 200 in 230ms (next.js: 92ms, proxy.ts: 21ms, application-code: 116ms)
- GET /events 200 in 101ms (next.js: 12ms, proxy.ts: 15ms, application-code: 75ms)
- GET /events/ai-coding-for-beginners 200 in 760ms (next.js: 668ms, proxy.ts: 17ms, application-code: 75ms)
- GET /admin/events 200 in 161ms (next.js: 74ms, proxy.ts: 14ms, application-code: 72ms)
- GET /admin/events/cmsfxoqb0000abczcz3qbcx5m 200 in 801ms (next.js: 695ms, proxy.ts: 15ms, application-code: 90ms)
- POST /api/uploads/sign 200 in 434ms (next.js: 375ms, application-code: 59ms)
- POST /api/uploads/local 200 in 236ms (next.js: 93ms, application-code: 143ms)
- POST /api/uploads/sign 200 in 26ms (next.js: 7ms, application-code: 19ms)
- POST /api/uploads/local 200 in 33ms (next.js: 6ms, application-code: 27ms)
- GET /admin/events/cmsfxoqb0000abczcz3qbcx5m 200 in 146ms (next.js: 13ms, proxy.ts: 11ms, application-code: 122ms)
- POST /admin/events/cmsfxoqb0000abczcz3qbcx5m 303 in 347ms (next.js: 22ms, proxy.ts: 12ms, application-code: 313ms)
-  └─ ƒ updateEvent("cmsfxoqb0000abczcz3qbcx5m", undefined, {}) in 125ms src/lib/actions/admin/event.actions.ts
- GET /admin/events/cmsfxoqb0000abczcz3qbcx5m 200 in 512ms (next.js: 22ms, proxy.ts: 12ms, application-code: 477ms)
- GET /events/ai-coding-for-beginners 200 in 407ms (next.js: 30ms, proxy.ts: 12ms, application-code: 365ms)
- GET /events 200 in 90ms (next.js: 13ms, proxy.ts: 16ms, application-code: 60ms)
- GET / 200 in 427ms (next.js: 20ms, proxy.ts: 24ms, application-code: 383ms)
- GET /programmes 200 in 210ms (next.js: 12ms, proxy.ts: 10ms, application-code: 187ms)
-[browser] Image with src "http://localhost:3000/uploads/programmes/92ab8bfb-9c8f-46d3-af10-3c3674aaf2e5-early_childhood_image.webp" was detected as the Largest Contentful Paint (LCP). Please add the `loading="eager"` property if this image is above the fold.
-Read more: https://nextjs.org/docs/app/api-reference/components/image#loading
-✓ Compiled in 251ms
- GET /admin/programmes/cmsx38y3b000kswzcat3mrucu 200 in 1013ms (next.js: 413ms, proxy.ts: 138ms, application-code: 462ms)
- GET /admin/events/cmsfxoqb0000abczcz3qbcx5m 200 in 914ms (next.js: 542ms, proxy.ts: 47ms, application-code: 325ms)
- GET /programmes?category=faculty-of-education-and-humanities-sciences 200 in 1216ms (next.js: 170ms, proxy.ts: 139ms, application-code: 907ms)
- GET /programmes?category=faculty-of-education-and-humanities-sciences 200 in 807ms (next.js: 19ms, proxy.ts: 520ms, application-code: 269ms)
- GET /programmes?category=computing 200 in 1588ms (next.js: 233ms, proxy.ts: 138ms, application-code: 1216ms)
- GET /programmes 200 in 1586ms (next.js: 263ms, proxy.ts: 137ms, application-code: 1186ms)
- GET /admin/programmes/cmsx38y3b000kswzcat3mrucu 200 in 470ms (next.js: 39ms, proxy.ts: 20ms, application-code: 412ms)
- GET /programmes 200 in 708ms (next.js: 50ms, proxy.ts: 53ms, application-code: 605ms)
- GET /programmes?category=computing 200 in 712ms (next.js: 10ms, proxy.ts: 54ms, application-code: 649ms)
- GET /admin/events/cmsfxoqb0000abczcz3qbcx5m 200 in 500ms (next.js: 43ms, proxy.ts: 336ms, application-code: 120ms)
-✓ Compiled in 211ms
- GET /admin/events/cmsfxoqb0000abczcz3qbcx5m 200 in 942ms (next.js: 434ms, proxy.ts: 104ms, application-code: 403ms)
- GET /admin/programmes/cmsx38y3b000kswzcat3mrucu 200 in 961ms (next.js: 291ms, proxy.ts: 110ms, application-code: 560ms)
- GET /programmes?category=faculty-of-education-and-humanities-sciences 200 in 1097ms (next.js: 82ms, proxy.ts: 107ms, application-code: 908ms)
- GET /programmes?category=faculty-of-education-and-humanities-sciences 200 in 844ms (next.js: 19ms, proxy.ts: 416ms, application-code: 409ms)
- GET /programmes 200 in 1342ms (next.js: 136ms, proxy.ts: 106ms, application-code: 1100ms)
- GET /programmes?category=computing 200 in 1269ms (next.js: 174ms, proxy.ts: 31ms, application-code: 1063ms)
- GET /admin/programmes/cmsx38y3b000kswzcat3mrucu 200 in 308ms (next.js: 106ms, proxy.ts: 52ms, application-code: 151ms)
- GET /admin/events/cmsfxoqb0000abczcz3qbcx5m 200 in 292ms (next.js: 32ms, proxy.ts: 169ms, application-code: 92ms)
- GET /programmes 200 in 502ms (next.js: 10ms, proxy.ts: 24ms, application-code: 467ms)
- GET /programmes?category=computing 200 in 496ms (next.js: 21ms, proxy.ts: 64ms, application-code: 411ms)
- GET /programmes 200 in 722ms (next.js: 13ms, proxy.ts: 20ms, application-code: 689ms)
- GET / 200 in 586ms (next.js: 228ms, proxy.ts: 16ms, application-code: 342ms)
+[browser] A tree hydrated but some attributes of the server rendered HTML didn't match the client properties. This won't be patched up. This can happen if a SSR-ed Client Component used:
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+https://react.dev/link/hydration-mismatch
+
+  ...
+    <SiteLayout>
+      <a>
+      <Header settings={{id:"singleton", ...}} categories={[...]}>
+        <header className="sticky top...">
+          <div>
+          <div className="mx-auto fl...">
+            <LinkComponent>
+            <nav className="hidden ite...">
+              <Button>
+              <Button>
+              <DropdownMenu>
+                <MenuRoot data-slot="dropdown-menu">
+                  <FloatingTree externalTree={{nodesRef:{...}, ...}}>
+                    <DropdownMenuTrigger render={<Button>}>
+                      <MenuTrigger data-slot="dropdown-m..." render={<Button>}>
+                        <Button variant="ghost" className="text-sm fo..." onClick={function} onMouseDown={function} ...>
+                          <Button data-slot="dropdown-m..." className={"group/bu..."} onClick={function} ...>
+                            <button
+                              type="button"
+                              onClick={function}
+                              onMouseDown={function}
+                              onKeyDown={function}
+                              onKeyUp={function}
+                              onPointerDown={function}
+                              tabIndex={0}
+                              disabled={false}
+                              data-slot="dropdown-menu-trigger"
+                              aria-haspopup="menu"
+                              aria-controls={undefined}
+                              id="base-ui-_R_6eikndlb_"
+                              ref={function}
+                              className={"group/button inline-flex shrink-0 items-center justify-center rounded-lg bo..."}
+-                             fdprocessedid="pyp87"
+                            >
++                             Programmes
+                    ...
+              <DropdownMenu>
+                <MenuRoot data-slot="dropdown-menu">
+                  <FloatingTree externalTree={{nodesRef:{...}, ...}}>
+                    <DropdownMenuTrigger render={<Button>}>
+                      <MenuTrigger data-slot="dropdown-m..." render={<Button>}>
+                        <Button variant="ghost" className="text-sm fo..." onClick={function} onMouseDown={function} ...>
+                          <Button data-slot="dropdown-m..." className={"group/bu..."} onClick={function} ...>
+                            <button
+                              type="button"
+                              onClick={function}
+                              onMouseDown={function}
+                              onKeyDown={function}
+                              onKeyUp={function}
+                              onPointerDown={function}
+                              tabIndex={0}
+                              disabled={false}
+                              data-slot="dropdown-menu-trigger"
+                              aria-haspopup="menu"
+                              aria-controls={undefined}
+                              id="base-ui-_R_6iikndlb_"
+                              ref={function}
+                              className={"group/button inline-flex shrink-0 items-center justify-center rounded-lg bo..."}
+-                             fdprocessedid="p6c1cs"
+                            >
++                             Success Stories
+                    ...
+              <DropdownMenu>
+                <MenuRoot data-slot="dropdown-menu">
+                  <FloatingTree externalTree={{nodesRef:{...}, ...}}>
+                    <DropdownMenuTrigger render={<Button>}>
+                      <MenuTrigger data-slot="dropdown-m..." render={<Button>}>
+                        <Button variant="ghost" className="text-sm fo..." onClick={function} onMouseDown={function} ...>
+                          <Button data-slot="dropdown-m..." className={"group/bu..."} onClick={function} ...>
+                            <button
+                              type="button"
+                              onClick={function}
+                              onMouseDown={function}
+                              onKeyDown={function}
+                              onKeyUp={function}
+                              onPointerDown={function}
+                              tabIndex={0}
+                              disabled={false}
+                              data-slot="dropdown-menu-trigger"
+                              aria-haspopup="menu"
+                              aria-controls={undefined}
+                              id="base-ui-_R_6mikndlb_"
+                              ref={function}
+                              className={"group/button inline-flex shrink-0 items-center justify-center rounded-lg bo..."}
+-                             fdprocessedid="cirvqt"
+                            >
++                             Team
+                    ...
+              ...
+            ...
+          ...
+      ...
+        <HTTPAccessFallbackBoundary notFound={<SegmentViewNode>} forbidden={undefined} unauthorized={undefined}>
+          <HTTPAccessFallbackErrorBoundary pathname="/" notFound={<SegmentViewNode>} forbidden={undefined} ...>
+            <RedirectBoundary>
+              <RedirectErrorBoundary router={{...}}>
+                <InnerLayoutRouter url="/" tree={[...]} params={{}} cacheNode={{rsc:{...}, ...}} segmentPath={[...]} ...>
+                  <SegmentViewNode type="page" pagePath="(site)/pag...">
+                    <SegmentTrieNode>
+                    <Home>
+                      <section className="relative o...">
+                        <HeroSlider images={[...]}>
+                          <img>
+                          <ImagePreload>
+                          <img>
+                          <img>
+                          <div className="absolute b...">
+                            <button
+                              type="button"
+                              aria-label="Show slide 1"
+                              aria-current={true}
+                              onClick={function onClick}
+                              className="group flex items-center justify-center rounded-full p-1.5 focus-visible:outli..."
+-                             fdprocessedid="b3ctn"
+                            >
+                            <button
+                              type="button"
+                              aria-label="Show slide 2"
+                              aria-current={false}
+                              onClick={function onClick}
+                              className="group flex items-center justify-center rounded-full p-1.5 focus-visible:outli..."
+-                             fdprocessedid="o9ke3c"
+                            >
+                            <button
+                              type="button"
+                              aria-label="Show slide 3"
+                              aria-current={false}
+                              onClick={function onClick}
+                              className="group flex items-center justify-center rounded-full p-1.5 focus-visible:outli..."
+-                             fdprocessedid="64xa9"
+                            >
+                        ...
+                        ...
+                      <section>
+                      <section>
+                      <section>
+                      ...
+                        <Reveal className="mt-28">
+                          <div ref={{current:null}} className="transition..." style={{...}}>
+                            <TestimonialCarousel testimonials={[...]}>
+                              <div className="relative" onMouseEnter={function onMouseEnter} ...>
+                                <Carousel>
+                                <div className="mt-8 flex ..." role="tablist" aria-label="Testimonials">
+                                  <button
+                                    type="button"
+                                    role="tab"
+                                    aria-selected={false}
+                                    aria-label="Show testimonial from Mohamed Samoon Sithy Rizana"
+                                    onClick={function onClick}
+                                    className="group flex items-center justify-center rounded-full p-2.5 focus-visible..."
+-                                   fdprocessedid="hq97g6"
+                                  >
+                                  <button
+                                    type="button"
+                                    role="tab"
+                                    aria-selected={true}
+                                    aria-label="Show testimonial from Prisca Pedurupilla"
+                                    onClick={function onClick}
+                                    className="group flex items-center justify-center rounded-full p-2.5 focus-visible..."
+-                                   fdprocessedid="ng60we"
+                                  >
+                                  <button
+                                    type="button"
+                                    role="tab"
+                                    aria-selected={false}
+                                    aria-label="Show testimonial from Shehan Danushka Kalansooriya"
+                                    onClick={function onClick}
+                                    className="group flex items-center justify-center rounded-full p-2.5 focus-visible..."
+-                                   fdprocessedid="pxwzze"
+                                  >
+                                  <button
+                                    type="button"
+                                    role="tab"
+                                    aria-selected={false}
+                                    aria-label="Show testimonial from Abdul Careem Mohamed Samil"
+                                    onClick={function onClick}
+                                    className="group flex items-center justify-center rounded-full p-2.5 focus-visible..."
+-                                   fdprocessedid="knpgpm"
+                                  >
+                                  <button
+                                    type="button"
+                                    role="tab"
+                                    aria-selected={false}
+                                    aria-label="Show testimonial from P A Sudarshana Perera"
+                                    onClick={function onClick}
+                                    className="group flex items-center justify-center rounded-full p-2.5 focus-visible..."
+-                                   fdprocessedid="hrxq3a"
+                                  >
+                                  <button
+                                    type="button"
+                                    role="tab"
+                                    aria-selected={false}
+                                    aria-label="Show testimonial from Subair Mohamed Hafrath"
+                                    onClick={function onClick}
+                                    className="group flex items-center justify-center rounded-full p-2.5 focus-visible..."
+-                                   fdprocessedid="drvau"
+                                  >
+                                ...
+                      <section className="mx-auto w-...">
+                        <Reveal>
+                        <Reveal className="mt-12">
+                          <div ref={{current:null}} className="transition..." style={{...}}>
+                            <PartnerUniversityCarousel partners={[...]}>
+                              <div>
+                                <Carousel>
+                                <div className="mt-8 flex ..." role="tablist" aria-label="Partner un...">
+                                  <button
+                                    type="button"
+                                    role="tab"
+                                    aria-selected={true}
+                                    aria-label="Show City University Malaysia"
+                                    onClick={function onClick}
+                                    className="group flex items-center justify-center rounded-full p-2.5 focus-visible..."
+-                                   fdprocessedid="vlslgk"
+                                  >
+                                  <button
+                                    type="button"
+                                    role="tab"
+                                    aria-selected={false}
+                                    aria-label="Show INTI International University"
+                                    onClick={function onClick}
+                                    className="group flex items-center justify-center rounded-full p-2.5 focus-visible..."
+-                                   fdprocessedid="ljr0gg"
+                                  >
+                      ...
+                        <Reveal delayMs={100} className="h-full rou...">
+                          <div ref={{current:null}} className="transition..." style={{...}}>
+                            <EventsCalendar events={[...]}>
+                              <div className="flex h-ful...">
+                                <div className="flex items...">
+                                  <button
+                                    type="button"
+                                    aria-label="Previous month"
+                                    onClick={function onClick}
+                                    className="text-muted-foreground transition hover:text-primary"
+-                                   fdprocessedid="yob34m"
+                                  >
+                                  <span>
+                                  <button
+                                    type="button"
+                                    aria-label="Next month"
+                                    onClick={function onClick}
+                                    className="text-muted-foreground transition hover:text-primary"
+-                                   fdprocessedid="cxyzkm"
+                                  >
+                                <div>
+                                <div className="grid flex-...">
+                                  <button>
+                                  <button>
+                                  <button>
+                                  <button>
+                                  <button>
+                                  <button>
+                                  <button>
+                                  <button>
+                                  <button>
+                                  <button>
+                                  <button>
+                                  <button>
+                                  <button>
+                                  <button>
+                                  <button>
+                                  <button>
+                                  <button>
+                                  <button>
+                                  <button>
+                                  <button>
+                                  <button>
+                                  <button>
+                                  <button>
+                                  <button>
+                                  <button>
+                                  <button>
+                                  <button>
+                                  <button>
+                                  <button>
+                                  <button>
+                                  <button>
+                                  <button>
+                                  <button>
+                                  <button>
+                                  <button>
+                                  <button>
+                                  <button>
+                                  <button>
+                                  <button>
+                                  <button>
+                                  <button
+                                    type="button"
+                                    disabled={false}
+                                    onClick={function onClick}
+                                    className="flex flex-col items-start gap-1 border-b p-2 text-left text-sm sm:p-3 c..."
+-                                   fdprocessedid="k7k09c"
+                                  >
+                                  ...
+                      ...
+                        <form ref={{current:null}} action={function bound dispatchActionState}>
+                          <FieldGroup>
+                            <div data-slot="field-group" className="group/fiel...">
+                              <div className="grid gap-4...">
+                                ...
+                                  <Input id="contact-name" name="name" required={true}>
+                                    <Input type={undefined} data-slot="input" className="h-8 w-full..." id="contact-name" ...>
+                                      <FieldControl ref={null} type={undefined} data-slot="input" ...>
+                                        <input
+                                          id="contact-name"
+                                          disabled={false}
+                                          name="name"
+                                          ref={function}
+                                          aria-labelledby={undefined}
+                                          autoFocus={false}
+                                          defaultValue={undefined}
+                                          onChange={function}
+                                          onFocus={function}
+                                          onBlur={function}
+                                          onKeyDown={function}
+                                          type={undefined}
+                                          data-slot="input"
+                                          required={true}
+                                          className="h-8 w-full min-w-0 rounded-lg border border-input bg-transparent ..."
+-                                         fdprocessedid="0y448c"
+                                        >
+                                ...
+                                  <Input id="contact-mo..." name="mobile" type="tel" required={true}>
+                                    <Input type="tel" data-slot="input" className="h-8 w-full..." id="contact-mo..." ...>
+                                      <FieldControl ref={null} type="tel" data-slot="input" className="h-8 w-full..." ...>
+                                        <input
+                                          id="contact-mobile"
+                                          disabled={false}
+                                          name="mobile"
+                                          ref={function}
+                                          aria-labelledby={undefined}
+                                          autoFocus={false}
+                                          defaultValue={undefined}
+                                          onChange={function}
+                                          onFocus={function}
+                                          onBlur={function}
+                                          onKeyDown={function}
+                                          type="tel"
+                                          data-slot="input"
+                                          required={true}
+                                          className="h-8 w-full min-w-0 rounded-lg border border-input bg-transparent ..."
+-                                         fdprocessedid="ahm0fw"
+                                        >
+                              ...
+                                <Input id="contact-email" name="email" type="email" required={true}>
+                                  <Input type="email" data-slot="input" className="h-8 w-full..." id="contact-email" ...>
+                                    <FieldControl ref={null} type="email" data-slot="input" className="h-8 w-full..." ...>
+                                      <input
+                                        id="contact-email"
+                                        disabled={false}
+                                        name="email"
+                                        ref={function}
+                                        aria-labelledby={undefined}
+                                        autoFocus={false}
+                                        defaultValue={undefined}
+                                        onChange={function}
+                                        onFocus={function}
+                                        onBlur={function}
+                                        onKeyDown={function}
+                                        type="email"
+                                        data-slot="input"
+                                        required={true}
+                                        className="h-8 w-full min-w-0 rounded-lg border border-input bg-transparent px..."
+-                                       fdprocessedid="vbssc"
+                                      >
+                              ...
+                                <Input id="contact-su..." name="subject" required={true}>
+                                  <Input type={undefined} data-slot="input" className="h-8 w-full..." id="contact-su..." ...>
+                                    <FieldControl ref={null} type={undefined} data-slot="input" className="h-8 w-full..." ...>
+                                      <input
+                                        id="contact-subject"
+                                        disabled={false}
+                                        name="subject"
+                                        ref={function}
+                                        aria-labelledby={undefined}
+                                        autoFocus={false}
+                                        defaultValue={undefined}
+                                        onChange={function}
+                                        onFocus={function}
+                                        onBlur={function}
+                                        onKeyDown={function}
+                                        type={undefined}
+                                        data-slot="input"
+                                        required={true}
+                                        className="h-8 w-full min-w-0 rounded-lg border border-input bg-transparent px..."
+-                                       fdprocessedid="39yhi"
+                                      >
+                              <Field>
+                              <Button type="submit" disabled={false} className="w-full bg-..." size="lg">
+                                <Button data-slot="button" className={"group/bu..."} type="submit" disabled={false}>
+                                  <button
+                                    type="submit"
+                                    onClick={function}
+                                    onMouseDown={function}
+                                    onKeyDown={function}
+                                    onKeyUp={function}
+                                    onPointerDown={function}
+                                    tabIndex={0}
+                                    disabled={false}
+                                    data-slot="button"
+                                    ref={function}
+                                    className={"group/button inline-flex shrink-0 items-center justify-center rounded..."}
+-                                   fdprocessedid="xz1ic4"
+                                  >
++                                   Submit
+                      ...
+                  ...
+                ...
+      ...
+ 
+    at <unknown> (chrome-extension://kiilhncajadbgbmdbdcopdpnmdhlbdle/assets/js/content.js:13:96450)
+    at d (chrome-extension://kiilhncajadbgbmdbdcopdpnmdhlbdle/assets/js/content.js:13:96560)
+    at f (chrome-extension://kiilhncajadbgbmdbdcopdpnmdhlbdle/assets/js/content.js:13:96661) (chrome-extension://kiilhncajadbgbmdbdcopdpnmdhlbdle/assets/js/content.js:13:96450)

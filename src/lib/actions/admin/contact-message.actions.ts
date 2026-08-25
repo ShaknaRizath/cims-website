@@ -15,6 +15,7 @@ export async function markContactMessageRead(
 
   await prisma.contactMessage.update({ where: { id: contactMessageId }, data: { isRead: true } });
   revalidatePath("/admin/contact-messages");
+  return undefined;
 }
 
 export async function deleteContactMessage(
