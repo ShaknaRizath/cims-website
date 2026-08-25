@@ -76,7 +76,7 @@ export function TeamMemberForm({
         <FileUploadField
           name="photoUrl"
           label="Photo"
-          folder="team"
+          folder="cims-website/team"
           defaultUrl={defaultValues?.photoUrl}
         />
 

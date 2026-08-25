@@ -95,7 +95,7 @@ export function TestimonialForm({
         <FileUploadField
           name="photoUrl"
           label="Photo"
-          folder="testimonials"
+          folder="cims-website/testimonials"
           defaultUrl={defaultValues?.photoUrl}
         />
 

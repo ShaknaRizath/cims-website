@@ -31,7 +31,7 @@ export function HeroSlideForm({
         <FileUploadField
           name="imageUrl"
           label="Slide image"
-          folder="hero"
+          folder="cims-website/hero"
           defaultUrl={defaultValues?.imageUrl}
           errors={state?.fieldErrors?.imageUrl}
           aspectRatio={16 / 9}

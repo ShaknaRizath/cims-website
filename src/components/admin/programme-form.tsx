@@ -132,7 +132,7 @@ export function ProgrammeForm({
         <FileUploadField
           name="heroImageUrl"
           label="Hero image"
-          folder="programmes"
+          folder="cims-website/programmes"
           defaultUrl={defaultValues?.heroImageUrl}
           accept="image/*"
         />
@@ -140,7 +140,7 @@ export function ProgrammeForm({
         <FileUploadField
           name="brochureFileUrl"
           label="Brochure (PDF)"
-          folder="programmes"
+          folder="cims-website/programmes"
           defaultUrl={defaultValues?.brochureFileUrl}
           accept="application/pdf"
           kind="file"

@@ -63,7 +63,7 @@ export function SiteSettingsForm({ defaultValues }: { defaultValues?: SiteSettin
               name="logoUrl"
               label="Site logo"
               description="Shown in the header next to the CIMS Campus name. Uploaded as-is, uncropped — this works best with a pre-sized square or circular logo."
-              folder="settings"
+              folder="cims-website/settings"
               defaultUrl={defaultValues?.logoUrl}
               disableCrop
             />
@@ -114,7 +114,7 @@ export function SiteSettingsForm({ defaultValues }: { defaultValues?: SiteSettin
             <FileUploadField
               name="chairmanPhotoUrl"
               label="Chairman's photo"
-              folder="settings"
+              folder="cims-website/settings"
               defaultUrl={defaultValues?.chairmanPhotoUrl}
               aspectRatio={1}
             />
@@ -143,7 +143,7 @@ export function SiteSettingsForm({ defaultValues }: { defaultValues?: SiteSettin
             <FileUploadField
               name="aboutTeaserImageUrl"
               label={'Homepage "Why CIMS?" image'}
-              folder="settings"
+              folder="cims-website/settings"
               defaultUrl={defaultValues?.aboutTeaserImageUrl}
               aspectRatio={4 / 3}
             />
@@ -151,7 +151,7 @@ export function SiteSettingsForm({ defaultValues }: { defaultValues?: SiteSettin
               name="aboutHeroImageUrl"
               label="About Us page banner image"
               description="Background image behind the navy banner at the top of the About Us page."
-              folder="settings"
+              folder="cims-website/settings"
               defaultUrl={defaultValues?.aboutHeroImageUrl}
               aspectRatio={16 / 9}
             />

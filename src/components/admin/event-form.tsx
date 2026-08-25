@@ -91,7 +91,7 @@ export function EventForm({
         <FileUploadField
           name="coverImageUrl"
           label="Cover image"
-          folder="events"
+          folder="cims-website/events"
           defaultUrl={defaultValues?.coverImageUrl}
           onUploaded={setCoverImageUrl}
         />

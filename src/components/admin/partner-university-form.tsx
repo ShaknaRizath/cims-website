@@ -51,7 +51,7 @@ export function PartnerUniversityForm({
         <FileUploadField
           name="logoUrl"
           label="Logo"
-          folder="partners"
+          folder="cims-website/partners"
           defaultUrl={defaultValues?.logoUrl}
           disableCrop
           description="Uploaded as-is, no cropping — use the university's own logo file so nothing gets cut off."

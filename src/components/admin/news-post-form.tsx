@@ -103,7 +103,7 @@ export function NewsPostForm({
         <FileUploadField
           name="coverImageUrl"
           label="Cover image"
-          folder="news"
+          folder="cims-website/news"
           defaultUrl={defaultValues?.coverImageUrl}
         />
 

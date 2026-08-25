@@ -29,7 +29,7 @@ export function EventCardImageField({
 
   async function handleCropped(croppedFile: File) {
     setCropOpen(false);
-    const result = await upload(croppedFile, "events");
+    const result = await upload(croppedFile, "cims-website/events");
     if (result) setCardImage({ url: result.url, name: result.fileName });
   }
 

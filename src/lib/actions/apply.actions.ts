@@ -53,7 +53,7 @@ export async function submitApplication(_prev: ApplyActionState, formData: FormD
       const buffer = Buffer.from(await file.arrayBuffer());
       const filename = `${randomUUID()}-${sanitizeFilename(file.name)}`;
       const uploaded = await storage.uploadBuffer({
-        folder: "applications",
+        folder: "cims-website/applications",
         filename,
         buffer,
         contentType: file.type || "application/octet-stream",

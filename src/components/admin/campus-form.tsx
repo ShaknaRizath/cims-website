@@ -79,7 +79,7 @@ export function CampusForm({
         <FileUploadField
           name="photoUrl"
           label="Photo"
-          folder="campuses"
+          folder="cims-website/campuses"
           defaultUrl={defaultValues?.photoUrl}
         />
 
