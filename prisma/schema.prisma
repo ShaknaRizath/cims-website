@@ -238,6 +238,24 @@ model ContactMessage {
   @@index([isRead, createdAt])
 }
 
+// Public request submitted through /certificate-verification by a third party
+// (employer, another institution, etc.) verifying a graduate's certificate.
+model CertificateVerificationRequest {
+  id                  String   @id @default(cuid())
+  verifierName        String
+  verifierInstitution String
+  verifierDepartment  String
+  verifierMobile      String
+  verifierEmail       String
+  purpose             String   @db.Text
+  studentName         String
+  certificateNumber   String
+  isRead              Boolean  @default(false)
+  createdAt           DateTime @default(now())
+
+  @@index([isRead, createdAt])
+}
+
 // Public online application submitted through /apply. Deliberately excludes
 // batch/fee-plan/payment fields — those are handled later in the enrolment
 // process, outside this initial form.

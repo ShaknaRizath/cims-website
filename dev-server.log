@@ -6,9 +6,46 @@
 - Local:         http://localhost:3000
 - Network:       http://192.168.174.1:3000
 - Environments: .env
-✓ Ready in 5.3s
+✓ Ready in 1435ms
 - Experiments (use with caution):
   · cpus: 1
 
-○ Compiling / ...
- GET / 200 in 9.6s (next.js: 4.5s, proxy.ts: 941ms, application-code: 4.2s)
+ GET /certificate-verification 200 in 3.4s (next.js: 1286ms, proxy.ts: 70ms, application-code: 2.0s)
+ GET / 200 in 3.5s (next.js: 1146ms, proxy.ts: 48ms, application-code: 2.3s)
+ GET / 200 in 4.8s (next.js: 540ms, proxy.ts: 1242ms, application-code: 3.0s)
+ GET / 200 in 242ms (next.js: 7ms, proxy.ts: 6ms, application-code: 229ms)
+ GET / 200 in 290ms (next.js: 11ms, proxy.ts: 17ms, application-code: 262ms)
+ GET /events 200 in 205ms (next.js: 117ms, proxy.ts: 14ms, application-code: 74ms)
+ GET /contact 200 in 179ms (next.js: 79ms, proxy.ts: 11ms, application-code: 89ms)
+ GET /certificate-verification 200 in 176ms (next.js: 8ms, proxy.ts: 14ms, application-code: 155ms)
+ GET /news 200 in 181ms (next.js: 93ms, proxy.ts: 14ms, application-code: 74ms)
+ GET /contact 200 in 131ms (next.js: 18ms, proxy.ts: 15ms, application-code: 97ms)
+ GET /events 200 in 90ms (next.js: 13ms, proxy.ts: 19ms, application-code: 58ms)
+ GET /certificate-verification 200 in 209ms (next.js: 12ms, proxy.ts: 14ms, application-code: 184ms)
+✓ Compiled in 948ms
+ GET /certificate-verification 200 in 694ms (next.js: 198ms, proxy.ts: 368ms, application-code: 127ms)
+ GET / 200 in 752ms (next.js: 185ms, proxy.ts: 113ms, application-code: 453ms)
+ GET / 200 in 749ms (next.js: 8ms, proxy.ts: 367ms, application-code: 374ms)
+✓ Compiled in 101ms
+ GET / 200 in 649ms (next.js: 106ms, proxy.ts: 81ms, application-code: 462ms)
+ GET / 200 in 644ms (next.js: 201ms, proxy.ts: 270ms, application-code: 173ms)
+ GET /certificate-verification 200 in 659ms (next.js: 147ms, proxy.ts: 269ms, application-code: 244ms)
+✓ Compiled in 120ms
+ GET /certificate-verification 200 in 676ms (next.js: 170ms, proxy.ts: 262ms, application-code: 244ms)
+ GET / 200 in 797ms (next.js: 114ms, proxy.ts: 114ms, application-code: 570ms)
+ GET / 200 in 480ms (next.js: 11ms, proxy.ts: 10ms, application-code: 459ms)
+ GET / 200 in 794ms (next.js: 45ms, proxy.ts: 329ms, application-code: 420ms)
+ GET /certificate-verification 200 in 236ms (next.js: 38ms, proxy.ts: 100ms, application-code: 98ms)
+ GET / 200 in 308ms (next.js: 6ms, proxy.ts: 129ms, application-code: 173ms)
+ GET /certificate-verification 200 in 258ms (next.js: 6ms, proxy.ts: 4ms, application-code: 248ms)
+[Resend API Error]: {
+  status: 403,
+  error: {
+    statusCode: 403,
+    name: 'validation_error',
+    message: 'You can only send testing emails to your own email address (cimscampusceylon@gmail.com). To send emails to other recipients, please verify a domain at resend.com/domains, and change the `from` address to an email using this domain.'
+  },
+  path: '/emails'
+}
+ POST /certificate-verification 200 in 1599ms (next.js: 9ms, proxy.ts: 16ms, application-code: 1574ms)
+  └─ ƒ submitCertificateVerificationRequest(undefined, {}) in 1496ms src/lib/actions/certificate-verification.actions.ts

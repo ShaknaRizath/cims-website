@@ -15,9 +15,15 @@ const headingFont = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://www.cims.edu.lk"),
   title: "CIMS Campus | College of Information Management and Sciences",
   description:
     "CIMS Campus offers degree programmes and vocational training in Engineering & Technology, Business & Economics, and Law & Education.",
+  // The same site is also served live on cims.lk — this tells search engines
+  // cims.edu.lk is the canonical version, avoiding a duplicate-content penalty.
+  alternates: {
+    canonical: "/",
+  },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
