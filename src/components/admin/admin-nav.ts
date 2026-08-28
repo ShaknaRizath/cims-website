@@ -13,6 +13,7 @@ import {
   Settings,
   FileText,
   UserCog,
+  ShieldCheck,
   type LucideIcon,
 } from "lucide-react";
 import type { AdminRole } from "@/generated/prisma/enums";
@@ -44,6 +45,12 @@ export const adminNavItems: AdminNavItem[] = [
     roles: ["ADMIN", "ADMISSIONS_OFFICER"],
   },
   { href: "/admin/contact-messages", label: "Contact Messages", icon: Mail, roles: ["ADMIN"] },
+  {
+    href: "/admin/certificate-verification-requests",
+    label: "Certificate Verification",
+    icon: ShieldCheck,
+    roles: ["ADMIN"],
+  },
   { href: "/admin/admins", label: "Admin Users", icon: UserCog, roles: ["ADMIN"] },
   { href: "/admin/settings", label: "Settings", icon: Settings, roles: ["ADMIN"] },
 ];

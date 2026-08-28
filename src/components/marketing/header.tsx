@@ -68,8 +68,8 @@ export function Header({
               <a
                 key={link.label}
                 href={link.href}
-                target="_blank"
-                rel="noreferrer"
+                target={link.external ? "_blank" : undefined}
+                rel={link.external ? "noreferrer" : undefined}
                 className="hover:text-primary"
               >
                 {link.label}
@@ -183,8 +183,8 @@ export function Header({
                 <a
                   key={link.label}
                   href={link.href}
-                  target="_blank"
-                  rel="noreferrer"
+                  target={link.external ? "_blank" : undefined}
+                  rel={link.external ? "noreferrer" : undefined}
                   className="text-sm text-muted-foreground hover:text-foreground"
                 >
                   {link.label}

@@ -85,8 +85,8 @@ export function Footer({ settings, campuses }: { settings: FooterSettings; campu
             <a
               key={link.label}
               href={link.href}
-              target="_blank"
-              rel="noreferrer"
+              target={link.external ? "_blank" : undefined}
+              rel={link.external ? "noreferrer" : undefined}
               className="text-sm text-sidebar-foreground/80 hover:text-sidebar-primary"
             >
               {link.label}

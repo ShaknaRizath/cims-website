@@ -1,6 +1,7 @@
 export interface NavLink {
   label: string;
   href: string;
+  external?: boolean;
 }
 
 export interface NavGroup {
@@ -51,14 +52,13 @@ export const primaryNav: NavEntry[] = [
 
 export interface UtilityNavSettings {
   lmsUrl: string;
-  certificateVerifyUrl: string;
   onlinePaymentUrl: string;
 }
 
 export function buildUtilityNav(settings: UtilityNavSettings): NavLink[] {
   return [
-    { label: "Online Learning Portal", href: settings.lmsUrl },
-    { label: "Certificate Verification", href: settings.certificateVerifyUrl },
-    { label: "Online Payment", href: settings.onlinePaymentUrl },
+    { label: "Online Learning Portal", href: settings.lmsUrl, external: true },
+    { label: "Certificate Verification", href: "/certificate-verification" },
+    { label: "Online Payment", href: settings.onlinePaymentUrl, external: true },
   ];
 }
