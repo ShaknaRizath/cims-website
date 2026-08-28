@@ -13,9 +13,14 @@ export function ContactSection({
   contactPhone: string;
 }) {
   const details = [
-    { icon: Mail, label: contactEmail, href: `mailto:${contactEmail}` },
-    { icon: MapPin, label: contactAddress, href: undefined },
-    { icon: Phone, label: contactPhone, href: `tel:${contactPhone}` },
+    { icon: Mail, label: contactEmail, href: `mailto:${contactEmail}`, external: false },
+    {
+      icon: MapPin,
+      label: contactAddress,
+      href: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(contactAddress)}`,
+      external: true,
+    },
+    { icon: Phone, label: contactPhone, href: `tel:${contactPhone}`, external: false },
   ];
 
   return (
@@ -40,14 +45,16 @@ export function ContactSection({
                   <span className="text-sm text-foreground">{detail.label}</span>
                 </>
               );
-              return detail.href ? (
-                <a key={detail.label} href={detail.href} className="flex items-center gap-3 hover:text-primary">
+              return (
+                <a
+                  key={detail.label}
+                  href={detail.href}
+                  target={detail.external ? "_blank" : undefined}
+                  rel={detail.external ? "noreferrer" : undefined}
+                  className="flex items-center gap-3 hover:text-primary"
+                >
                   {content}
                 </a>
-              ) : (
-                <div key={detail.label} className="flex items-center gap-3">
-                  {content}
-                </div>
               );
             })}
           </div>
