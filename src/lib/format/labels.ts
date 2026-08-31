@@ -4,6 +4,7 @@ export const TEAM_CATEGORY_LABELS: Record<TeamCategory, string> = {
   BOARD_OF_GOVERNORS: "Board of Governors",
   ACADEMIC_BOARD: "Academic Board",
   INTERNATIONAL_REPRESENTATIVE: "International Representatives",
+  ACADEMIC_PANEL: "Academic Panel",
 };
 
 export const APPLICATION_STATUS_LABELS: Record<ApplicationStatus, string> = {

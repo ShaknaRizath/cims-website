@@ -14,6 +14,7 @@ const CATEGORY_OPTIONS = [
   { value: "BOARD_OF_GOVERNORS", label: "Board of Governors" },
   { value: "ACADEMIC_BOARD", label: "Academic Board" },
   { value: "INTERNATIONAL_REPRESENTATIVE", label: "International Representative" },
+  { value: "ACADEMIC_PANEL", label: "Academic Panel" },
 ];
 
 export interface TeamMemberFormDefaults {

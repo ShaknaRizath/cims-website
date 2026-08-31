@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 
 export const metadata: Metadata = {
   title: "Team | CIMS Campus",
-  description: "Meet the Board of Governors, Academic Board, and International Representatives at CIMS Campus.",
+  description: "Meet the Board of Governors, Academic Board, Academic Panel, and International Representatives at CIMS Campus.",
 };
 
 const CATEGORIES = Object.values(TeamCategory);
@@ -39,7 +39,7 @@ export default async function TeamPage({
     <>
       <PageHero
         title="Leadership & Representatives"
-        description="Meet the Board of Governors, Academic Board, and International Representatives leading CIMS Campus."
+        description="Meet the Board of Governors, Academic Board, Academic Panel, and International Representatives leading CIMS Campus."
       />
       <div className="mx-auto max-w-7xl px-6 py-16">
         <div className="flex flex-wrap justify-center gap-2">

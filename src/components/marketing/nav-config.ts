@@ -43,6 +43,7 @@ export const primaryNav: NavEntry[] = [
       { label: "Board of Governors", href: "/team?category=BOARD_OF_GOVERNORS" },
       { label: "Academic Board", href: "/team?category=ACADEMIC_BOARD" },
       { label: "International Representatives", href: "/team?category=INTERNATIONAL_REPRESENTATIVE" },
+      { label: "Academic Panel", href: "/team?category=ACADEMIC_PANEL" },
     ],
   },
   { label: "News", href: "/news" },

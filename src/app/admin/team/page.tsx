@@ -15,7 +15,7 @@ export default async function AdminTeamPage() {
     <div>
       <AdminPageHeader
         title="Team"
-        description="Board of Governors, Academic Board, and International Representatives shown on the Team page."
+        description="Board of Governors, Academic Board, Academic Panel, and International Representatives shown on the Team page."
         newLabel="New Team Member"
         newHref="/admin/team/new"
       />

@@ -1,0 +1,2 @@
+-- AlterEnum
+ALTER TYPE "TeamCategory" ADD VALUE 'ACADEMIC_PANEL';
