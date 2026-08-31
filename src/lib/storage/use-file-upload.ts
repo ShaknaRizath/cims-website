@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { compressImageIfLarge } from "@/lib/image/compress-image";
 
 export type UploadedFile = {
   url: string;
@@ -18,10 +19,15 @@ export function useFileUpload() {
     setUploading(true);
     setError(null);
     try {
+      // Uploads that skip cropping (or aren't images at all) never pass through
+      // getCroppedImageFile's own size cap — this is the safety net for those,
+      // keeping large photos under Cloudinary's free-plan 10MB upload limit.
+      const uploadFile = await compressImageIfLarge(file);
+
       const signRes = await fetch("/api/uploads/sign", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ folder, resourceType: "auto", filename: file.name }),
+        body: JSON.stringify({ folder, resourceType: "auto", filename: uploadFile.name }),
       });
       if (!signRes.ok) {
         const body = await signRes.json().catch(() => ({}));
@@ -31,7 +37,7 @@ export function useFileUpload() {
 
       const formData = new FormData();
       Object.entries(fields).forEach(([key, value]) => formData.append(key, value as string));
-      formData.append("file", file);
+      formData.append("file", uploadFile);
 
       const uploadRes = await fetch(url, { method: "POST", body: formData });
       if (!uploadRes.ok) {
@@ -42,9 +48,9 @@ export function useFileUpload() {
       return {
         url: uploaded.secure_url,
         publicId: uploaded.public_id,
-        fileName: file.name,
-        fileSizeBytes: file.size,
-        mimeType: file.type,
+        fileName: uploadFile.name,
+        fileSizeBytes: uploadFile.size,
+        mimeType: uploadFile.type,
       };
     } catch (err) {
       setError(err instanceof Error ? err.message : "Upload failed.");
