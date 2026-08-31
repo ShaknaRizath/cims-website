@@ -13,12 +13,12 @@ function baseUrl(request: Request): string {
   return process.env.AUTH_URL ?? new URL(request.url).origin;
 }
 
-export async function POST(request: Request) {
-  const session = await auth();
-  if (!session?.user) {
-    return new Response(null, { status: 401 });
-  }
+// Applicant document uploads (Apply Now) come from anonymous site visitors, not
+// logged-in admins, so that one folder is exempt from the auth check below — the
+// folder allowlist still confines it to nowhere else on disk.
+const PUBLIC_UPLOAD_FOLDER = "cims-website/applications";
 
+export async function POST(request: Request) {
   const formData = await request.formData();
   const folder = formData.get("folder");
   const file = formData.get("file");
@@ -30,6 +30,13 @@ export async function POST(request: Request) {
   const allowedPrefixes = resolveAllowedFolderPrefixes();
   if (!allowedPrefixes.some((prefix) => folder.startsWith(prefix))) {
     return Response.json({ error: "Invalid upload folder." }, { status: 400 });
+  }
+
+  if (!folder.startsWith(PUBLIC_UPLOAD_FOLDER)) {
+    const session = await auth();
+    if (!session?.user) {
+      return new Response(null, { status: 401 });
+    }
   }
 
   const safeFolder = folder

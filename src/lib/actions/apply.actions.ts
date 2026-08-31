@@ -1,18 +1,32 @@
 "use server";
 
-import { randomUUID } from "node:crypto";
 import { z } from "zod";
 import { prisma } from "@/lib/db/prisma";
-import { storage } from "@/lib/storage";
-import { applicationSchema, DOCUMENT_SLOTS, MAX_DOCUMENT_SIZE_BYTES } from "@/lib/validation/application.schema";
+import { applicationSchema, DOCUMENT_SLOTS } from "@/lib/validation/application.schema";
 import { sendApplicationNotification } from "@/lib/email/send-application-notification";
 
 export type ApplyActionState =
   | { error?: string; fieldErrors?: Record<string, string[] | undefined>; success?: boolean }
   | undefined;
 
-function sanitizeFilename(name: string): string {
-  return name.replace(/[^a-zA-Z0-9.\-_ ]/g, "_").trim() || "file";
+// Documents are uploaded straight from the browser to Cloudinary before submit
+// (see DocumentUploadField) and arrive here as JSON `{ url, fileName }` strings in
+// hidden inputs — not raw File objects. Vercel hard-caps a Server Action's request
+// body at 4.5MB, which even one real certificate scan can exceed, so the actual
+// file bytes never pass through this action.
+function parseUploadedDocs(formData: FormData, fieldName: string): { url: string; fileName: string }[] {
+  return formData
+    .getAll(fieldName)
+    .filter((value): value is string => typeof value === "string" && value.length > 0)
+    .map((value) => {
+      try {
+        const parsed = JSON.parse(value);
+        return typeof parsed?.url === "string" && typeof parsed?.fileName === "string" ? parsed : null;
+      } catch {
+        return null;
+      }
+    })
+    .filter((doc): doc is { url: string; fileName: string } => doc !== null);
 }
 
 export async function submitApplication(_prev: ApplyActionState, formData: FormData): Promise<ApplyActionState> {
@@ -21,21 +35,16 @@ export async function submitApplication(_prev: ApplyActionState, formData: FormD
     ? {}
     : z.flattenError(parsed.error).fieldErrors;
 
-  // Collect valid (non-empty) files per document slot, validating required + size
-  // server-side — client-side `required`/`accept` only guides the UI.
-  const filesBySlot = new Map<string, File[]>();
+  const documentsToCreate: { documentType: string; fileUrl: string; fileName: string }[] = [];
   for (const slot of DOCUMENT_SLOTS) {
-    const files = formData.getAll(slot.fieldName).filter((f): f is File => f instanceof File && f.size > 0);
-    if (slot.required && files.length === 0) {
+    const docs = parseUploadedDocs(formData, slot.fieldName);
+    if (slot.required && docs.length === 0) {
       fieldErrors[slot.fieldName] = [`${slot.label} is required.`];
       continue;
     }
-    const oversized = files.find((f) => f.size > MAX_DOCUMENT_SIZE_BYTES);
-    if (oversized) {
-      fieldErrors[slot.fieldName] = [`${oversized.name} is larger than 10MB.`];
-      continue;
+    for (const doc of docs) {
+      documentsToCreate.push({ documentType: slot.key, fileUrl: doc.url, fileName: doc.fileName });
     }
-    filesBySlot.set(slot.key, files);
   }
 
   if (!parsed.success || Object.values(fieldErrors).some((errors) => errors?.length)) {
@@ -45,21 +54,6 @@ export async function submitApplication(_prev: ApplyActionState, formData: FormD
   const programme = await prisma.programme.findUnique({ where: { id: parsed.data.programmeId } });
   if (!programme || !programme.isPublished) {
     return { fieldErrors: { programmeId: ["Select a valid programme."] } };
-  }
-
-  const documentsToCreate: { documentType: string; fileUrl: string; fileName: string }[] = [];
-  for (const [documentType, files] of filesBySlot) {
-    for (const file of files) {
-      const buffer = Buffer.from(await file.arrayBuffer());
-      const filename = `${randomUUID()}-${sanitizeFilename(file.name)}`;
-      const uploaded = await storage.uploadBuffer({
-        folder: "cims-website/applications",
-        filename,
-        buffer,
-        contentType: file.type || "application/octet-stream",
-      });
-      documentsToCreate.push({ documentType, fileUrl: uploaded.url, fileName: file.name });
-    }
   }
 
   const {

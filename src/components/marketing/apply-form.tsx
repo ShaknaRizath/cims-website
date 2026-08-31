@@ -4,6 +4,7 @@ import { useActionState, useEffect, useRef, useState } from "react";
 import { Check, FileText } from "lucide-react";
 import { submitApplication, type ApplyActionState } from "@/lib/actions/apply.actions";
 import { DOCUMENT_SLOTS } from "@/lib/validation/application.schema";
+import { DocumentUploadField, type UploadedDoc } from "@/components/marketing/document-upload-field";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -20,6 +21,8 @@ export function ApplyForm({ programmes }: { programmes: { id: string; name: stri
   const [step, setStep] = useState(0);
   const [declarationChecked, setDeclarationChecked] = useState(false);
   const [reviewData, setReviewData] = useState<FormData | null>(null);
+  const [slotDocs, setSlotDocs] = useState<Record<string, UploadedDoc[]>>({});
+  const [docErrors, setDocErrors] = useState<Record<string, string>>({});
   const formRef = useRef<HTMLFormElement>(null);
   const stepRefs = useRef<(HTMLDivElement | null)[]>([]);
 
@@ -29,11 +32,14 @@ export function ApplyForm({ programmes }: { programmes: { id: string; name: stri
     }
   }, [step]);
 
-  const err = (field: string) => state?.fieldErrors?.[field]?.map((message) => ({ message }));
+  const err = (field: string) => (docErrors[field] ? [{ message: docErrors[field] }] : state?.fieldErrors?.[field]?.map((message) => ({ message })));
 
   // Validating the whole form (formRef.current.reportValidity()) blocks silently on required
   // fields in later, CSS-hidden steps — the browser can't focus/show a bubble on a
   // display:none element, so "Next" would just do nothing. Only check the visible step.
+  // Documents live outside native <input type=file> now (they're uploaded ahead of
+  // submit to keep the eventual Server Action request tiny), so required slots are
+  // checked against slotDocs instead of relying on checkValidity().
   function goNext() {
     const container = stepRefs.current[step];
     const fields = container?.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>("input, textarea");
@@ -45,6 +51,18 @@ export function ApplyForm({ programmes }: { programmes: { id: string; name: stri
         }
       }
     }
+
+    if (step === 3) {
+      const nextDocErrors: Record<string, string> = {};
+      for (const slot of DOCUMENT_SLOTS) {
+        if (slot.required && !(slotDocs[slot.key]?.length > 0)) {
+          nextDocErrors[slot.fieldName] = `${slot.label} is required.`;
+        }
+      }
+      setDocErrors(nextDocErrors);
+      if (Object.keys(nextDocErrors).length > 0) return;
+    }
+
     setStep((s) => Math.min(s + 1, STEP_LABELS.length - 1));
   }
 
@@ -216,18 +234,26 @@ export function ApplyForm({ programmes }: { programmes: { id: string; name: stri
                 <FieldLabel htmlFor={slot.fieldName}>
                   {slot.label} {slot.required ? "*" : <span className="text-muted-foreground">(optional)</span>}
                 </FieldLabel>
-                <Input
-                  id={slot.fieldName}
-                  name={slot.fieldName}
-                  type="file"
+                <DocumentUploadField
+                  fieldName={slot.fieldName}
+                  folder="cims-website/applications"
                   accept={slot.accept}
                   multiple={slot.multiple}
-                  required={slot.required}
+                  docs={slotDocs[slot.key] ?? []}
+                  onChange={(docs) => {
+                    setSlotDocs((prev) => ({ ...prev, [slot.key]: docs }));
+                    setDocErrors((prev) => {
+                      if (!prev[slot.fieldName]) return prev;
+                      const next = { ...prev };
+                      delete next[slot.fieldName];
+                      return next;
+                    });
+                  }}
+                  errors={err(slot.fieldName)?.map((e) => e.message)}
                 />
                 <FieldDescription>
                   {slot.multiple ? "You can select multiple files." : "One file only."} Max 10MB per file.
                 </FieldDescription>
-                <FieldError errors={err(slot.fieldName)} />
               </Field>
             ))}
           </FieldGroup>
@@ -266,18 +292,16 @@ export function ApplyForm({ programmes }: { programmes: { id: string; name: stri
 
               <ReviewSection title="Documents">
                 {DOCUMENT_SLOTS.map((slot) => {
-                  const files = reviewData
-                    .getAll(slot.fieldName)
-                    .filter((f): f is File => f instanceof File && f.size > 0);
+                  const docs = slotDocs[slot.key] ?? [];
                   return (
                     <div key={slot.key} className="flex flex-col gap-1 py-1.5 text-sm">
                       <span className="text-muted-foreground">{slot.label}</span>
-                      {files.length === 0 ? (
+                      {docs.length === 0 ? (
                         <span className="text-foreground">Not provided</span>
                       ) : (
-                        files.map((file, index) => (
+                        docs.map((doc, index) => (
                           <span key={index} className="flex items-center gap-1.5 text-foreground">
-                            <FileText className="size-3.5 shrink-0" /> {file.name}
+                            <FileText className="size-3.5 shrink-0" /> {doc.fileName}
                           </span>
                         ))
                       )}
