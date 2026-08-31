@@ -20,15 +20,20 @@ export async function sendContactNotification(contactMessage: ContactMessage) {
     return;
   }
 
-  await resend.emails.send({
-    from: process.env.EMAIL_FROM ?? "CIMS Campus <onboarding@resend.dev>",
-    to: process.env.CONTACT_NOTIFICATION_EMAIL ?? "info@cims.lk",
-    replyTo: contactMessage.email,
-    subject: `New contact message: ${escapeHtml(contactMessage.subject)}`,
-    html: `
-      <p><strong>From:</strong> ${escapeHtml(contactMessage.name)} &lt;${escapeHtml(contactMessage.email)}&gt;</p>
-      <p><strong>Subject:</strong> ${escapeHtml(contactMessage.subject)}</p>
-      <p>${escapeHtml(contactMessage.message).replace(/\n/g, "<br>")}</p>
-    `,
-  });
+  try {
+    const { error } = await resend.emails.send({
+      from: process.env.EMAIL_FROM ?? "CIMS Campus <onboarding@resend.dev>",
+      to: process.env.CONTACT_NOTIFICATION_EMAIL ?? "info@cims.lk",
+      replyTo: contactMessage.email,
+      subject: `New contact message: ${escapeHtml(contactMessage.subject)}`,
+      html: `
+        <p><strong>From:</strong> ${escapeHtml(contactMessage.name)} &lt;${escapeHtml(contactMessage.email)}&gt;</p>
+        <p><strong>Subject:</strong> ${escapeHtml(contactMessage.subject)}</p>
+        <p>${escapeHtml(contactMessage.message).replace(/\n/g, "<br>")}</p>
+      `,
+    });
+    if (error) console.error("[contact] Resend error:", error);
+  } catch (err) {
+    console.error("[contact] Failed to send notification email:", err);
+  }
 }

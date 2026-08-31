@@ -20,16 +20,21 @@ export async function sendApplicationNotification(application: Application) {
     return;
   }
 
-  await resend.emails.send({
-    from: process.env.EMAIL_FROM ?? "CIMS Campus <onboarding@resend.dev>",
-    to: process.env.APPLICATION_NOTIFICATION_EMAIL ?? "info@cims.lk",
-    replyTo: application.email,
-    subject: `New application: ${escapeHtml(application.fullName)}`,
-    html: `
-      <p><strong>Name:</strong> ${escapeHtml(application.fullName)}</p>
-      <p><strong>Email:</strong> ${escapeHtml(application.email)}</p>
-      <p><strong>Mobile:</strong> ${escapeHtml(application.mobileNumber)}</p>
-      <p>View the full application in the admin dashboard under Applications.</p>
-    `,
-  });
+  try {
+    const { error } = await resend.emails.send({
+      from: process.env.EMAIL_FROM ?? "CIMS Campus <onboarding@resend.dev>",
+      to: process.env.APPLICATION_NOTIFICATION_EMAIL ?? "info@cims.lk",
+      replyTo: application.email,
+      subject: `New application: ${escapeHtml(application.fullName)}`,
+      html: `
+        <p><strong>Name:</strong> ${escapeHtml(application.fullName)}</p>
+        <p><strong>Email:</strong> ${escapeHtml(application.email)}</p>
+        <p><strong>Mobile:</strong> ${escapeHtml(application.mobileNumber)}</p>
+        <p>View the full application in the admin dashboard under Applications.</p>
+      `,
+    });
+    if (error) console.error("[apply] Resend error:", error);
+  } catch (err) {
+    console.error("[apply] Failed to send notification email:", err);
+  }
 }

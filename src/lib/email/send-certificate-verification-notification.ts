@@ -22,19 +22,24 @@ export async function sendCertificateVerificationNotification(request: Certifica
     return;
   }
 
-  await resend.emails.send({
-    from: process.env.EMAIL_FROM ?? "CIMS Campus <onboarding@resend.dev>",
-    to: process.env.CERTIFICATE_VERIFICATION_NOTIFICATION_EMAIL ?? "verify@cims.lk",
-    replyTo: request.verifierEmail,
-    subject: `New certificate verification request: ${escapeHtml(request.studentName)}`,
-    html: `
-      <p><strong>Verifier:</strong> ${escapeHtml(request.verifierName)} (${escapeHtml(request.verifierInstitution)}, ${escapeHtml(request.verifierDepartment)})</p>
-      <p><strong>Verifier Mobile:</strong> ${escapeHtml(request.verifierMobile)}</p>
-      <p><strong>Verifier Email:</strong> ${escapeHtml(request.verifierEmail)}</p>
-      <p><strong>Purpose:</strong> ${escapeHtml(request.purpose)}</p>
-      <hr>
-      <p><strong>Student Name:</strong> ${escapeHtml(request.studentName)}</p>
-      <p><strong>Certificate Number:</strong> ${escapeHtml(request.certificateNumber)}</p>
-    `,
-  });
+  try {
+    const { error } = await resend.emails.send({
+      from: process.env.EMAIL_FROM ?? "CIMS Campus <onboarding@resend.dev>",
+      to: process.env.CERTIFICATE_VERIFICATION_NOTIFICATION_EMAIL ?? "verify@cims.lk",
+      replyTo: request.verifierEmail,
+      subject: `New certificate verification request: ${escapeHtml(request.studentName)}`,
+      html: `
+        <p><strong>Verifier:</strong> ${escapeHtml(request.verifierName)} (${escapeHtml(request.verifierInstitution)}, ${escapeHtml(request.verifierDepartment)})</p>
+        <p><strong>Verifier Mobile:</strong> ${escapeHtml(request.verifierMobile)}</p>
+        <p><strong>Verifier Email:</strong> ${escapeHtml(request.verifierEmail)}</p>
+        <p><strong>Purpose:</strong> ${escapeHtml(request.purpose)}</p>
+        <hr>
+        <p><strong>Student Name:</strong> ${escapeHtml(request.studentName)}</p>
+        <p><strong>Certificate Number:</strong> ${escapeHtml(request.certificateNumber)}</p>
+      `,
+    });
+    if (error) console.error("[certificate-verification] Resend error:", error);
+  } catch (err) {
+    console.error("[certificate-verification] Failed to send notification email:", err);
+  }
 }
