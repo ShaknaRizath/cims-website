@@ -40,3 +40,5 @@
  GET /admin/team/new 200 in 171ms (next.js: 10ms, proxy.ts: 13ms, application-code: 148ms)
  POST /api/uploads/sign 200 in 26ms (next.js: 6ms, application-code: 20ms)
 ✓ Compiled in 387ms
+✓ Compiled in 1114ms
+✓ Compiled in 1097ms
