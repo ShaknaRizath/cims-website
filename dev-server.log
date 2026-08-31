@@ -6,22 +6,8 @@
 - Local:         http://localhost:3000
 - Network:       http://192.168.174.1:3000
 - Environments: .env
-✓ Ready in 1342ms
+✓ Ready in 3.3s
 - Experiments (use with caution):
   · cpus: 1
 
-[browser] Uncaught PrismaClientKnownRequestError: 
-Invalid `__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2f$prisma$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["prisma"].programmeCategory.findMany()` invocation in
-C:\Users\DELL\Documents\GitHub\cims-website\.next\dev\server\chunks\ssr\[root-of-the-server]__1rxph9n._.js:1239:160
-
-  1236         city: true
-  1237     }
-  1238 }),
-→ 1239 __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2f$prisma$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["prisma"].programmeCategory.findMany(
-Server has closed the connection.
-    at <unknown> (C:\Users\DELL\Documents\GitHub\cims-website\.next\dev\server\chunks\ssr\[root-of-the-server]__1rxph9n._.js:1239:160)
-    at Function.all (<anonymous>:1:21)
-    at SiteLayout (about://React/Server/C:%5CUsers%5CDELL%5CDocuments%5CGitHub%5Ccims-website%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__1rxph9n._.js?0:1223:46)
-○ Compiling / ...
- GET / 200 in 12.2s (next.js: 4.4s, proxy.ts: 1973ms, application-code: 5.9s)
- GET / 200 in 599ms (next.js: 20ms, proxy.ts: 17ms, application-code: 563ms)
+ GET / 200 in 12.7s (next.js: 2.6s, proxy.ts: 1878ms, application-code: 8.2s)
