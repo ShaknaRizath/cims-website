@@ -42,3 +42,4 @@
 ✓ Compiled in 387ms
 ✓ Compiled in 1114ms
 ✓ Compiled in 1097ms
+ GET / 200 in 4.3s (next.js: 2.0s, proxy.ts: 1288ms, application-code: 1025ms)
