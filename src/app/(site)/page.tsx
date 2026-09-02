@@ -17,7 +17,7 @@ import { ContactSection } from "@/components/marketing/contact-section";
 const stats = [
   { label: "Years of Excellence", value: "19+", icon: BadgeCheck },
   { label: "Passed Out Students", value: "10,000+", icon: GraduationCap },
-  { label: "UGC Recognized Degrees", value: "20", icon: BookOpen },
+  { label: "UGC Recognized Degrees & TVEC-approved Diplomas", value: "22", icon: BookOpen },
   { label: "University Affiliations", value: "5", icon: Landmark },
   { label: "Industry Partners", value: "50+", icon: Users },
 ];
