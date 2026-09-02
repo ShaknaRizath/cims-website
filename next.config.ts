@@ -22,6 +22,14 @@ const nextConfig: NextConfig = {
       { source: "/programmes/education", destination: "/programmes?category=faculty-of-education-and-humanities-sciences", permanent: true },
     ];
   },
+
+  // Next.js reserves the `favicon.ico` name for its own static-file convention (even
+  // a route handler at that literal path is silently ignored), so the per-domain
+  // favicon lives at an ordinary route and this rewrite makes /favicon.ico itself
+  // resolve to it — see src/app/api/site-favicon/route.ts.
+  async rewrites() {
+    return [{ source: "/favicon.ico", destination: "/api/site-favicon" }];
+  },
 };
 
 export default nextConfig;
