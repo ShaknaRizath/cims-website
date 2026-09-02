@@ -43,3 +43,100 @@
 ✓ Compiled in 1114ms
 ✓ Compiled in 1097ms
  GET / 200 in 4.3s (next.js: 2.0s, proxy.ts: 1288ms, application-code: 1025ms)
+✓ Compiled in 5.2s
+✓ Compiled in 262ms
+✓ Compiled in 419ms
+✓ Compiled in 249ms
+✓ Compiled in 151ms
+✓ Compiled in 204ms
+✓ Compiled in 195ms
+✓ Compiled in 269ms
+✓ Compiled in 532ms
+✓ Compiled in 2.5s
+✓ Finished filesystem cache database compaction in 15.2s
+✓ Compiled in 207ms
+⨯ Error: Connection terminated unexpectedly
+    at ignore-listed frames {
+  clientVersion: '7.9.1',
+  digest: '2930446633'
+}
+⨯ Error: Connection terminated unexpectedly
+    at ignore-listed frames {
+  clientVersion: '7.9.1',
+  digest: '2930446633'
+}
+ GET / 500 in 3.6s (next.js: 1156ms, proxy.ts: 997ms, application-code: 1407ms)
+⨯ Error [PrismaClientKnownRequestError]: 
+Invalid `{imported module ./src/lib/db/prisma.ts}["prisma"].programmeCategory.findMany()` invocation in
+C:\Users\DELL\Documents\GitHub\cims-website\.next\dev\server\chunks\ssr\_0etrk8n._.js:734:160
+
+  731         city: true
+  732     }
+  733 }),
+→ 734 {imported module ./src/lib/db/prisma.ts}["prisma"].programmeCategory.findMany(
+Server has closed the connection.
+    at <unknown> (src\app\(site)\layout.tsx:26:30)
+    at async SiteLayout (src\app\(site)\layout.tsx:23:44)
+  24 |     getBrandedSiteSettings(),
+  25 |     prisma.campusLocation.findMany({ orderBy: { orderIndex: "asc" }, select: { id: true, n...
+> 26 |     prisma.programmeCategory.findMany({ orderBy: { orderIndex: "asc" }, select: { name: tr...
+     |                              ^
+  27 |   ]);
+  28 |
+  29 |   const headerFooterSettings = settings ?? FALLBACK_SETTINGS; {
+  code: 'P1017',
+  meta: {
+    modelName: 'ProgrammeCategory',
+    driverAdapterError: Error [DriverAdapterError]: ConnectionClosed
+        at async SiteLayout (src\app\(site)\layout.tsx:23:44)
+      21 |
+      22 | export default async function SiteLayout({ children }: { children: React.ReactNode }) {
+    > 23 |   const [settings, campuses, categories] = await Promise.all([
+         |                                            ^
+      24 |     getBrandedSiteSettings(),
+      25 |     prisma.campusLocation.findMany({ orderBy: { orderIndex: "asc" }, select: { id: true, n...
+      26 |     prisma.programmeCategory.findMany({ orderBy: { orderIndex: "asc" }, select: { name: tr... {
+      [cause]: [Object]
+    }
+  },
+  clientVersion: '7.9.1',
+  digest: '4282833433'
+}
+⨯ Error [PrismaClientKnownRequestError]: 
+Invalid `{imported module ./src/lib/db/prisma.ts}["prisma"].programme.findMany()` invocation in
+C:\Users\DELL\Documents\GitHub\cims-website\.next\dev\server\chunks\ssr\[root-of-the-server]__1-wjp26._.js:1129:152
+
+  1126 async function Home() {
+  1127     const [settings, featuredProgrammes, featuredTestimonials, partners, latestPosts, events, heroSlides] = await Promise.all([
+  1128         (0, {imported module ./src/lib/site/branding.ts}["getBrandedSiteSettings"])(),
+→ 1129         {imported module ./src/lib/db/prisma.ts}["prisma"].programme.findMany(
+Server has closed the connection.
+    at <unknown> (src\app\(site)\page.tsx:29:22)
+    at async Home (src\app\(site)\page.tsx:27:5)
+  27 |     await Promise.all([
+  28 |     getBrandedSiteSettings(),
+> 29 |     prisma.programme.findMany({
+     |                      ^
+  30 |       where: { isPublished: true, isFeatured: true },
+  31 |       orderBy: { orderIndex: "asc" },
+  32 |       take: 4, {
+  code: 'P1017',
+  meta: {
+    modelName: 'Programme',
+    driverAdapterError: Error [DriverAdapterError]: ConnectionClosed
+        at async Home (src\app\(site)\page.tsx:27:5)
+      25 | export default async function Home() {
+      26 |   const [settings, featuredProgrammes, featuredTestimonials, partners, latestPosts, events...
+    > 27 |     await Promise.all([
+         |     ^
+      28 |     getBrandedSiteSettings(),
+      29 |     prisma.programme.findMany({
+      30 |       where: { isPublished: true, isFeatured: true }, {
+      [cause]: [Object]
+    }
+  },
+  clientVersion: '7.9.1',
+  digest: '1621290736'
+}
+ GET / 500 in 486ms (next.js: 13ms, proxy.ts: 13ms, application-code: 460ms)
+[?25h
