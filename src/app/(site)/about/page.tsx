@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import { BadgeCheck, GraduationCap, Users, Compass, Eye, Target, Lightbulb, Handshake, BookOpen, Trophy } from "lucide-react";
-import { prisma } from "@/lib/db/prisma";
+import { getBrandedSiteSettings } from "@/lib/site/branding";
 import { Reveal } from "@/components/marketing/reveal";
 import { PageHero } from "@/components/marketing/page-hero";
 import { CtaBanner } from "@/components/marketing/cta-banner";
@@ -53,7 +53,7 @@ const whatWeValue = [
 ];
 
 export default async function AboutPage() {
-  const settings = await prisma.siteSettings.findUnique({ where: { id: "singleton" } });
+  const settings = await getBrandedSiteSettings();
 
   return (
     <>

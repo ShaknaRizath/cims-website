@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { BadgeCheck, GraduationCap, Landmark, Users, BookOpen } from "lucide-react";
 import { prisma } from "@/lib/db/prisma";
+import { getBrandedSiteSettings } from "@/lib/site/branding";
 import { Button } from "@/components/ui/button";
 import { Reveal } from "@/components/marketing/reveal";
 import { CtaBanner } from "@/components/marketing/cta-banner";
@@ -24,7 +25,7 @@ const stats = [
 export default async function Home() {
   const [settings, featuredProgrammes, featuredTestimonials, partners, latestPosts, events, heroSlides] =
     await Promise.all([
-    prisma.siteSettings.findUnique({ where: { id: "singleton" } }),
+    getBrandedSiteSettings(),
     prisma.programme.findMany({
       where: { isPublished: true, isFeatured: true },
       orderBy: { orderIndex: "asc" },

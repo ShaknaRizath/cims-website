@@ -1,9 +1,11 @@
 import { prisma } from "@/lib/db/prisma";
+import { getBrandedSiteSettings, NEW_SITE_NAME } from "@/lib/site/branding";
 import { Header } from "@/components/marketing/header";
 import { Footer } from "@/components/marketing/footer";
 import { WhatsAppWidget } from "@/components/marketing/whatsapp-widget";
 
 const FALLBACK_SETTINGS = {
+  siteName: NEW_SITE_NAME,
   logoUrl: null,
   contactPhone: "+94 77 359 0505",
   contactEmail: "info@cims.lk",
@@ -19,7 +21,7 @@ const FALLBACK_SETTINGS = {
 
 export default async function SiteLayout({ children }: { children: React.ReactNode }) {
   const [settings, campuses, categories] = await Promise.all([
-    prisma.siteSettings.findUnique({ where: { id: "singleton" } }),
+    getBrandedSiteSettings(),
     prisma.campusLocation.findMany({ orderBy: { orderIndex: "asc" }, select: { id: true, name: true, city: true } }),
     prisma.programmeCategory.findMany({ orderBy: { orderIndex: "asc" }, select: { name: true, slug: true } }),
   ]);
