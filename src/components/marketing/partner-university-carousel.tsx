@@ -42,22 +42,22 @@ export function PartnerUniversityCarousel({ partners }: { partners: PartnerUnive
         <CarouselContent>
           {partners.map((partner) => {
             const logo = (
-              <div className="flex h-80 w-full items-center justify-center rounded-lg border bg-card p-12">
+              <div className="flex h-32 w-full items-center justify-center rounded-lg border bg-card p-6 sm:h-40 sm:p-8">
                 {partner.logoUrl ? (
                   <div className="relative h-full w-full">
                     <Image src={partner.logoUrl} alt={partner.name} fill unoptimized className="object-contain" />
                   </div>
                 ) : (
-                  <div className="flex flex-col items-center gap-3 text-muted-foreground">
-                    <Landmark className="size-14" />
-                    <span className="text-base font-medium">{partner.name}</span>
+                  <div className="flex flex-col items-center gap-2 text-muted-foreground">
+                    <Landmark className="size-8" />
+                    <span className="text-sm font-medium">{partner.name}</span>
                   </div>
                 )}
               </div>
             );
 
             return (
-              <CarouselItem key={partner.name} className="basis-full sm:basis-1/2">
+              <CarouselItem key={partner.name} className="basis-1/2 sm:basis-1/3 lg:basis-1/4">
                 {partner.websiteUrl ? (
                   <a href={partner.websiteUrl} target="_blank" rel="noreferrer" aria-label={partner.name} className="block">
                     {logo}
