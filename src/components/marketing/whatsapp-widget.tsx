@@ -16,7 +16,7 @@ export function WhatsAppWidget({ whatsappNumber }: { whatsappNumber?: string | n
       target="_blank"
       rel="noreferrer"
       aria-label="Chat with CIMS Campus on WhatsApp"
-      className="group fixed right-4 bottom-4 z-40 flex size-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-lg transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-[#25D366]/50 motion-reduce:transition-none sm:right-6 sm:bottom-6"
+      className="group fixed right-4 bottom-20 z-40 flex size-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-lg transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-[#25D366]/50 motion-reduce:transition-none sm:right-6 sm:bottom-24"
     >
       <span className="absolute inset-0 -z-10 animate-ping rounded-full bg-[#25D366]/60 motion-reduce:hidden" />
       <WhatsappIcon className="size-7" />
