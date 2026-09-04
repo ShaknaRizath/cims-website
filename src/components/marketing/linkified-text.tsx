@@ -22,7 +22,7 @@ export function LinkifiedText({ text, className }: { text: string; className?: s
               href={url}
               target="_blank"
               rel="noreferrer"
-              className="text-primary underline underline-offset-2 break-all hover:no-underline"
+              className="break-all text-amber-700 underline underline-offset-2 hover:no-underline dark:text-amber-500"
             >
               {url}
             </a>
