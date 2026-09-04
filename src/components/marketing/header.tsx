@@ -6,11 +6,17 @@ import { useState } from "react";
 import { Menu, Phone, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuPopup,
+  NavigationMenuPortal,
+  NavigationMenuPositioner,
+  NavigationMenuTrigger,
+  NavigationMenuViewport,
+} from "@/components/ui/navigation-menu";
 import {
   Sheet,
   SheetContent,
@@ -87,38 +93,53 @@ export function Header({
           CIMS <span className="font-normal text-foreground">Campus</span>
         </Link>
 
-        <nav className="hidden items-center gap-1 lg:flex">
-          {nav.map((entry) =>
-            isNavGroup(entry) ? (
-              <DropdownMenu key={entry.label}>
-                <DropdownMenuTrigger
-                  render={
-                    <Button variant="ghost" className="text-sm font-medium" />
-                  }
-                >
-                  {entry.label}
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="start" className="w-96">
-                  {entry.items.map((item) => (
-                    <DropdownMenuItem key={item.label} render={<Link href={item.href} />} className="whitespace-nowrap">
-                      {item.label}
-                    </DropdownMenuItem>
-                  ))}
-                </DropdownMenuContent>
-              </DropdownMenu>
-            ) : (
-              <Button
-                key={entry.label}
-                variant="ghost"
-                className="text-sm font-medium"
-                nativeButton={false}
-                render={<Link href={entry.href} />}
-              >
-                {entry.label}
-              </Button>
-            ),
-          )}
-        </nav>
+        <NavigationMenu className="hidden lg:flex">
+          <NavigationMenuList>
+            {nav.map((entry) =>
+              isNavGroup(entry) ? (
+                <NavigationMenuItem key={entry.label}>
+                  <NavigationMenuTrigger
+                    render={
+                      <Button variant="ghost" className="text-sm font-medium" />
+                    }
+                  >
+                    {entry.label}
+                  </NavigationMenuTrigger>
+                  <NavigationMenuContent>
+                    <ul className="flex flex-col gap-0.5">
+                      {entry.items.map((item) => (
+                        <li key={item.label}>
+                          <NavigationMenuLink render={<Link href={item.href} />} className="whitespace-nowrap">
+                            {item.label}
+                          </NavigationMenuLink>
+                        </li>
+                      ))}
+                    </ul>
+                  </NavigationMenuContent>
+                </NavigationMenuItem>
+              ) : (
+                <NavigationMenuItem key={entry.label}>
+                  <Button
+                    variant="ghost"
+                    className="text-sm font-medium"
+                    nativeButton={false}
+                    render={<Link href={entry.href} />}
+                  >
+                    {entry.label}
+                  </Button>
+                </NavigationMenuItem>
+              ),
+            )}
+          </NavigationMenuList>
+
+          <NavigationMenuPortal>
+            <NavigationMenuPositioner>
+              <NavigationMenuPopup>
+                <NavigationMenuViewport />
+              </NavigationMenuPopup>
+            </NavigationMenuPositioner>
+          </NavigationMenuPortal>
+        </NavigationMenu>
 
         <div className="flex items-center gap-2">
           <Button
