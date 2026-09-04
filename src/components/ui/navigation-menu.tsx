@@ -48,7 +48,7 @@ function NavigationMenuLink({ className, ...props }: NavigationMenuPrimitive.Lin
     <NavigationMenuPrimitive.Link
       data-slot="navigation-menu-link"
       className={cn(
-        "block cursor-default rounded-md px-1.5 py-1 text-sm whitespace-nowrap outline-hidden select-none focus:bg-accent focus:text-accent-foreground data-[active]:bg-accent data-[active]:text-accent-foreground",
+        "block cursor-default rounded-md px-1.5 py-1 text-sm whitespace-nowrap outline-hidden select-none transition-colors duration-150 hover:bg-secondary hover:text-secondary-foreground focus:bg-accent focus:text-accent-foreground data-[active]:bg-accent data-[active]:text-accent-foreground",
         className
       )}
       {...props}
