@@ -4,6 +4,7 @@ import { CalendarDays, MapPin } from "lucide-react";
 import { prisma } from "@/lib/db/prisma";
 import { Reveal } from "@/components/marketing/reveal";
 import { CtaBanner } from "@/components/marketing/cta-banner";
+import { LinkifiedText } from "@/components/marketing/linkified-text";
 
 export async function generateMetadata({
   params,
@@ -62,7 +63,7 @@ export default async function EventDetailPage({
 
         {event.description && (
           <Reveal delayMs={200} className="mt-8 whitespace-pre-line text-muted-foreground">
-            {event.description}
+            <LinkifiedText text={event.description} />
           </Reveal>
         )}
       </article>
