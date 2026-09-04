@@ -51,11 +51,12 @@ export default async function EventDetailPage({
         {event.coverImageUrl && (
           // Not Next's <Image fill> here — that needs a fixed-aspect container, which would
           // crop tall posters/flyers the same way object-cover did. Image dimensions aren't
-          // stored, so a plain <img> at its natural size (capped by max-height) is what lets
-          // both wide photos and tall posters display in full, uncropped.
-          <Reveal delayMs={100} className="mt-8 overflow-hidden rounded-xl bg-muted">
+          // stored, so a plain <img> at its natural size (capped by max-height/width) is what
+          // lets both wide photos and tall posters display in full, uncropped. The wrapper
+          // has no forced width/background, so it never shows more than the image itself.
+          <Reveal delayMs={100} className="mt-8 flex justify-center">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={event.coverImageUrl} alt="" className="mx-auto max-h-[720px] w-full object-contain" />
+            <img src={event.coverImageUrl} alt="" className="max-h-[720px] max-w-full rounded-xl object-contain" />
           </Reveal>
         )}
 
