@@ -3,6 +3,7 @@ import { getBrandedSiteSettings, NEW_SITE_NAME } from "@/lib/site/branding";
 import { Header } from "@/components/marketing/header";
 import { Footer } from "@/components/marketing/footer";
 import { WhatsAppWidget } from "@/components/marketing/whatsapp-widget";
+import { BackToTopButton } from "@/components/marketing/back-to-top-button";
 
 const FALLBACK_SETTINGS = {
   siteName: NEW_SITE_NAME,
@@ -42,6 +43,7 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
       </main>
       <Footer settings={headerFooterSettings} campuses={campuses} />
       <WhatsAppWidget whatsappNumber={headerFooterSettings.whatsappNumber} />
+      <BackToTopButton />
     </>
   );
 }
