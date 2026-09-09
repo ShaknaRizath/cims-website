@@ -79,6 +79,8 @@ export function TeamMemberForm({
           label="Photo"
           folder="cims-website/team"
           defaultUrl={defaultValues?.photoUrl}
+          aspectRatio={1}
+          description="Shown as a circular photo — use the crop box to center the face before saving."
         />
 
         <div className="grid gap-4 sm:grid-cols-2">
