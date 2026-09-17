@@ -64,21 +64,14 @@ export function NewsPostForm({
     const result = await uploadBodyImage(file, "cims-website/news");
     if (!result) return;
 
+    // Always appended at the end, in upload order — not at the text cursor. Inserting
+    // at the cursor sounds more precise, but in practice it means every image lands
+    // wherever the cursor was last left (often position 0, if the box was never
+    // clicked into), so several uploads in a row all pile up at the same spot instead
+    // of following the order they were added. Reorder by cutting/pasting the <img>
+    // line itself if a photo needs to sit somewhere other than at the end.
     const tag = `\n<img src="${result.url}" alt="" />\n`;
-    const textarea = bodyTextareaRef.current;
-    if (textarea) {
-      const start = textarea.selectionStart ?? bodyHtml.length;
-      const end = textarea.selectionEnd ?? bodyHtml.length;
-      setBodyHtml(bodyHtml.slice(0, start) + tag + bodyHtml.slice(end));
-      requestAnimationFrame(() => {
-        const cursor = start + tag.length;
-        textarea.focus();
-        textarea.setSelectionRange(cursor, cursor);
-      });
-    } else {
-      setBodyHtml((prev) => prev + tag);
-    }
-
+    setBodyHtml((prev) => prev + tag);
     setBodyImages((prev) => (prev.includes(result.url) ? prev : [...prev, result.url]));
   }
 
@@ -159,7 +152,8 @@ export function NewsPostForm({
             {uploadingBodyImage && <span className="text-sm text-muted-foreground">Uploading...</span>}
           </div>
           <FieldDescription>
-            Add an image anywhere in the body by choosing a file above — it&apos;s inserted at your cursor.
+            Write your text first, then add photos with the file picker above — each one is added to the
+            end, in the order you upload them. To move one, cut and paste its &lt;img&gt; line in the box above.
             Basic formatting (paragraphs, bold, links, headings, lists) is also allowed.
           </FieldDescription>
           {bodyImageUploadError && <FieldError>{bodyImageUploadError}</FieldError>}
