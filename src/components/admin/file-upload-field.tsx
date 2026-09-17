@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { FileText, X } from "lucide-react";
 import { useFileUpload } from "@/lib/storage/use-file-upload";
@@ -29,6 +29,10 @@ interface FileUploadFieldProps {
   // that need to derive something else from this image (e.g. a separately
   // cropped thumbnail) without re-reading it back out of the DOM.
   onUploaded?: (url: string | null) => void;
+  // Lets a parent set/replace the selected file from outside the field's own upload
+  // flow — e.g. "use this image as the cover" picked from a gallery elsewhere in the
+  // same form. Any change to this value overwrites the current selection.
+  selectedUrl?: string;
 }
 
 export function FileUploadField({
@@ -43,10 +47,20 @@ export function FileUploadField({
   aspectRatio,
   disableCrop = false,
   onUploaded,
+  selectedUrl,
 }: FileUploadFieldProps) {
   const [file, setFile] = useState<{ url: string; name: string } | null>(
     defaultUrl ? { url: defaultUrl, name: defaultUrl.split("/").pop() ?? defaultUrl } : null,
   );
+
+  useEffect(() => {
+    if (!selectedUrl) return;
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setFile({ url: selectedUrl, name: selectedUrl.split("/").pop() ?? selectedUrl });
+    onUploaded?.(selectedUrl);
+    // Only re-run when the externally-picked URL itself changes.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedUrl]);
   const [pendingImage, setPendingImage] = useState<{ src: string; name: string; type: string } | null>(null);
   // Per-upload opt-out of the crop dialog — distinct from the `disableCrop` prop,
   // which removes cropping entirely for fields that never want it (e.g. logos).

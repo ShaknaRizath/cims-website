@@ -2,12 +2,12 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import sanitizeHtml from "sanitize-html";
 import { z } from "zod";
 import { Prisma } from "@/generated/prisma/client";
 import { prisma } from "@/lib/db/prisma";
 import { requireAdmin } from "@/lib/auth/rbac";
 import { newsPostSchema } from "@/lib/validation/news.schema";
+import { sanitizeNewsBody } from "@/lib/format/sanitize-news-body";
 import type { ActionState } from "@/lib/actions/action-state";
 
 export async function createNewsPost(_prev: ActionState, formData: FormData): Promise<ActionState> {
@@ -21,7 +21,7 @@ export async function createNewsPost(_prev: ActionState, formData: FormData): Pr
   let postId: string;
   try {
     const post = await prisma.newsPost.create({
-      data: { ...parsed.data, bodyHtml: sanitizeHtml(parsed.data.bodyHtml) },
+      data: { ...parsed.data, bodyHtml: sanitizeNewsBody(parsed.data.bodyHtml) },
     });
     postId = post.id;
   } catch (error) {
@@ -50,7 +50,7 @@ export async function updateNewsPost(
   try {
     await prisma.newsPost.update({
       where: { id: postId },
-      data: { ...parsed.data, bodyHtml: sanitizeHtml(parsed.data.bodyHtml) },
+      data: { ...parsed.data, bodyHtml: sanitizeNewsBody(parsed.data.bodyHtml) },
     });
   } catch (error) {
     if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === "P2002") {
